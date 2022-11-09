@@ -92,17 +92,23 @@ function ProductCard({ item }) {
               >
                 {item.price.toFixed(2)} ₺
               </Text>
-              <Badge
-                colorScheme="teal"
-                mt={3}
-                width={"fit-content"}
-                px={"1"}
-                py={"0.5"}
-                borderRadius={"md"}
-                variant="solid"
-              >
-                {item.tag}
-              </Badge>
+              <Flex flexDirection={"row"} ml="-0.8">
+                {item.tag.map((tag, index) => (
+                  <Badge
+                    key={index}
+                    colorScheme="teal"
+                    mt={3}
+                    width={"fit-content"}
+                    px={"1"}
+                    py={"0.5"}
+                    borderRadius={"md"}
+                    variant="solid"
+                    mx="1"
+                  >
+                    {tag}
+                  </Badge>
+                ))}
+              </Flex>
             </Flex>
             <Link to={`/${item.link}`}>
               <Tooltip

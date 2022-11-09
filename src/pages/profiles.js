@@ -88,12 +88,10 @@ function Profiles() {
 
   const product = data.cards.find((item) => item.link === id);
 
-  console.log(product.details);
 
   const right = product.details.slice(0, 3);
   const left = product.details.slice(3, 6);
 
-  console.log(product.desc);
 
   return (
     <Container maxW={"7xl"}>
@@ -169,17 +167,16 @@ function Profiles() {
           </Stack>
           <Stack>
             <Accordion allowToggle>
-              <AccordionItem borderColor={"gray.600"}>
-                <h2>
-                  <AccordionButton>
-                    <Box flex="1" textAlign="left">
-                      <FormattedMessage id="title" />
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
+              <Tabs>
+                <TabList>
+                  <Tab><FormattedMessage id="title" /></Tab>
+                  <Tab>Two</Tab>
+                  <Tab>Three</Tab>
+                </TabList>
+
+                <TabPanels>
+                  <TabPanel>
+                    <p><SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
                     <List spacing={2} color={textColor}>
                       {product.details.lenght > 3
                         ? product.details.map((item, index) => (
@@ -199,85 +196,16 @@ function Profiles() {
                             <ListItem key={index}>{item}</ListItem>
                           ))}
                     </List>
-                  </SimpleGrid>
-                </AccordionPanel>
-              </AccordionItem>
-
-              {/* <AccordionItem borderColor={"gray.600"}>
-                <h2>
-                  <AccordionButton>
-                    <Box flex="1" textAlign="left">
-                      <FormattedMessage id="bestSeries" />
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  <Tabs variant="enclosed" borderColor={textColor}>
-                    <TabList>
-                      {product.bestGames.length > 0 && (
-                        <Tab>
-                          <FormattedMessage id="series" />
-                        </Tab>
-                      )}
-                      {product.bestGames.length > 0 && (
-                        <Tab>
-                          <FormattedMessage id="games" />
-                        </Tab>
-                      )}
-                      {product.bestAnime.length > 0 && (
-                        <Tab>
-                          <FormattedMessage id="anime" />
-                        </Tab>
-                      )}
-                      {product.bestMovies.length > 0 && (
-                        <Tab>
-                          <FormattedMessage id="movie" />
-                        </Tab>
-                      )}
-                    </TabList>
-
-                    <TabPanels>
-                      <TabPanel>
-                        <List color={textColor}>
-                          {product.bestSeries.map((item, index) => (
-                            <div key={index}>
-                              <ListItem>{item}</ListItem>
-                            </div>
-                          ))}
-                        </List>
-                      </TabPanel>
-                      <TabPanel>
-                        <List color={textColor}>
-                          {product.bestGames.map((item, index) => (
-                            <div key={index}>
-                              <ListItem>{item}</ListItem>
-                            </div>
-                          ))}
-                        </List>
-                      </TabPanel>
-                      <TabPanel>
-                        <List color={textColor}>
-                          {product.bestAnime.map((item, index) => (
-                            <div key={index}>
-                              <ListItem>{item}</ListItem>
-                            </div>
-                          ))}
-                        </List>
-                      </TabPanel>
-                      <TabPanel>
-                        <List color={textColor}>
-                          {product.bestMovies.map((item, index) => (
-                            <div key={index}>
-                              <ListItem>{item}</ListItem>
-                            </div>
-                          ))}
-                        </List>
-                      </TabPanel>
-                    </TabPanels>
-                  </Tabs>
-                </AccordionPanel>
-              </AccordionItem> */}
+                  </SimpleGrid></p>
+                  </TabPanel>
+                  <TabPanel>
+                    <p>two!</p>
+                  </TabPanel>
+                  <TabPanel>
+                    <p>three!</p>
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
             </Accordion>
           </Stack>
 

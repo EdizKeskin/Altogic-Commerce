@@ -35,6 +35,7 @@ function Card({ item }) {
     lg: { scale: 0.9 },
   });
 
+
   return (
     <motion.div
       dragConstraints={{ top: 0, left: 0, right: 0, bottom: 0 }}
@@ -76,7 +77,10 @@ function Card({ item }) {
               {item.name}
             </Heading>
             <Text fontWeight={600} fontSize={"xl"} color={"gray.500"} mb={4}>
-              {item.tag}
+              //map tag
+              {item.tag.map ((tag, index) => (
+                <span key={index}>{tag}</span>
+              ))}
             </Text>
 
             <Center>

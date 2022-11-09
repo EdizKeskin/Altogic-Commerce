@@ -38,6 +38,7 @@ function Home() {
 
   if (isLoading) return <CustomSpinner />;
   if (error) return <pre>{error.message}</pre>;
+  console.log(data);
 
 
   return (
