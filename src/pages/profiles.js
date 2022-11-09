@@ -68,6 +68,7 @@ function Profiles() {
       link
       details
       desc
+      shipDetails
     }
   }
 `;
@@ -88,10 +89,8 @@ function Profiles() {
 
   const product = data.cards.find((item) => item.link === id);
 
-
   const right = product.details.slice(0, 3);
   const left = product.details.slice(3, 6);
-
 
   return (
     <Container maxW={"7xl"}>
@@ -144,7 +143,7 @@ function Profiles() {
               {product.title}
             </Heading>
             <Text color={"gray.400"} fontSize={"2xl"}>
-              {product.price.toFixed(2)} ₺
+              {product.price} ₺
             </Text>
           </Box>
 
@@ -170,13 +169,12 @@ function Profiles() {
               <Tabs>
                 <TabList>
                   <Tab><FormattedMessage id="title" /></Tab>
-                  <Tab>Two</Tab>
-                  <Tab>Three</Tab>
+                  <Tab>Kargo Detayları</Tab>
                 </TabList>
 
                 <TabPanels>
                   <TabPanel>
-                    <p><SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
                     <List spacing={2} color={textColor}>
                       {product.details.lenght > 3
                         ? product.details.map((item, index) => (
@@ -196,13 +194,19 @@ function Profiles() {
                             <ListItem key={index}>{item}</ListItem>
                           ))}
                     </List>
-                  </SimpleGrid></p>
+                  </SimpleGrid>
                   </TabPanel>
                   <TabPanel>
-                    <p>two!</p>
-                  </TabPanel>
-                  <TabPanel>
-                    <p>three!</p>
+                    {!product.shipDetails ? (
+                      <Text fontSize={"lg"} color={"gray.400"} fontWeight={"300"}>
+                        Ücretsiz kargo.<br/>
+                        Kargo ücreti satıcı tarafından ödenir.
+                      </Text>
+                    ) : (
+                      <Text fontSize={"lg"} color={"gray.400"} fontWeight={"300"}>
+                        {product.shipDetails}
+                      </Text>
+                    )}
                   </TabPanel>
                 </TabPanels>
               </Tabs>

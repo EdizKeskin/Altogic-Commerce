@@ -21,6 +21,7 @@ function Home() {
       link
       details
       desc
+      shipDetails
     }
   }
 `;

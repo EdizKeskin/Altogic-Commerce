@@ -90,7 +90,7 @@ function ProductCard({ item }) {
                   color: "gray.200",
                 }}
               >
-                {item.price.toFixed(2)} ₺
+                {item.price} ₺
               </Text>
               <Flex flexDirection={"row"} ml="-0.8">
                 {item.tag.map((tag, index) => (
