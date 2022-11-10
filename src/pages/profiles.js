@@ -27,6 +27,14 @@ import {
   TabPanel,
   Breadcrumb,
   BreadcrumbItem,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
 } from "@chakra-ui/react";
 import {
   FaInstagram,
@@ -45,10 +53,12 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import CustomSpinner from "../components/spinner";
 import { motion } from "framer-motion";
+import Multistep from "../components/multiStep";
 
 function Profiles() {
   const { lang } = useLang();
   const { id } = useParams();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const textColor = useColorModeValue("black", "white");
   const titleColor = useColorModeValue("yellow.500", "yellow.300");
@@ -61,7 +71,7 @@ function Profiles() {
   {
     cards {
       price
-      image
+      images
       id
       tag
       title
@@ -120,7 +130,7 @@ function Profiles() {
             <Image
               rounded={"md"}
               alt={"user image"}
-              src={product.image}
+              src={product.images[0]}
               fit={"cover"}
               align={"center"}
               w={"100%"}
@@ -146,7 +156,6 @@ function Profiles() {
               {product.price} ₺
             </Text>
           </Box>
-
           <Stack
             spacing={{ base: 4, sm: 6 }}
             direction={"column"}
@@ -168,42 +177,53 @@ function Profiles() {
             <Accordion allowToggle>
               <Tabs>
                 <TabList>
-                  <Tab><FormattedMessage id="title" /></Tab>
+                  <Tab>
+                    <FormattedMessage id="title" />
+                  </Tab>
                   <Tab>Kargo Detayları</Tab>
                 </TabList>
 
                 <TabPanels>
                   <TabPanel>
                     <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-                    <List spacing={2} color={textColor}>
-                      {product.details.lenght > 3
-                        ? product.details.map((item, index) => (
-                            <ListItem key={index}>{item}</ListItem>
-                          ))
-                        : right.map((item, index) => (
-                            <ListItem key={index}>{item}</ListItem>
-                          ))}
-                    </List>
+                      <List spacing={2} color={textColor}>
+                        {product.details.lenght > 3
+                          ? product.details.map((item, index) => (
+                              <ListItem key={index}>{item}</ListItem>
+                            ))
+                          : right.map((item, index) => (
+                              <ListItem key={index}>{item}</ListItem>
+                            ))}
+                      </List>
 
-                    <List spacing={2} color={textColor}>
-                      {product.details.lenght > 3
-                        ? product.details.map((item, index) => (
-                            <ListItem key={index}>{item}</ListItem>
-                          ))
-                        : left.map((item, index) => (
-                            <ListItem key={index}>{item}</ListItem>
-                          ))}
-                    </List>
-                  </SimpleGrid>
+                      <List spacing={2} color={textColor}>
+                        {product.details.lenght > 3
+                          ? product.details.map((item, index) => (
+                              <ListItem key={index}>{item}</ListItem>
+                            ))
+                          : left.map((item, index) => (
+                              <ListItem key={index}>{item}</ListItem>
+                            ))}
+                      </List>
+                    </SimpleGrid>
                   </TabPanel>
                   <TabPanel>
                     {!product.shipDetails ? (
-                      <Text fontSize={"lg"} color={"gray.400"} fontWeight={"300"}>
-                        Ücretsiz kargo.<br/>
+                      <Text
+                        fontSize={"lg"}
+                        color={"gray.400"}
+                        fontWeight={"300"}
+                      >
+                        Ücretsiz kargo.
+                        <br />
                         Kargo ücreti satıcı tarafından ödenir.
                       </Text>
                     ) : (
-                      <Text fontSize={"lg"} color={"gray.400"} fontWeight={"300"}>
+                      <Text
+                        fontSize={"lg"}
+                        color={"gray.400"}
+                        fontWeight={"300"}
+                      >
                         {product.shipDetails}
                       </Text>
                     )}
@@ -212,27 +232,38 @@ function Profiles() {
               </Tabs>
             </Accordion>
           </Stack>
+          <motion.div whileTap={{ scale: 0.8 }}>
+            <Button
+              onClick={onOpen}
+              rounded={"none"}
+              w={"full"}
+              size={"lg"}
+              py={"7"}
+              bg={btnBg}
+              color={btnColor}
+              textTransform={"uppercase"}
+              _hover={{
+                transform: "translateY(2px)",
+                boxShadow: "lg",
+              }}
+              mb={{ base: "6", md: "0" }}
+            >
+              <FormattedMessage id="buy" />
+            </Button>
+          </motion.div>
+          
+          //Buy modal
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay
+             backdropFilter='blur(10px) hue-rotate(20deg)'
+            />
+            <ModalContent>
+              <ModalBody>
+                <Multistep onClose={onClose}/>
+              </ModalBody>
+            </ModalContent>
+          </Modal>
 
-          <Link to="/">
-            <motion.div whileTap={{ scale: 0.8 }}>
-              <Button
-                rounded={"none"}
-                w={"full"}
-                size={"lg"}
-                py={"7"}
-                bg={btnBg}
-                color={btnColor}
-                textTransform={"uppercase"}
-                _hover={{
-                  transform: "translateY(2px)",
-                  boxShadow: "lg",
-                }}
-                mb={{ base: "6", md: "0" }}
-              >
-                <FormattedMessage id="home_btn" />
-              </Button>
-            </motion.div>
-          </Link>
           <Stack direction="row" alignItems="center" justifyContent={"center"}>
             <MdLocalShipping />
             <Text>2-3 business days delivery</Text>

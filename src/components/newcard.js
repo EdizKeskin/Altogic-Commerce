@@ -18,6 +18,7 @@ import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
 function ProductCard({ item }) {
+  console.log(item);
   return (
     <Flex p={15}>
       <Flex
@@ -35,7 +36,7 @@ function ProductCard({ item }) {
           shadow="md"
           bgSize="cover"
           bgPos="center"
-          backgroundImage={item.image}
+          backgroundImage={item.images[0]}
         ></Box>
 
         <Box

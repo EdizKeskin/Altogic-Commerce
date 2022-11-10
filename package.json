@@ -53,6 +53,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-slick": "^0.23.10",
     "easter-egg-collection": "^1.4.56"
   }
 }

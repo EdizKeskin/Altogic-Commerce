@@ -14,7 +14,7 @@ function Home() {
   {
     cards {
       price
-      image
+      images
       id
       tag
       title

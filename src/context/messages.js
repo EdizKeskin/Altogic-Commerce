@@ -23,6 +23,7 @@ const Messages = {
     formSubmit: "Gönder",
     formMessage: "Mesaj",
     phone: "Bu sizin telefon numaranız mı ?",
+    buy: "Satın Al",
   },
   "en-US": {
     desc: "We're 4 friends who love anime girls. We play games together and laugh at stupid jokes.",
@@ -48,6 +49,7 @@ const Messages = {
     formSubmit: "Submit",
     formMessage: "Message",
     phone: "Is this your phone number ?",
+    buy: "Buy Now",
   },
 };
 
