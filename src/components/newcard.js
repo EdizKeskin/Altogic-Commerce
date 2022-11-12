@@ -16,9 +16,9 @@ import {
 import { FiShoppingCart } from "react-icons/fi";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
+import Coursel from "./coursel";
 
 function ProductCard({ item }) {
-  console.log(item);
   return (
     <Flex p={15}>
       <Flex
@@ -38,7 +38,7 @@ function ProductCard({ item }) {
           bgPos="center"
           backgroundImage={item.images[0]}
         ></Box>
-
+        
         <Box
           w={"full"}
           bg="white"

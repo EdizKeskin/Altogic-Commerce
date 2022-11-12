@@ -17,39 +17,46 @@ import {
   Textarea,
   FormHelperText,
   InputRightElement,
+  Text,
+  Image,
 } from "@chakra-ui/react";
+import Form1svg from "../images/join.svg";
+import Form3svg from "../images/shop.svg";
 
 import { useToast } from "@chakra-ui/react";
 
 const Form1 = () => {
-  const [show, setShow] = useState(false);
-  const handleClick = () => setShow(!show);
   return (
     <>
       <Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%">
         Buy Now
       </Heading>
-      <Flex>
-        <FormControl mr="5%">
-          <FormLabel htmlFor="first-name" fontWeight={"normal"}>
-            First name
-          </FormLabel>
-          <Input id="first-name" placeholder="First name"/>
-        </FormControl>
+      <SimpleGrid columns={{ base: "1", md: "2" }} spacing={10}>
+        <div>
+          <Flex>
+            <FormControl mr="5%">
+              <FormLabel htmlFor="first-name" fontWeight={"normal"}>
+                First name
+              </FormLabel>
+              <Input id="first-name" placeholder="First name" />
+            </FormControl>
 
-        <FormControl>
-          <FormLabel htmlFor="last-name" fontWeight={"normal"}>
-            Last name
-          </FormLabel>
-          <Input id="last-name" placeholder="First name" />
-        </FormControl>
-      </Flex>
-      <FormControl mt="2%">
-        <FormLabel htmlFor="email" fontWeight={"normal"}>
-          Email address
-        </FormLabel>
-        <Input id="email" type="email" />
-      </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="last-name" fontWeight={"normal"}>
+                Last name
+              </FormLabel>
+              <Input id="last-name" placeholder="First name" />
+            </FormControl>
+          </Flex>
+          <FormControl mt="2%">
+            <FormLabel htmlFor="email" fontWeight={"normal"} mt={"10"}>
+              Email address
+            </FormLabel>
+            <Input id="email" type="email" />
+          </FormControl>
+        </div>
+        <Image src={Form1svg} display={{ base: "none", md: "block" }} />
+      </SimpleGrid>
     </>
   );
 };
@@ -200,81 +207,89 @@ const Form3 = () => {
   return (
     <>
       <Heading w="100%" textAlign={"center"} fontWeight="normal">
-        Social Handles
+        Ödeme Bilgileri
       </Heading>
-      <SimpleGrid columns={1} spacing={6}>
-        <FormControl as={GridItem} colSpan={[3, 1]}>
-          <FormLabel
-            fontSize="sm"
-            fontWeight="md"
-            color="gray.700"
-            _dark={{
-              color: "gray.50",
-            }}
-          >
-            Kart numarası
-          </FormLabel>
-          <InputGroup size="sm">
-            <Input
-              type="number"
-              maxLength="16"
-              minLength="16"
-              placeholder="Card Number"
+      <SimpleGrid columns={{ base: "1", md: "2" }} spacing={10}>
+        <SimpleGrid columns={1} spacing={6}>
+          <FormControl as={GridItem} colSpan={[3, 1]}>
+            <FormLabel
+              fontSize="sm"
+              fontWeight="md"
+              color="gray.700"
+              _dark={{
+                color: "gray.50",
+              }}
+            >
+              Kart numarası
+            </FormLabel>
+            <InputGroup size="sm">
+              <Input
+                type="number"
+                maxLength="16"
+                minLength="16"
+                placeholder="Card Number"
+                focusBorderColor="brand.400"
+                rounded="md"
+              />
+            </InputGroup>
+          </FormControl>
+
+          <FormControl mr="5%">
+            <FormLabel fontWeight={"normal"}>First name</FormLabel>
+            <Input id="first-name" placeholder="First name" />
+          </FormControl>
+          <Flex flexDirection={"row"}>
+            <FormControl mr="2">
+              <FormLabel fontWeight={"normal"}>MM/YY</FormLabel>
+              <Input placeholder="MM/YY" w={"90px"} maxLength="4" />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel fontWeight={"normal"}>Güvenlik kodu</FormLabel>
+              <Input
+                id="last-name"
+                placeholder="CVV2"
+                w={"90px"}
+                maxLength="4"
+              />
+            </FormControl>
+          </Flex>
+
+          <FormControl mt={"-4"}>
+            <FormLabel
+              fontSize="sm"
+              fontWeight="md"
+              color="gray.700"
+              _dark={{
+                color: "gray.50",
+              }}
+            >
+              Satıcıya not
+            </FormLabel>
+            <Textarea
+              placeholder="Lorem, ipsum dolor sit amet consectetur adipisicing."
+              rows={3}
+              shadow="sm"
               focusBorderColor="brand.400"
-              rounded="md"
+              fontSize={{
+                sm: "sm",
+              }}
             />
-          </InputGroup>
-        </FormControl>
-
-        <FormControl mr="5%">
-          <FormLabel  fontWeight={"normal"}>
-            First name
-          </FormLabel>
-          <Input id="first-name" placeholder="First name" />
-        </FormControl>
-        <Flex flexDirection={"row"}>
-          <FormControl mr="2">
-            <FormLabel  fontWeight={"normal"} >
-              MM/YY
-            </FormLabel>
-            <Input placeholder="MM/YY" w={"90px"} maxlength="4"/>
           </FormControl>
-
-          <FormControl>
-            <FormLabel  fontWeight={"normal"}>
-              Güvenlik kodu
-            </FormLabel>
-            <Input id="last-name" placeholder="CVV2" w={"90px"} maxLength="4"/>
-          </FormControl>
+        </SimpleGrid>
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          flexDirection={"column"}
+        >
+          <Image src={Form3svg} display={{ base: "none", md: "block" }} />
         </Flex>
-
-        <FormControl id="email" mt={1}>
-          <FormLabel
-            fontSize="sm"
-            fontWeight="md"
-            color="gray.700"
-            _dark={{
-              color: "gray.50",
-            }}
-          >
-            Satıcıya not
-          </FormLabel>
-          <Textarea
-            placeholder="you@example.com"
-            rows={3}
-            shadow="sm"
-            focusBorderColor="brand.400"
-            fontSize={{
-              sm: "sm",
-            }}
-          />
-        </FormControl>
       </SimpleGrid>
     </>
   );
 };
 
-export default function Multistep({onClose}) {
+export default function Multistep({ onClose, price, name }) {
   const toast = useToast();
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(33.33);
@@ -287,24 +302,33 @@ export default function Multistep({onClose}) {
           mb="5%"
           mx="5%"
           isAnimated
+          colorScheme="teal"
           borderRadius={"md"}
         ></Progress>
-        {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : <Form3 />}
+        {step === 1 ? (
+          <Form1 />
+        ) : step === 2 ? (
+          <Form2 />
+        ) : (
+          <Form3 price={price} />
+        )}
         <ButtonGroup mt="5%" w="100%">
-          <Flex w="100%" justifyContent="space-between">
+          <Flex w="100%" justifyContent="space-between" alignItems={"flex-end"}>
             <Flex>
               <Button
                 onClick={() => {
                   setStep(step - 1);
                   setProgress(progress - 33.33);
+                  if (step === 1) {
+                    onClose();
+                  }
                 }}
-                isDisabled={step === 1}
-                colorScheme="teal"
+                colorScheme={step === 1 ? "red" : "gray"}
                 variant="solid"
                 w="7rem"
                 mr="5%"
               >
-                Back
+                {step === 1 ? "İptal" : "Geri"}
               </Button>
               <Button
                 w="7rem"
@@ -324,23 +348,39 @@ export default function Multistep({onClose}) {
               </Button>
             </Flex>
             {step === 3 ? (
-              <Button
-                w="7rem"
-                colorScheme="green"
-                variant="solid"
-                onClick={() => {
-                  onClose();
-                  toast({
-                    title: "Başarılı!",
-                    description: "Siparişiniz alındı.",
-                    status: "success",
-                    duration: 3000,
-                    isClosable: true,
-                  });
-                }}
-              >
-                Submit
-              </Button>
+              <Flex flexDirection={"column"}>
+                <Text
+                  as="h2"
+                  fontSize={"3xl"}
+                  fontWeight={"bold"}
+                  textAlign={"right"}
+                  mt={"-5"}
+                >
+                  <Text as={"span"} fontSize={"sm"} fontWeight={"normal"} color={"gray.400"}>
+                    {name}:&nbsp;&nbsp;&nbsp;
+                  </Text>
+                  {price} ₺
+                </Text>
+                <Flex alignItems={"flex-end"} justifyContent={"flex-end"}>
+                <Button
+                  w="7rem"
+                  colorScheme="green"
+                  variant="solid"
+                  onClick={() => {
+                    onClose();
+                    toast({
+                      title: "Başarılı!",
+                      description: "Siparişiniz alındı.",
+                      status: "success",
+                      duration: 3000,
+                      isClosable: true,
+                    });
+                  }}
+                >
+                  Sipariş ver
+                </Button>
+                </Flex>
+              </Flex>
             ) : null}
           </Flex>
         </ButtonGroup>
@@ -348,5 +388,3 @@ export default function Multistep({onClose}) {
     </>
   );
 }
-
-

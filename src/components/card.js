@@ -24,7 +24,6 @@ function Card({ item }) {
   const bg = useColorModeValue("gray.100", "gray.900");
   const textColor = useColorModeValue("black", "white");
 
-  console.log(item);
 
   const draggable = useBreakpointValue({
     base: "none",

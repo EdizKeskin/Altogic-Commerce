@@ -73,7 +73,7 @@ function BtnGroup() {
         <Button
           variant={"link"}
           position={"absolute"}
-          bottom={3}
+          bottom={2}
           left={3}
           zIndex="2"
         >

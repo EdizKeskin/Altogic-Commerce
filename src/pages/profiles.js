@@ -35,6 +35,7 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
+  toast,
 } from "@chakra-ui/react";
 import {
   FaInstagram,
@@ -54,8 +55,12 @@ import { useQuery } from "react-query";
 import CustomSpinner from "../components/spinner";
 import { motion } from "framer-motion";
 import Multistep from "../components/multiStep";
+import Coursel from "../components/coursel";
+//import basketContext from "../context/basketContext";
+import { useBasket } from "../context/basketContext";
 
 function Profiles() {
+  const { basket, setBasket } = useBasket();
   const { lang } = useLang();
   const { id } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -102,6 +107,10 @@ function Profiles() {
   const right = product.details.slice(0, 3);
   const left = product.details.slice(3, 6);
 
+  const photos = product.images.map((url) => ({ image: url }));
+
+  console.log(basket);
+
   return (
     <Container maxW={"7xl"}>
       <SimpleGrid
@@ -109,24 +118,28 @@ function Profiles() {
         spacing={{ base: 8, md: 10 }}
         py={{ base: 18, md: 20 }}
       >
-        <Flex data-aos="fade-down">
-          <Box>
-            <Breadcrumb
-              display={{ base: "none", md: "block" }}
-              spacing="4px"
-              mb={4}
-              separator={<AiOutlineRight color="gray.500" />}
-            >
-              <BreadcrumbItem>
-                <Link to="/">
-                  <Button variant={"link"}>Home</Button>
-                </Link>
-              </BreadcrumbItem>
+        {/* // ? Sorun çıkarsa Box yerine Flex kullan ve Breadcrumb'ı kaldır */}
+        <Box data-aos="fade-down">
+          <Breadcrumb
+            mt={{base: 3, md: 0}}
+            spacing="4px"
+            mb={4}
+            separator={<AiOutlineRight color="gray.500" />}
+          >
+            <BreadcrumbItem>
+              <Link to="/">
+                <Button variant={"link"}>Home</Button>
+              </Link>
+            </BreadcrumbItem>
 
-              <BreadcrumbItem isCurrentPage>
-                <Button variant={"link"}>{product.title}</Button>
-              </BreadcrumbItem>
-            </Breadcrumb>
+            <BreadcrumbItem isCurrentPage>
+              <Button variant={"link"}>{product.title}</Button>
+            </BreadcrumbItem>
+          </Breadcrumb>
+
+          {photos.length > 1 ? (
+            <Coursel images={photos} />
+          ) : (
             <Image
               rounded={"md"}
               alt={"user image"}
@@ -136,8 +149,8 @@ function Profiles() {
               w={"100%"}
               h={{ base: "100%", sm: "400px", lg: "500px" }}
             />
-          </Box>
-        </Flex>
+          )}
+        </Box>
         <Stack
           spacing={{ base: 6, md: 10 }}
           data-aos="fade-up"
@@ -250,20 +263,42 @@ function Profiles() {
             >
               <FormattedMessage id="buy" />
             </Button>
+            {/* sepete ekle */}
           </motion.div>
           
+          <Button
+            onClick={() => {
+              setBasket((basket) => [...basket, product]);
+            }}
+            rounded={"none"}
+            w={"full"}
+            size={"lg"}
+            py={"7"}
+            bg={btnBg}
+            color={btnColor}
+            textTransform={"uppercase"}
+            _hover={{
+              transform: "translateY(2px)",
+              boxShadow: "lg",
+            }}
+            mb={{ base: "6", md: "0" }}
+          >
+            <Text>Sepete Ekle</Text>
+          </Button>
           //Buy modal
-          <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay
-             backdropFilter='blur(10px) hue-rotate(20deg)'
-            />
+          <Modal size={"2xl"} isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay backdropFilter="blur(10px) hue-rotate(20deg)" />
             <ModalContent>
+              <ModalCloseButton />
               <ModalBody>
-                <Multistep onClose={onClose}/>
+                <Multistep
+                  onClose={onClose}
+                  price={product.price}
+                  name={product.title}
+                />
               </ModalBody>
             </ModalContent>
           </Modal>
-
           <Stack direction="row" alignItems="center" justifyContent={"center"}>
             <MdLocalShipping />
             <Text>2-3 business days delivery</Text>
