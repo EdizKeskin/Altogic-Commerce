@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   Box,
   Container,
@@ -47,6 +47,8 @@ import {
 import { MdLocalShipping } from "react-icons/md";
 import { BiWorld } from "react-icons/bi";
 import { AiOutlineRight } from "react-icons/ai";
+import { BsFillBasketFill } from "react-icons/bs";
+import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { FormattedMessage } from "react-intl";
 import { useLang } from "../context/langContext";
 import { Link, useParams } from "react-router-dom";
@@ -58,9 +60,11 @@ import Multistep from "../components/multiStep";
 import Coursel from "../components/coursel";
 //import basketContext from "../context/basketContext";
 import { useBasket } from "../context/basketContext";
+import BasketTable from "../components/basketTable";
 
 function Profiles() {
-  const { basket, setBasket } = useBasket();
+  const { addToBasket, items, notification } = useBasket();
+
   const { lang } = useLang();
   const { id } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -102,15 +106,19 @@ function Profiles() {
   if (isLoading) return <CustomSpinner />;
   if (error) return <pre>{error.message}</pre>;
 
-  const product = data.cards.find((item) => item.link === id);
+  console.log(data);
 
+  const product = data.cards.find((item) => item.link === id);
   const right = product.details.slice(0, 3);
   const left = product.details.slice(3, 6);
 
   const photos = product.images.map((url) => ({ image: url }));
 
-  console.log(basket);
+  const findBasketItem = items.find(
+    (basket_item) => basket_item.id === product.id
+  );
 
+  console.log(notification);
   return (
     <Container maxW={"7xl"}>
       <SimpleGrid
@@ -121,7 +129,7 @@ function Profiles() {
         {/* // ? Sorun çıkarsa Box yerine Flex kullan ve Breadcrumb'ı kaldır */}
         <Box data-aos="fade-down">
           <Breadcrumb
-            mt={{base: 3, md: 0}}
+            mt={{ base: 3, md: 0 }}
             spacing="4px"
             mb={4}
             separator={<AiOutlineRight color="gray.500" />}
@@ -248,7 +256,6 @@ function Profiles() {
           <motion.div whileTap={{ scale: 0.8 }}>
             <Button
               onClick={onOpen}
-              rounded={"none"}
               w={"full"}
               size={"lg"}
               py={"7"}
@@ -265,25 +272,22 @@ function Profiles() {
             </Button>
             {/* sepete ekle */}
           </motion.div>
-          
           <Button
-            onClick={() => {
-              setBasket((basket) => [...basket, product]);
-            }}
-            rounded={"none"}
-            w={"full"}
-            size={"lg"}
-            py={"7"}
-            bg={btnBg}
-            color={btnColor}
-            textTransform={"uppercase"}
+            colorScheme={findBasketItem ? "red" : "teal"}
+            onClick={() => addToBasket(product, findBasketItem)}
             _hover={{
               transform: "translateY(2px)",
               boxShadow: "lg",
             }}
-            mb={{ base: "6", md: "0" }}
+            rightIcon={
+              findBasketItem ? (
+                <IoMdRemoveCircleOutline />
+              ) : (
+                <BsFillBasketFill />
+              )
+            }
           >
-            <Text>Sepete Ekle</Text>
+            {findBasketItem ? "Remove from basket" : "Add to basket"}
           </Button>
           //Buy modal
           <Modal size={"2xl"} isOpen={isOpen} onClose={onClose}>

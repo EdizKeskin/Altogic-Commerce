@@ -83,3 +83,8 @@
 .phone-input {
     color: black;
 }
+
+.red {
+    background-color: blue;
+    width: 500px;
+}

@@ -14,11 +14,21 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { FiShoppingCart } from "react-icons/fi";
+import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 import Coursel from "./coursel";
+import { useBasket } from "../context/basketContext";
+import { BsFillBasketFill } from "react-icons/bs";
 
 function ProductCard({ item }) {
+
+  const { addToBasket, items } = useBasket();
+
+  const findBasketItem = items.find(
+    (basket_item) => basket_item.id === item.id
+  );
+  
   return (
     <Flex p={15}>
       <Flex
@@ -38,7 +48,7 @@ function ProductCard({ item }) {
           bgPos="center"
           backgroundImage={item.images[0]}
         ></Box>
-        
+
         <Box
           w={"full"}
           bg="white"
@@ -111,6 +121,7 @@ function ProductCard({ item }) {
                 ))}
               </Flex>
             </Flex>
+            <Flex alignItems={"center"}>
             <Link to={`/${item.link}`}>
               <Tooltip
                 label="Product Page"
@@ -127,6 +138,7 @@ function ProductCard({ item }) {
                   px={2}
                   py={1}
                   rounded="lg"
+                  mr={2}
                   _hover={{
                     bg: "gray.700",
                     _dark: {
@@ -145,6 +157,35 @@ function ProductCard({ item }) {
                 </Button>
               </Tooltip>
             </Link>
+            <Tooltip
+              label={findBasketItem ? "Remove from Basket" : "Add to Basket"}
+              hasArrow
+              bg="gray.300"
+              color="black"
+              borderRadius={"md"}
+            >
+              <Button
+                colorScheme={findBasketItem ? "red" : "green"}
+                fontSize="xs"
+                fontWeight="bold"
+                px={2}
+                py={1}
+                rounded="lg"
+                onClick={() => addToBasket(item, findBasketItem)}
+              >
+                {findBasketItem ? (
+                  <Icon
+                    as={IoMdRemoveCircleOutline}
+                    h={5}
+                    w={5}
+                    alignSelf={"center"}
+                  />
+                ) : (
+                  <Icon as={BsFillBasketFill} h={5} w={5} alignSelf={"center"} />
+                )}
+              </Button>
+            </Tooltip>
+            </Flex>
           </Flex>
         </Box>
       </Flex>

@@ -5,6 +5,7 @@ import {
   useColorMode,
   useColorModeValue,
   Tooltip,
+  Center,
 } from "@chakra-ui/react";
 import { FaDiscord } from "react-icons/fa";
 import { FormattedMessage } from "react-intl";
@@ -34,6 +35,7 @@ function Header() {
         fontWeight={"extrabold"}
         letterSpacing={"10px"}
         color={textColor}
+        textAlign={"center"}
       >
         Sharp Commerce
       </Text>
@@ -45,10 +47,7 @@ function Header() {
             deleteSpeed: 0.05,
           }}
           onInit={(typewriter) => {
-            typewriter
-              .typeString(desc)
-              .pauseFor(1000)
-              .start();
+            typewriter.typeString(desc).pauseFor(1000).start();
           }}
         />
       </Box>
@@ -62,7 +61,6 @@ function Header() {
       >
         <FormattedMessage id="err" />
       </Button>
-
     </Box>
   );
 }

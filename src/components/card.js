@@ -178,6 +178,30 @@ function Card({ item }) {
                   <FormattedMessage id="card_btn" />
                 </Button>
               </Link>
+              <Tooltip
+                label="Remove from basket"
+                hasArrow
+                bg="gray.300"
+                color="black"
+                borderRadius={"md"}
+              >
+                <Button
+                  colorScheme="red"
+                  fontSize="xs"
+                  fontWeight="bold"
+                  px={2}
+                  py={1}
+                  rounded="lg"
+                  onClick={() => basket(item.id)}
+                >
+                  <Icon
+                    as={IoMdRemoveCircleOutline}
+                    h={5}
+                    w={5}
+                    alignSelf={"center"}
+                  />
+                </Button>
+                </Tooltip>
             </Collapse>
           </Box>
       </Center>

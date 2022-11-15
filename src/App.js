@@ -14,6 +14,7 @@ import Err404 from "./pages/err/err404";
 import BtnGroup from "./components/btnGroup";
 import Detail from "./pages/profiles";
 import Contact from "./pages/contact/contact";
+import Basket from "./pages/basket";
 
 function App() {
 
@@ -570,6 +571,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/:id" element={<Detail />} />
+            <Route path="/basket" element={<Basket />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<Err404 />} />
           </Routes>
