@@ -235,8 +235,8 @@ const Form3 = () => {
           </FormControl>
 
           <FormControl mr="5%">
-            <FormLabel fontWeight={"normal"}>First name</FormLabel>
-            <Input id="first-name" placeholder="First name" />
+            <FormLabel fontWeight={"normal"}>Kart Üzerindeki İsim</FormLabel>
+            <Input id="first-name" placeholder="Kart Üzerindeki İsim" />
           </FormControl>
           <Flex flexDirection={"row"}>
             <FormControl mr="2">
@@ -289,7 +289,7 @@ const Form3 = () => {
   );
 };
 
-export default function Multistep({ onClose, price, name }) {
+export default function Multistep({ onClose, price, name, names }) {
   const toast = useToast();
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(33.33);
@@ -349,36 +349,60 @@ export default function Multistep({ onClose, price, name }) {
             </Flex>
             {step === 3 ? (
               <Flex flexDirection={"column"}>
-                <Text
-                  as="h2"
-                  fontSize={"3xl"}
-                  fontWeight={"bold"}
-                  textAlign={"right"}
-                  mt={"-5"}
-                >
-                  <Text as={"span"} fontSize={"sm"} fontWeight={"normal"} color={"gray.400"}>
-                    {name}:&nbsp;&nbsp;&nbsp;
+                <Flex alignItems={"center"} mb={4}>
+                  <Flex flexDirection={"column"}>
+                    {!names ? (
+                      <Text
+                        as={"span"}
+                        fontSize={"sm"}
+                        fontWeight={"normal"}
+                        color={"gray.400"}
+                        mr={"10px"}
+                      >
+                        {name}
+                      </Text>
+                    ) : (
+                      names.map((item) => (
+                        <Text
+                          key={item.id}
+                          as={"span"}
+                          fontSize={"sm"}
+                          fontWeight={"normal"}
+                          color={"gray.400"}
+                          mr={"10px"}
+                        >
+                          {item.title}
+                        </Text>
+                      ))
+                    )}
+                  </Flex>
+                  <Text
+                    as="h2"
+                    fontSize={"3xl"}
+                    fontWeight={"bold"}
+                    textAlign={"right"}
+                  >
+                    {price} ₺
                   </Text>
-                  {price} ₺
-                </Text>
+                </Flex>
                 <Flex alignItems={"flex-end"} justifyContent={"flex-end"}>
-                <Button
-                  w="7rem"
-                  colorScheme="green"
-                  variant="solid"
-                  onClick={() => {
-                    onClose();
-                    toast({
-                      title: "Başarılı!",
-                      description: "Siparişiniz alındı.",
-                      status: "success",
-                      duration: 3000,
-                      isClosable: true,
-                    });
-                  }}
-                >
-                  Sipariş ver
-                </Button>
+                  <Button
+                    w="7rem"
+                    colorScheme="green"
+                    variant="solid"
+                    onClick={() => {
+                      onClose();
+                      toast({
+                        title: "Başarılı!",
+                        description: "Siparişiniz alındı.",
+                        status: "success",
+                        duration: 3000,
+                        isClosable: true,
+                      });
+                    }}
+                  >
+                    Sipariş ver
+                  </Button>
                 </Flex>
               </Flex>
             ) : null}

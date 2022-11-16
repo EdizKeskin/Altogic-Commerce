@@ -35,14 +35,17 @@ import { useBasket } from "../context/basketContext";
 //ICONS
 import { IoIosReturnLeft, IoMdRemoveCircleOutline } from "react-icons/io";
 import { TiTickOutline } from "react-icons/ti";
-import BasketHeader from "../components/basketHeader";
+import BasketSidebar from "../components/basketSidebar";
 import BasketTable from "../components/basketTable";
 
 function Basket() {
   const { items, removeFromBasket, emptyBasket } = useBasket();
   const total = items.reduce((acc, obj) => acc + obj.price, 0);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const textColor = useColorModeValue("black", "white");
   const btnColor = useColorModeValue("white.50", "gray.600");
+
+  const totalPrice = items.reduce((acc, obj) => acc + obj.price, 0);
 
   return (
     <Box minh="100vh">
@@ -75,10 +78,23 @@ function Basket() {
       )}
       {items.length > 0 && (
         <>
-          <BasketHeader />
+          <Flex justifyContent={"center"} alignItems={"center"}>
+            <Text
+              as={"h1"}
+              fontSize={"4xl"}
+              fontWeight={"extrabold"}
+              letterSpacing={"10px"}
+              color={textColor}
+              zIndex={"99"}
+              mt={10}
+              data-aos="zoom-in-up"
+            >
+              Basket  
+            </Text>
+          </Flex>
           <Grid
             templateColumns={{
-              sm: "repeat(2, 1fr)",
+              sm: "repeat(1, 1fr)",
               md: "repeat(2, 1fr)",
               lg: "repeat(2, 1fr)",
             }}
@@ -86,9 +102,10 @@ function Basket() {
           >
             <div data-aos="zoom-in-up">
               <BasketTable />
-              {/* <BasketCard item={product} basket={removeFromBasket} /> */}
             </div>
-            <div data-aos="zoom-in-up">asdasdasd</div>
+            <div data-aos="zoom-in-up">
+              <BasketSidebar items={items} totalPrice={totalPrice} />
+            </div>
           </Grid>
         </>
       )}

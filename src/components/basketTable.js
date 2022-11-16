@@ -36,8 +36,9 @@ function BasketTable() {
           md: bg,
         }}
         shadow="lg"
-        ml={3}
+        mx={3}
         w="full"
+        mt={10}
       >
         {items.map((item) => {
           return (
