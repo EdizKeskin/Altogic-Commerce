@@ -28,10 +28,6 @@ function BasketSidebar({ items, totalPrice }) {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // map items for name
-  const mappedItems = items.map((item) => item.title);
-
-  console.log(mappedItems);
 
   return (
     <Flex

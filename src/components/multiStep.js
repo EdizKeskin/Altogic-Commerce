@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Progress,
   Box,
@@ -24,6 +24,11 @@ import Form1svg from "../images/join.svg";
 import Form3svg from "../images/shop.svg";
 
 import { useToast } from "@chakra-ui/react";
+import { useMutation, useQuery } from "react-query";
+
+import { request } from 'graphql-request';
+import useSWR from 'swr';
+import axios from "axios";
 
 const Form1 = () => {
   return (
@@ -293,6 +298,7 @@ export default function Multistep({ onClose, price, name, names }) {
   const toast = useToast();
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(33.33);
+
   return (
     <>
       <Box rounded="lg" maxWidth={800} p={6} m="10px auto" as="form">

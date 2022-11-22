@@ -93,20 +93,20 @@ function Profiles() {
 `;
   }, []);
 
-  const { data, isLoading, error } = useQuery("launches", () => {
-    return axios({
+  const { data, isLoading, error } = useQuery("launches", async () => {
+    const response = await axios({
       url: endpoint,
       method: "POST",
       data: {
         query: PRODUCT_QUERY,
       },
-    }).then((response) => response.data.data);
+    });
+    return response.data.data;
   });
 
   if (isLoading) return <CustomSpinner />;
   if (error) return <pre>{error.message}</pre>;
 
-  console.log(data);
 
   const product = data.cards.find((item) => item.link === id);
   const right = product.details.slice(0, 3);
@@ -118,7 +118,6 @@ function Profiles() {
     (basket_item) => basket_item.id === product.id
   );
 
-  console.log(notification);
   return (
     <Container maxW={"7xl"}>
       <SimpleGrid
@@ -137,6 +136,11 @@ function Profiles() {
             <BreadcrumbItem>
               <Link to="/">
                 <Button variant={"link"}>Home</Button>
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+              <Link to={`/categories/${product.tag[0]}`}>
+                <Button variant={"link"} textTransform={"capitalize"}>{product.tag[0]}</Button>
               </Link>
             </BreadcrumbItem>
 

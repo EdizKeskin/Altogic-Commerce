@@ -10,7 +10,7 @@ import BasketTable from "../components/basketTable";
 
 function Home() {
   const endpoint = process.env.REACT_APP_GRAPHQL_ENDPOINT;
-  const MEMBER_QUERY = useMemo(() => {
+  const PRODUCT_QUERY = useMemo(() => {
     return `
   {
     cards {
@@ -28,20 +28,19 @@ function Home() {
 `;
   }, []);
 
-  const { data, isLoading, error } = useQuery("launches", () => {
-    return axios({
+  const { data, isLoading, error } = useQuery("launches", async () => {
+    const response = await axios({
       url: endpoint,
       method: "POST",
       data: {
-        query: MEMBER_QUERY,
+        query: PRODUCT_QUERY,
       },
-    }).then((response) => response.data.data);
+    });
+    return response.data.data;
   });
 
   if (isLoading) return <CustomSpinner />;
   if (error) return <pre>{error.message}</pre>;
-console.log(data.cards);
-
   return (
     <Box minh="100vh">
       <div data-aos="fade-up">
@@ -58,7 +57,7 @@ console.log(data.cards);
       >
         {data.cards.map((user, index) => (
           <div key={index} data-aos="zoom-in-up">
-            <ProductCard item={user}/>
+            <ProductCard item={user} />
           </div>
         ))}
       </Grid>

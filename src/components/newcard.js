@@ -22,13 +22,12 @@ import { useBasket } from "../context/basketContext";
 import { BsFillBasketFill } from "react-icons/bs";
 
 function ProductCard({ item }) {
-
   const { addToBasket, items } = useBasket();
 
   const findBasketItem = items.find(
     (basket_item) => basket_item.id === item.id
   );
-  
+
   return (
     <Flex p={15}>
       <Flex
@@ -105,86 +104,98 @@ function ProductCard({ item }) {
               </Text>
               <Flex flexDirection={"row"} ml="-0.8">
                 {item.tag.map((tag, index) => (
-                  <Badge
-                    key={index}
-                    colorScheme="teal"
-                    mt={3}
-                    width={"fit-content"}
-                    px={"1"}
-                    py={"0.5"}
-                    borderRadius={"md"}
-                    variant="solid"
-                    mx="1"
-                  >
-                    {tag}
-                  </Badge>
+                  <Link to={`/categories/${tag}`}>
+                    <Badge
+                      key={index}
+                      colorScheme="teal"
+                      mt={3}
+                      width={"fit-content"}
+                      px={"1"}
+                      py={"0.5"}
+                      borderRadius={"md"}
+                      variant="solid"
+                      mx="1"
+                    >
+                      {tag}
+                    </Badge>
+                  </Link>
                 ))}
               </Flex>
             </Flex>
             <Flex alignItems={"center"}>
-            <Link to={`/${item.link}`}>
+              <Link to={`/${item.link}`}>
+                <Tooltip
+                  label="Product Page"
+                  hasArrow
+                  bg="gray.300"
+                  color="black"
+                  borderRadius={"md"}
+                >
+                  <Button
+                    bg="gray.800"
+                    fontSize="xs"
+                    fontWeight="bold"
+                    color="white"
+                    px={2}
+                    py={1}
+                    rounded="lg"
+                    mr={2}
+                    _hover={{
+                      bg: "gray.700",
+                      _dark: {
+                        bg: "gray.600",
+                      },
+                    }}
+                    _focus={{
+                      bg: "gray.700",
+                      _dark: {
+                        bg: "gray.600",
+                      },
+                      outline: "none",
+                    }}
+                  >
+                    <Icon
+                      as={FiShoppingCart}
+                      h={5}
+                      w={5}
+                      alignSelf={"center"}
+                    />
+                  </Button>
+                </Tooltip>
+              </Link>
               <Tooltip
-                label="Product Page"
+                label={findBasketItem ? "Remove from Basket" : "Add to Basket"}
                 hasArrow
                 bg="gray.300"
                 color="black"
                 borderRadius={"md"}
               >
                 <Button
-                  bg="gray.800"
+                  colorScheme={findBasketItem ? "red" : "green"}
                   fontSize="xs"
                   fontWeight="bold"
-                  color="white"
                   px={2}
                   py={1}
                   rounded="lg"
-                  mr={2}
-                  _hover={{
-                    bg: "gray.700",
-                    _dark: {
-                      bg: "gray.600",
-                    },
-                  }}
-                  _focus={{
-                    bg: "gray.700",
-                    _dark: {
-                      bg: "gray.600",
-                    },
-                    outline: "none",
-                  }}
+                  onClick={() => addToBasket(item, findBasketItem)}
                 >
-                  <Icon as={FiShoppingCart} h={5} w={5} alignSelf={"center"} />
+                  {findBasketItem ? (
+                    <Icon
+                      as={IoMdRemoveCircleOutline}
+                      h={5}
+                      w={5}
+                      alignSelf={"center"}
+                    />
+                  ) : (
+                    <Icon
+                      as={BsFillBasketFill}
+                      h={5}
+                      w={5}
+                      alignSelf={"center"}
+                    />
+                  )}
                 </Button>
               </Tooltip>
-            </Link>
-            <Tooltip
-              label={findBasketItem ? "Remove from Basket" : "Add to Basket"}
-              hasArrow
-              bg="gray.300"
-              color="black"
-              borderRadius={"md"}
-            >
-              <Button
-                colorScheme={findBasketItem ? "red" : "green"}
-                fontSize="xs"
-                fontWeight="bold"
-                px={2}
-                py={1}
-                rounded="lg"
-                onClick={() => addToBasket(item, findBasketItem)}
-              >
-                {findBasketItem ? (
-                  <Icon
-                    as={IoMdRemoveCircleOutline}
-                    h={5}
-                    w={5}
-                    alignSelf={"center"}
-                  />
-                ) : (
-                  <Icon as={BsFillBasketFill} h={5} w={5} alignSelf={"center"} />
-                )}
-              </Button>
-            </Tooltip>
             </Flex>
           </Flex>
         </Box>
