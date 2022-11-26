@@ -1,11 +1,7 @@
 import {
   Text,
-  Box,
   Button,
-  useColorMode,
   useColorModeValue,
-  Tooltip,
-  Grid,
   Flex,
   Image,
   Modal,
@@ -15,17 +11,11 @@ import {
   ModalBody,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FaDiscord } from "react-icons/fa";
-import { FormattedMessage } from "react-intl";
-import { useLang } from "../context/langContext";
-import Typewriter from "typewriter-effect";
 import { TiTickOutline } from "react-icons/ti";
 import Form3svg from "../images/shop.svg";
 import Multistep from "./multiStep";
 
 function BasketSidebar({ items, totalPrice }) {
-  const { lang } = useLang();
-  const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
 

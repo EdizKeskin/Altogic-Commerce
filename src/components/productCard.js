@@ -1,23 +1,15 @@
 import {
   Flex,
-  Circle,
   Box,
-  Image,
   Badge,
-  useColorModeValue,
   Icon,
-  chakra,
   Tooltip,
   Button,
-  Center,
   Text,
-  Stack,
 } from "@chakra-ui/react";
 import { FiShoppingCart } from "react-icons/fi";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
-import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
-import Coursel from "./coursel";
 import { useBasket } from "../context/basketContext";
 import { BsFillBasketFill } from "react-icons/bs";
 

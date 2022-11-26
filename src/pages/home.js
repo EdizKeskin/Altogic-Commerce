@@ -1,12 +1,11 @@
 import { useMemo } from "react";
-import { Box, Grid, Text } from "@chakra-ui/react";
+import { Box, Grid } from "@chakra-ui/react";
 import Header from "../components/header";
 
 import axios from "axios";
 import { useQuery } from "react-query";
 import CustomSpinner from "../components/spinner";
 import ProductCard from "../components/productCard";
-import BasketTable from "../components/basketTable";
 
 function Home() {
   const endpoint = process.env.REACT_APP_GRAPHQL_ENDPOINT;

@@ -4,21 +4,17 @@ import {
   BreadcrumbItem,
   Button,
   Grid,
-  Text,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useMemo } from "react";
 import { AiOutlineRight } from "react-icons/ai";
 import { useQuery } from "react-query";
 import { Link, useParams } from "react-router-dom";
-import Header from "../components/header";
 import ProductCard from "../components/productCard";
 import CustomSpinner from "../components/spinner";
 
 function Categories() {
   const { category } = useParams();
-  const textColor = useColorModeValue("black", "white");
 
 
   const endpoint = process.env.REACT_APP_GRAPHQL_ENDPOINT;

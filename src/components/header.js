@@ -4,10 +4,7 @@ import {
   Button,
   useColorMode,
   useColorModeValue,
-  Tooltip,
-  Center,
 } from "@chakra-ui/react";
-import { FaDiscord } from "react-icons/fa";
 import { FormattedMessage } from "react-intl";
 import { useLang } from "../context/langContext";
 import Typewriter from "typewriter-effect";

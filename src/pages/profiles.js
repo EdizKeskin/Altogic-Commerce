@@ -1,12 +1,10 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import {
   Box,
   Container,
   Stack,
   Text,
   Image,
-  Flex,
-  VStack,
   Button,
   Heading,
   SimpleGrid,
@@ -14,12 +12,7 @@ import {
   List,
   useColorModeValue,
   ListItem,
-  Tooltip,
   Accordion,
-  AccordionPanel,
-  AccordionIcon,
-  AccordionButton,
-  AccordionItem,
   Tab,
   TabList,
   Tabs,
@@ -31,21 +24,10 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalCloseButton,
   ModalBody,
-  ModalFooter,
-  toast,
 } from "@chakra-ui/react";
-import {
-  FaInstagram,
-  FaSteam,
-  FaTwitter,
-  FaGithub,
-  FaTwitch,
-} from "react-icons/fa";
 import { MdLocalShipping } from "react-icons/md";
-import { BiWorld } from "react-icons/bi";
 import { AiOutlineRight } from "react-icons/ai";
 import { BsFillBasketFill } from "react-icons/bs";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
@@ -60,10 +42,9 @@ import Multistep from "../components/multiStep";
 import Coursel from "../components/coursel";
 //import basketContext from "../context/basketContext";
 import { useBasket } from "../context/basketContext";
-import BasketTable from "../components/basketTable";
 
 function Profiles() {
-  const { addToBasket, items, notification } = useBasket();
+  const { addToBasket, items } = useBasket();
 
   const { lang } = useLang();
   const { id } = useParams();

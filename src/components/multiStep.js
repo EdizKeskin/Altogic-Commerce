@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import {
   Progress,
   Box,
@@ -12,11 +12,8 @@ import {
   Input,
   Select,
   SimpleGrid,
-  InputLeftAddon,
   InputGroup,
   Textarea,
-  FormHelperText,
-  InputRightElement,
   Text,
   Image,
 } from "@chakra-ui/react";
@@ -24,11 +21,8 @@ import Form1svg from "../images/join.svg";
 import Form3svg from "../images/shop.svg";
 
 import { useToast } from "@chakra-ui/react";
-import { useMutation, useQuery } from "react-query";
 
-import { request } from 'graphql-request';
-import useSWR from 'swr';
-import axios from "axios";
+import { useBasket } from "../context/basketContext";
 
 const Form1 = () => {
   return (
@@ -296,6 +290,7 @@ const Form3 = () => {
 
 export default function Multistep({ onClose, price, name, names }) {
   const toast = useToast();
+  const { setItems } = useBasket();
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(33.33);
 
@@ -397,6 +392,7 @@ export default function Multistep({ onClose, price, name, names }) {
                     colorScheme="green"
                     variant="solid"
                     onClick={() => {
+                      !names ? console.log("ok") : setItems([]);
                       onClose();
                       toast({
                         title: "Başarılı!",

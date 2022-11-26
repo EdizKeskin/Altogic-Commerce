@@ -1,12 +1,5 @@
 import React from "react";
 import {
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
   Flex,
   Stack,
   SimpleGrid,

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function err404() {
   return (
-    <Box textAlign="center" py={10} px={6}>
+    <Box textAlign="center" py={10} px={6} data-aos="fade-up">
       <Heading
         display="inline-block"
         as="h2"

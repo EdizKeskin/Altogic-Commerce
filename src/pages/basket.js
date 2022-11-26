@@ -1,47 +1,22 @@
-import { useRef, useState } from "react";
 import {
   Alert,
   AlertIcon,
   Box,
-  Image,
-  Button,
   Text,
   Grid,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
-  FormControl,
-  FormLabel,
-  Textarea,
-  Input,
-  Center,
   IconButton,
   useColorModeValue,
   Flex,
-  TableContainer,
-  Table,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Td,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useBasket } from "../context/basketContext";
 //ICONS
-import { IoIosReturnLeft, IoMdRemoveCircleOutline } from "react-icons/io";
-import { TiTickOutline } from "react-icons/ti";
+import { IoIosReturnLeft } from "react-icons/io";
 import BasketSidebar from "../components/basketSidebar";
 import BasketTable from "../components/basketTable";
 
 function Basket() {
-  const { items, removeFromBasket, emptyBasket } = useBasket();
-  const total = items.reduce((acc, obj) => acc + obj.price, 0);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { items } = useBasket();
   const textColor = useColorModeValue("black", "white");
   const btnColor = useColorModeValue("white.50", "gray.600");
 
