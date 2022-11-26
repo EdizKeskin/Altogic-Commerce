@@ -32,7 +32,6 @@ import { AiOutlineRight } from "react-icons/ai";
 import { BsFillBasketFill } from "react-icons/bs";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { FormattedMessage } from "react-intl";
-import { useLang } from "../context/langContext";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "react-query";
@@ -46,7 +45,6 @@ import { useBasket } from "../context/basketContext";
 function Profiles() {
   const { addToBasket, items } = useBasket();
 
-  const { lang } = useLang();
   const { id } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
