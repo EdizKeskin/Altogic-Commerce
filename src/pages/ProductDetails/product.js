@@ -35,14 +35,14 @@ import { FormattedMessage } from "react-intl";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "react-query";
-import CustomSpinner from "../components/spinner";
+import CustomSpinner from "../../components/spinner";
 import { motion } from "framer-motion";
-import Multistep from "../components/multiStep";
-import Coursel from "../components/coursel";
+import Multistep from "../../components/multiStep";
+import Coursel from "../../components/coursel";
 //import basketContext from "../context/basketContext";
-import { useBasket } from "../context/basketContext";
+import { useBasket } from "../../context/basketContext";
 
-function Profiles() {
+function Product() {
   const { addToBasket, items } = useBasket();
 
   const { id } = useParams();
@@ -296,4 +296,4 @@ function Profiles() {
   );
 }
 
-export default Profiles;
+export default Product;

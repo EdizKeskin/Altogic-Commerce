@@ -10,12 +10,14 @@ import collection from "easter-egg-collection";
 
 //PAGES
 import Home from "./pages/home";
-import Err404 from "./pages/err/err404";
-import BtnGroup from "./components/btnGroup";
-import Detail from "./pages/profiles";
-import Contact from "./pages/contact/contact";
-import Basket from "./pages/basket";
-import Categories from "./pages/categories";
+import Err404 from "./pages/Err/err404";
+import Detail from "./pages/ProductDetails/product";
+import Contact from "./pages/Contact/contact";
+import Basket from "./pages/Basket/basket";
+import Categories from "./pages/Categories/categories";
+import Navbar from "./components/navbar";
+import SignIn from "./pages/Auth/SignIn/signIn";
+import SignUp from "./pages/Auth/SignUp/signUp";
 
 function App() {
 
@@ -568,13 +570,15 @@ function App() {
       />
       <Router>
         <div>
-          <BtnGroup />
+          <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/:id" element={<Detail />} />
             <Route path="/categories/:category" element={<Categories />} />
             <Route path="/basket" element={<Basket />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
             <Route path="*" element={<Err404 />} />
           </Routes>
         </div>

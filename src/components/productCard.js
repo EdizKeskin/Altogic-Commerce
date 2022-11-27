@@ -96,9 +96,8 @@ function ProductCard({ item }) {
               </Text>
               <Flex flexDirection={"row"} ml="-0.8">
                 {item.tag.map((tag, index) => (
-                  <Link to={`/categories/${tag}`}>
+                  <Link key={index} to={`/categories/${tag}`}>
                     <Badge
-                      key={index}
                       colorScheme="teal"
                       mt={3}
                       width={"fit-content"}

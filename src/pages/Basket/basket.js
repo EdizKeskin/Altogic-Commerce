@@ -9,11 +9,11 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { useBasket } from "../context/basketContext";
+import { useBasket } from "../../context/basketContext";
 //ICONS
 import { IoIosReturnLeft } from "react-icons/io";
-import BasketSidebar from "../components/basketSidebar";
-import BasketTable from "../components/basketTable";
+import BasketSidebar from "../../components/basketSidebar";
+import BasketTable from "../../components/basketTable";
 
 function Basket() {
   const { items } = useBasket();
@@ -24,11 +24,13 @@ function Basket() {
 
   return (
     <Box minh="100vh">
+      <Flex align="center" justifyContent="center" data-aos="fade-up">
       <Box position={"absolute"} top={"5"} left={"5"} mt="3">
         <Link to="/">
           <IconButton icon={<IoIosReturnLeft />} bgColor={btnColor} />
         </Link>
       </Box>
+      </Flex>
       {items.length < 1 && (
         <>
           <Box

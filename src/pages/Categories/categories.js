@@ -10,8 +10,8 @@ import React, { useMemo } from "react";
 import { AiOutlineRight } from "react-icons/ai";
 import { useQuery } from "react-query";
 import { Link, useParams } from "react-router-dom";
-import ProductCard from "../components/productCard";
-import CustomSpinner from "../components/spinner";
+import ProductCard from "../../components/productCard";
+import CustomSpinner from "../../components/spinner";
 
 function Categories() {
   const { category } = useParams();
