@@ -95,8 +95,8 @@ function ProductCard({ item }) {
                 {item.price} ₺
               </Text>
               <Flex flexDirection={"row"} ml="-0.8">
-                {item.tag.map((tag, index) => (
-                  <Link key={index} to={`/categories/${tag}`}>
+                {item.categories.map((category, index) => (
+                  <Link key={index} to={`/categories/${category}`}>
                     <Badge
                       colorScheme="teal"
                       mt={3}
@@ -107,7 +107,7 @@ function ProductCard({ item }) {
                       variant="solid"
                       mx="1"
                     >
-                      {tag}
+                      {category}
                     </Badge>
                   </Link>
                 ))}

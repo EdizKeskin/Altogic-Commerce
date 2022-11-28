@@ -61,12 +61,12 @@ function Product() {
       price
       images
       id
-      tag
       title
       link
       details
       desc
       shipDetails
+      categories
     }
   }
 `;
@@ -118,8 +118,8 @@ function Product() {
               </Link>
             </BreadcrumbItem>
             <BreadcrumbItem>
-              <Link to={`/categories/${product.tag[0]}`}>
-                <Button variant={"link"} textTransform={"capitalize"}>{product.tag[0]}</Button>
+              <Link to={`/categories/${product.categories[0]}`}>
+                <Button variant={"link"} textTransform={"capitalize"}>{product.categories[0]}</Button>
               </Link>
             </BreadcrumbItem>
 

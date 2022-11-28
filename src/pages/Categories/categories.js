@@ -16,7 +16,6 @@ import CustomSpinner from "../../components/spinner";
 function Categories() {
   const { category } = useParams();
 
-
   const endpoint = process.env.REACT_APP_GRAPHQL_ENDPOINT;
   const PRODUCT_QUERY = useMemo(() => {
     return `
@@ -25,12 +24,12 @@ function Categories() {
           price
           images
           id
-          tag
           title
           link
           details
           desc
           shipDetails
+          categories
         }
       }
     `;
@@ -49,9 +48,9 @@ function Categories() {
   if (isLoading) return <CustomSpinner />;
   if (error) return <pre>{error.message}</pre>;
 
-  const products = data.cards.filter((item) => item.tag[0] === category);
-
-  console.log(products);
+  const products = data.cards.filter((card) => {
+    return card.categories.includes(category);
+  });
 
   return (
     <Box minh="100vh">

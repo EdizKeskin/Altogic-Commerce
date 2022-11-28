@@ -25,7 +25,6 @@ import { IoClose } from "react-icons/io5";
 import { ImEarth } from "react-icons/im";
 import { useLang } from "../context/langContext";
 import { Link } from "react-router-dom";
-import { FormattedMessage } from "react-intl";
 import { motion } from "framer-motion";
 
 const DesktopNav = () => {
@@ -66,17 +65,14 @@ const MobileNav = () => {
           <Text fontWeight={600} color="gray.200" mb="2">
             Products
           </Text>
-          <Link to="/signup">
-            <Text fontWeight={600} color="gray.200">
-              Sign Up
-            </Text>
-          </Link>
+        </Link>
+        <Link to="/signup">
+          <Text fontWeight={600} color="gray.200">
+            Sign Up
+          </Text>
         </Link>
       </Flex>
-      <ButtonGroup
-        size="sm"
-        zIndex={"overlay"}
-      >
+      <ButtonGroup size="sm" zIndex={"overlay"}>
         <Tooltip
           hasArrow
           label={lang === "tr-TR" ? "English" : "Türkçe"}

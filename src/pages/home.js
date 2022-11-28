@@ -16,12 +16,12 @@ function Home() {
       price
       images
       id
-      tag
       title
       link
       details
       desc
       shipDetails
+      categories
     }
   }
 `;
@@ -40,6 +40,7 @@ function Home() {
 
   if (isLoading) return <CustomSpinner />;
   if (error) return <pre>{error.message}</pre>;
+
   return (
     <Box minh="100vh">
       <div data-aos="fade-up">
