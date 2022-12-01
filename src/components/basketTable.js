@@ -7,16 +7,16 @@ import {
   ButtonGroup,
   useColorModeValue,
   IconButton,
-
   Image,
+  useToast,
 } from "@chakra-ui/react";
 import { BsBoxArrowUpRight, BsFillTrashFill } from "react-icons/bs";
 import { useBasket } from "../context/basketContext";
 import { Link } from "react-router-dom";
 
 function BasketTable() {
-  const { items, removeFromBasket } = useBasket();
-
+  const { items, removeFromBasket, setNotification, notification } = useBasket();
+  const toast = useToast();
   const bg = useColorModeValue("white", "gray.800");
   const bg2 = useColorModeValue("white", "gray.800");
   return (
@@ -88,7 +88,17 @@ function BasketTable() {
                       variant="outline"
                       icon={<BsFillTrashFill />}
                       aria-label="Delete"
-                      onClick={() => removeFromBasket(item.id)}
+                      onClick={() => {
+                        toast({
+                          title: "Ürün sepetten silindi.",
+                          status: "error",
+                          duration: 2000,
+                          isClosable: true,
+                          position: "bottom-right",
+                        });
+                        setNotification(notification - 1);
+                        removeFromBasket(item.id);
+                      }}
                     />
                   </ButtonGroup>
                 </Flex>

@@ -6,6 +6,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import CustomSpinner from "../components/spinner";
 import ProductCard from "../components/productCard";
+import Footer from "../components/footer";
 
 function Home() {
   const endpoint = process.env.REACT_APP_GRAPHQL_ENDPOINT;
@@ -62,6 +63,7 @@ function Home() {
           </div>
         ))}
       </Grid>
+      <Footer />
     </Box>
   );
 }

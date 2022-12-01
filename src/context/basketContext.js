@@ -5,7 +5,7 @@ const defaultBasket = JSON.parse(localStorage.getItem("basket")) || [];
 
 const BasketProvider = ({ children }) => {
   const [items, setItems] = useState(defaultBasket);
-  const [notification, setNotification] = useState(false);
+  const [notification, setNotification] = useState(items.length);
 
   useEffect(() => {
     localStorage.setItem("basket", JSON.stringify(items));
@@ -13,15 +13,10 @@ const BasketProvider = ({ children }) => {
 
   const addToBasket = (data, findBasketItem) => {
     if (!findBasketItem) {
-      return setItems((items) => [data, ...items]), setNotification(true);
+      return setItems((items) => [data, ...items]), setNotification(notification + 1);
     }
     const filtered = items.filter((item) => item.id !== findBasketItem.id);
-
     setItems(filtered);
-
-    if (items.length === 1) {
-      setNotification(false);
-    }
   };
 
   const removeFromBasket = (item_id) => {

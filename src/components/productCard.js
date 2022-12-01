@@ -6,6 +6,7 @@ import {
   Tooltip,
   Button,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { FiShoppingCart } from "react-icons/fi";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
@@ -14,7 +15,8 @@ import { useBasket } from "../context/basketContext";
 import { BsFillBasketFill } from "react-icons/bs";
 
 function ProductCard({ item }) {
-  const { addToBasket, items } = useBasket();
+  const { addToBasket, items,notification, setNotification } = useBasket();
+  const toast = useToast();
 
   const findBasketItem = items.find(
     (basket_item) => basket_item.id === item.id
@@ -168,7 +170,18 @@ function ProductCard({ item }) {
                   px={2}
                   py={1}
                   rounded="lg"
-                  onClick={() => addToBasket(item, findBasketItem)}
+                  onClick={() => {
+                    toast({
+                      title: findBasketItem
+                        ? "Removed from Basket"
+                        : "Added to Basket",
+                      status: findBasketItem ? "error" : "success",
+                      duration: 2000,
+                      isClosable: true,
+                      position: "bottom-right",
+                    });
+                    findBasketItem && setNotification(notification - 1);
+                    addToBasket(item, findBasketItem)}}
                 >
                   {findBasketItem ? (
                     <Icon

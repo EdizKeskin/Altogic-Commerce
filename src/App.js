@@ -8,7 +8,7 @@ import "aos/dist/aos.css";
 import Particles from "react-tsparticles";
 import collection from "easter-egg-collection";
 
-//PAGES
+//COMPONENTS
 import Home from "./pages/home";
 import Err404 from "./pages/Err/err404";
 import Detail from "./pages/ProductDetails/product";
@@ -32,7 +32,7 @@ function App() {
   }, []);
   console.log("TOP SECRET", collection);
   return (
-    <Box bg={bg} minH="100vh">
+    <Box>
       <Particles
         id="tsparticles"
         options={{
@@ -59,7 +59,7 @@ function App() {
           },
           "fullScreen": {
             "enable": true,
-            "zIndex": 0
+            "zIndex": -1
           },
           "detectRetina": true,
           "duration": 0,
@@ -552,7 +552,7 @@ function App() {
             "zIndex": {
               "random": {
                 "enable": false,
-                "minimumValue": 0
+                "minimumValue": -1
               },
               "value": 0,
               "opacityRate": 1,
