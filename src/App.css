@@ -88,3 +88,14 @@
     background-color: blue;
     width: 500px;
 }
+
+.file {
+    position: absolute;
+    opacity: 0;
+    display: block;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    cursor: pointer;
+}

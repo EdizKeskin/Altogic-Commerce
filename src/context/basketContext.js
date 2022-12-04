@@ -15,12 +15,12 @@ const BasketProvider = ({ children }) => {
     if (!findBasketItem) {
       return setItems((items) => [data, ...items]), setNotification(notification + 1);
     }
-    const filtered = items.filter((item) => item.id !== findBasketItem.id);
+    const filtered = items.filter((item) => item._id !== findBasketItem._id);
     setItems(filtered);
   };
 
   const removeFromBasket = (item_id) => {
-    const filtered = items.filter((item) => item.id !== item_id);
+    const filtered = items.filter((item) => item._id !== item_id);
     setItems(filtered);
   };
 

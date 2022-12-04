@@ -36,7 +36,7 @@ function BasketTable() {
         {items.map((item) => {
           return (
             <Flex
-              key={item.id}
+              key={item._id}
               direction={{
                 base: "row",
                 md: "column",
@@ -97,7 +97,7 @@ function BasketTable() {
                           position: "bottom-right",
                         });
                         setNotification(notification - 1);
-                        removeFromBasket(item.id);
+                        removeFromBasket(item._id);
                       }}
                     />
                   </ButtonGroup>

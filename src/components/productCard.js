@@ -19,7 +19,7 @@ function ProductCard({ item }) {
   const toast = useToast();
 
   const findBasketItem = items.find(
-    (basket_item) => basket_item.id === item.id
+    (basket_item) => basket_item._id === item._id
   );
 
   return (

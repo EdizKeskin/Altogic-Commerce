@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Box, Grid } from "@chakra-ui/react";
 import Header from "../components/header";
 
@@ -7,40 +7,17 @@ import { useQuery } from "react-query";
 import CustomSpinner from "../components/spinner";
 import ProductCard from "../components/productCard";
 import Footer from "../components/footer";
+import { AuthenticationContext } from "../context/authContext";
 
-function Home() {
-  const endpoint = process.env.REACT_APP_GRAPHQL_ENDPOINT;
-  const PRODUCT_QUERY = useMemo(() => {
-    return `
-  {
-    cards {
-      price
-      images
-      id
-      title
-      link
-      details
-      desc
-      shipDetails
-      categories
-    }
-  }
-`;
-  }, []);
 
-  const { data, isLoading, error } = useQuery("launches", async () => {
-    const response = await axios({
-      url: endpoint,
-      method: "POST",
-      data: {
-        query: PRODUCT_QUERY,
-      },
-    });
-    return response.data.data;
-  });
+function Home({ products }) {
+  const context = useContext(AuthenticationContext);
+  const {isAuth} = context;
+  console.log(isAuth);
+  if (products === null) return <CustomSpinner />;
 
-  if (isLoading) return <CustomSpinner />;
-  if (error) return <pre>{error.message}</pre>;
+ 
+
 
   return (
     <Box minh="100vh">
@@ -57,9 +34,9 @@ function Home() {
         gap={6}
         mt={"16"}
       >
-        {data.cards.map((user, index) => (
+        {products.map((data, index) => (
           <div key={index} data-aos="zoom-in-up">
-            <ProductCard item={user} />
+            <ProductCard item={data} />
           </div>
         ))}
       </Grid>

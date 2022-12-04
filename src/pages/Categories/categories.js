@@ -5,50 +5,19 @@ import {
   Button,
   Grid,
 } from "@chakra-ui/react";
-import axios from "axios";
-import React, { useMemo } from "react";
+import React from "react";
 import { AiOutlineRight } from "react-icons/ai";
-import { useQuery } from "react-query";
 import { Link, useParams } from "react-router-dom";
 import ProductCard from "../../components/productCard";
 import CustomSpinner from "../../components/spinner";
 
-function Categories() {
+function Categories({products}) {
   const { category } = useParams();
 
-  const endpoint = process.env.REACT_APP_GRAPHQL_ENDPOINT;
-  const PRODUCT_QUERY = useMemo(() => {
-    return `
-      {
-        cards {
-          price
-          images
-          id
-          title
-          link
-          details
-          desc
-          shipDetails
-          categories
-        }
-      }
-    `;
-  }, []);
-  const { data, isLoading, error } = useQuery("launches", async () => {
-    const response = await axios({
-      url: endpoint,
-      method: "POST",
-      data: {
-        query: PRODUCT_QUERY,
-      },
-    });
-    return response.data.data;
-  });
 
-  if (isLoading) return <CustomSpinner />;
-  if (error) return <pre>{error.message}</pre>;
+  if (products === null) return <CustomSpinner />;
 
-  const products = data.cards.filter((card) => {
+  const filteredProducts = products.filter((card) => {
     return card.categories.includes(category);
   });
 
@@ -93,7 +62,7 @@ function Categories() {
         gap={6}
         mt={"5"}
       >
-        {products.map((user, index) => (
+        {filteredProducts.map((user, index) => (
           <div key={index} data-aos="zoom-in-up">
             <ProductCard item={user} />
           </div>

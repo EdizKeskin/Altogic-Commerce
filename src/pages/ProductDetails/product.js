@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import {
   Box,
   Container,
@@ -33,16 +32,14 @@ import { BsFillBasketFill } from "react-icons/bs";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { FormattedMessage } from "react-intl";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
-import { useQuery } from "react-query";
 import CustomSpinner from "../../components/spinner";
 import { motion } from "framer-motion";
-import Multistep from "../../components/multiStep";
+import Multistep from "../../components/multistep/multiStep";
 import Coursel from "../../components/coursel";
 //import basketContext from "../context/basketContext";
 import { useBasket } from "../../context/basketContext";
 
-function Product() {
+function Product({products}) {
   const { addToBasket, items } = useBasket();
 
   const { id } = useParams();
@@ -53,48 +50,17 @@ function Product() {
   const btnBg = useColorModeValue("gray.900", "gray.50");
   const btnColor = useColorModeValue("white", "gray.900");
 
-  const endpoint = process.env.REACT_APP_GRAPHQL_ENDPOINT;
-  const PRODUCT_QUERY = useMemo(() => {
-    return `
-  {
-    cards {
-      price
-      images
-      id
-      title
-      link
-      details
-      desc
-      shipDetails
-      categories
-    }
-  }
-`;
-  }, []);
-
-  const { data, isLoading, error } = useQuery("launches", async () => {
-    const response = await axios({
-      url: endpoint,
-      method: "POST",
-      data: {
-        query: PRODUCT_QUERY,
-      },
-    });
-    return response.data.data;
-  });
-
-  if (isLoading) return <CustomSpinner />;
-  if (error) return <pre>{error.message}</pre>;
+  if (products === null ) return <CustomSpinner />;
 
 
-  const product = data.cards.find((item) => item.link === id);
+  const product = products.find((item) => item.link === id);
   const right = product.details.slice(0, 3);
   const left = product.details.slice(3, 6);
 
   const photos = product.images.map((url) => ({ image: url }));
 
   const findBasketItem = items.find(
-    (basket_item) => basket_item.id === product.id
+    (basket_item) => basket_item._id === product._id
   );
 
   return (

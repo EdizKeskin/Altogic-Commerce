@@ -17,7 +17,8 @@ const client = new QueryClient({
       refetchOnMount: false,
       refetchOnWindowFocus: false,
     },
-  },});
+  },
+});
 
 ReactDOM.render(
   <React.StrictMode>
@@ -25,7 +26,7 @@ ReactDOM.render(
       <ChakraProvider theme={theme}>
         <LangProvider>
           <BasketProvider>
-          <App />
+            <App />
           </BasketProvider>
         </LangProvider>
       </ChakraProvider>

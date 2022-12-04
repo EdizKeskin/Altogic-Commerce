@@ -14,6 +14,12 @@ import {
   useColorModeValue,
   Tooltip,
   Icon,
+  Avatar,
+  Menu,
+  MenuButton,
+  Portal,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
 import { useBasket } from "../context/basketContext";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
@@ -23,6 +29,8 @@ import { ImEarth } from "react-icons/im";
 import { useLang } from "../context/langContext";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useAuth } from "../context/authContext";
+import altogic from "../api/altogic";
 
 const DesktopNav = () => {
   return (
@@ -110,6 +118,7 @@ const MobileNav = () => {
 function Navbar() {
   const { items, notification } = useBasket();
   const { isOpen, onToggle } = useDisclosure();
+  const { isAuth, signOutCurrentSession } = useAuth();
   const size = useBreakpointValue({ base: "sm", sm: "md" });
   const { lang, setLang } = useLang();
   const btnColor = useColorModeValue("white.50", "gray.600");
@@ -121,6 +130,7 @@ function Navbar() {
       setLang("tr-TR");
     }
   };
+  console.log(isAuth);
 
   return (
     <Box data-aos="fade-down">
@@ -227,26 +237,52 @@ function Navbar() {
               </motion.div>
             </Tooltip>
           </ButtonGroup>
-          <Link to="/signin">
-            <Button fontSize={"sm"} fontWeight={400} variant={"link"}>
-              Sign In
-            </Button>
-          </Link>
-          <Link to="/signup">
-            {" "}
-            <Button
-              display={{ base: "none", sm: "inline-flex" }}
-              fontSize={"sm"}
-              fontWeight={600}
-              color={"white"}
-              bg={"pink.400"}
-              _hover={{
-                bg: "pink.300",
-              }}
-            >
-              Sign Up
-            </Button>
-          </Link>
+          {isAuth === false ? (
+            <>
+              <Link to="/signup">
+                {" "}
+                <Button
+                  display={{ base: "none", sm: "inline-flex" }}
+                  fontSize={"sm"}
+                  fontWeight={600}
+                  color={"white"}
+                  bg={"pink.400"}
+                  _hover={{
+                    bg: "pink.300",
+                  }}
+                >
+                  Sign Up
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <Menu>
+              <MenuButton>
+                <Avatar src={altogic.auth.getUser().profilePicture} />
+              </MenuButton>
+              <Portal>
+                <MenuList>
+                  <Link to="/profile">
+                    <MenuItem>
+                      <Button variant={"link"}>Profile</Button>
+                    </MenuItem>
+                  </Link>
+                  <MenuItem>New Window</MenuItem>
+                  <MenuItem>Open Closed Tab</MenuItem>
+                  <MenuItem
+                    onClick={(event) => {
+                      event.preventDefault();
+                      signOutCurrentSession()();
+                    }}
+                  >
+                    <Button variant={"link"} colorScheme="red">
+                      Sign Out
+                    </Button>
+                  </MenuItem>
+                </MenuList>
+              </Portal>
+            </Menu>
+          )}
         </Stack>
 
         <>
