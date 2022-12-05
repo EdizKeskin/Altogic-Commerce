@@ -239,7 +239,6 @@ function Product({ products }) {
           >
             {findBasketItem ? "Remove from basket" : "Add to basket"}
           </Button>
-          //Buy modal
           <Modal size={"2xl"} isOpen={isOpen} onClose={onClose}>
             <ModalOverlay backdropFilter="blur(10px) hue-rotate(20deg)" />
             <ModalContent>

@@ -8,10 +8,8 @@ import {
   Button,
   useColorModeValue,
   useToast,
-  Input,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useContext } from "react";
 import {
   uploadProfilePicture,
   updateProfilePictureFieldOnDatabase,
@@ -35,6 +33,7 @@ function Profile() {
     if (altogic.auth.getUser().profilePicture) {
       setProfilePicture(altogic.auth.getUser().profilePicture);
     }
+    //eslint-disable-next-line
   }, [altogic.auth.getUser().profilePicture]);
 
   const handleFileSelect = async (event) => {

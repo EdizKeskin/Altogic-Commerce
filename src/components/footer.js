@@ -6,7 +6,7 @@ import {
   Text,
   Tooltip,
 } from "@chakra-ui/react";
-import { FaGithub, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 import React from "react";
 
 function Footer() {

@@ -1,6 +1,5 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../../context/authContext";
 import altogic from "../../api/altogic";
 
 const RequiresAuth = ({ children }) => {

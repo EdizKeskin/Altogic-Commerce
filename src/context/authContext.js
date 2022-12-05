@@ -7,11 +7,9 @@ export const AuthenticationContext = createContext();
 
 const AuthenticationProvider = ({ children }) => {
   const toast = useToast();
-  // Define states
   const [sessions, setSessions] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
 
-  // We use useNavigate() method to switch routes
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -20,14 +18,12 @@ const AuthenticationProvider = ({ children }) => {
       setSessions(resp.sessions);
     };
 
-    // Fetches the session data to determine if the user is authenticated and updates the context
     if (altogic.auth.getSession()) {
       setIsAuth(true);
       sendReq();
     }
   }, [isAuth]);
 
-  // Signs out from the current session with Altogic Client Library signOut() function and updates isAuth state. We call this function in ProfileDropdown component
   const signOutCurrentSession = async () => {
     try {
       const resp = await altogic.auth.signOut();
@@ -41,8 +37,6 @@ const AuthenticationProvider = ({ children }) => {
     }
   };
 
-  // This function will call same Altogic Client Library function with above signOutFromTheCurrentSession().
-  // But the difference is, we call this function in Sessions component, not in ProfileDropdown
   const signOutSelectedSession = async (token) => {
     const flag = token === altogic.auth.getSession().token;
 
@@ -77,7 +71,6 @@ const AuthenticationProvider = ({ children }) => {
     }
   };
 
-  // Sign out from all sessions with AltogicClientLibrary signOutAll() function
   const signOutAllSessions = async () => {
     try {
       const resp = await altogic.auth.signOutAll();
@@ -90,7 +83,6 @@ const AuthenticationProvider = ({ children }) => {
     }
   };
 
-  // Get list of all active sessions with Altogic Client Library function getAllSessions()
   const getAllSessions = async () => {
     try {
       return await altogic.auth.getAllSessions();

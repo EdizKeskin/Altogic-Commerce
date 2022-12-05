@@ -14,7 +14,7 @@ export const createBucketForProfilePictures = async () => {
 export const uploadProfilePicture = async (picture) => {
   try {
     if (altogic.auth.getUser().profilePicture) {
-      // Checking the source of the profile photo
+    
       if (altogic.auth.getUser().profilePicture.includes("c1-na.altogic.com")) {
         await altogic.storage
           .bucket(PROFILE_PICTURES)

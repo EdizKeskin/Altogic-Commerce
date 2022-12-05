@@ -1,19 +1,16 @@
-import { useContext, useEffect, useMemo, useState } from "react";
 import { Box, Grid } from "@chakra-ui/react";
 import Header from "../components/header";
 
-import axios from "axios";
-import { useQuery } from "react-query";
 import CustomSpinner from "../components/spinner";
 import ProductCard from "../components/productCard";
 import Footer from "../components/footer";
-import { AuthenticationContext } from "../context/authContext";
+import altogic from "../api/altogic";
 
 function Home({ products }) {
-  const context = useContext(AuthenticationContext);
-  const { isAuth } = context;
-  console.log(isAuth);
   if (products === null) return <CustomSpinner />;
+
+  const test = altogic.auth.getUser();
+  console.log(test);
 
   return (
     <Box minh="100vh">

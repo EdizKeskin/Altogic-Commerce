@@ -4,7 +4,6 @@ import {
   SimpleGrid,
   Text,
   useColorModeValue,
-  useToast,
   Button,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
