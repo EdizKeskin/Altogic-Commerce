@@ -39,7 +39,7 @@ import Coursel from "../../components/coursel";
 //import basketContext from "../context/basketContext";
 import { useBasket } from "../../context/basketContext";
 
-function Product({products}) {
+function Product({ products }) {
   const { addToBasket, items } = useBasket();
 
   const { id } = useParams();
@@ -50,8 +50,7 @@ function Product({products}) {
   const btnBg = useColorModeValue("gray.900", "gray.50");
   const btnColor = useColorModeValue("white", "gray.900");
 
-  if (products === null ) return <CustomSpinner />;
-
+  if (products === null) return <CustomSpinner />;
 
   const product = products.find((item) => item.link === id);
   const right = product.details.slice(0, 3);
@@ -85,7 +84,9 @@ function Product({products}) {
             </BreadcrumbItem>
             <BreadcrumbItem>
               <Link to={`/categories/${product.categories[0]}`}>
-                <Button variant={"link"} textTransform={"capitalize"}>{product.categories[0]}</Button>
+                <Button variant={"link"} textTransform={"capitalize"}>
+                  {product.categories[0]}
+                </Button>
               </Link>
             </BreadcrumbItem>
 

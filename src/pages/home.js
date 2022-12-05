@@ -9,15 +9,11 @@ import ProductCard from "../components/productCard";
 import Footer from "../components/footer";
 import { AuthenticationContext } from "../context/authContext";
 
-
 function Home({ products }) {
   const context = useContext(AuthenticationContext);
-  const {isAuth} = context;
+  const { isAuth } = context;
   console.log(isAuth);
   if (products === null) return <CustomSpinner />;
-
- 
-
 
   return (
     <Box minh="100vh">

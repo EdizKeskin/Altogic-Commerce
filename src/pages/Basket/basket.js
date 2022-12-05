@@ -25,11 +25,11 @@ function Basket() {
   return (
     <Box minh="100vh">
       <Flex align="center" justifyContent="center" data-aos="fade-up">
-      <Box position={"absolute"} top={"5"} left={"5"} mt="3">
-        <Link to="/">
-          <IconButton icon={<IoIosReturnLeft />} bgColor={btnColor} />
-        </Link>
-      </Box>
+        <Box position={"absolute"} top={"5"} left={"5"} mt="3">
+          <Link to="/">
+            <IconButton icon={<IoIosReturnLeft />} bgColor={btnColor} />
+          </Link>
+        </Box>
       </Flex>
       {items.length < 1 && (
         <>
@@ -62,11 +62,10 @@ function Basket() {
               fontWeight={"extrabold"}
               letterSpacing={"10px"}
               color={textColor}
-              zIndex={"99"}
               mt={10}
               data-aos="zoom-in-up"
             >
-              Basket  
+              Basket
             </Text>
           </Flex>
           <Grid

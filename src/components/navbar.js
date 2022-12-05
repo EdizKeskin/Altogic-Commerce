@@ -71,11 +71,6 @@ const MobileNav = () => {
             Products
           </Text>
         </Link>
-        <Link to="/signup">
-          <Text fontWeight={600} color="gray.200">
-            Sign Up
-          </Text>
-        </Link>
       </Flex>
       <ButtonGroup size="sm" zIndex={"overlay"}>
         <Tooltip
@@ -240,9 +235,7 @@ function Navbar() {
           {isAuth === false ? (
             <>
               <Link to="/signup">
-                {" "}
                 <Button
-                  display={{ base: "none", sm: "inline-flex" }}
                   fontSize={"sm"}
                   fontWeight={600}
                   color={"white"}
@@ -263,13 +256,17 @@ function Navbar() {
               <Portal>
                 <MenuList>
                   <Link to="/profile">
-                    <MenuItem>
+                    <MenuItem as={"span"}>
                       <Button variant={"link"}>Profile</Button>
                     </MenuItem>
                   </Link>
-                  <MenuItem>New Window</MenuItem>
-                  <MenuItem>Open Closed Tab</MenuItem>
+
+                  <Link to="/sessions">
+                    <MenuItem as={"span"}>Sessions</MenuItem>
+                  </Link>
+
                   <MenuItem
+                    as={"span"}
                     onClick={(event) => {
                       event.preventDefault();
                       signOutCurrentSession()();

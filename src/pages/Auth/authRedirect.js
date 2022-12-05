@@ -21,10 +21,10 @@ const AuthRedirect = () => {
     };
     getUrl();
   }, []);
-  
+
   return (
     <>
-      <div >
+      <div>
         <CustomSpinner />
       </div>
     </>

@@ -15,7 +15,8 @@ import { useBasket } from "../context/basketContext";
 import { Link } from "react-router-dom";
 
 function BasketTable() {
-  const { items, removeFromBasket, setNotification, notification } = useBasket();
+  const { items, removeFromBasket, setNotification, notification } =
+    useBasket();
   const toast = useToast();
   const bg = useColorModeValue("white", "gray.800");
   const bg2 = useColorModeValue("white", "gray.800");
@@ -32,6 +33,8 @@ function BasketTable() {
         mx={3}
         w="full"
         mt={10}
+        rounded={"md"}
+        border={{ base: "none", md: "1px solid" }}
       >
         {items.map((item) => {
           return (
@@ -43,6 +46,8 @@ function BasketTable() {
               }}
               bg={bg2}
               py={3}
+              rounded={"md"}
+              border={{ base: "1px solid", md: "none" }}
             >
               <SimpleGrid
                 spacingY={3}
@@ -56,6 +61,7 @@ function BasketTable() {
                 fontWeight="hairline"
                 alignItems={"center"}
                 justifyItems={"center"}
+                textAlign={"center"}
               >
                 <Link to={`/${item.link}`}>
                   <Image
@@ -64,7 +70,7 @@ function BasketTable() {
                     boxSize="90px"
                   />
                 </Link>
-                <Text as={"span"} fontSize={"2xl"} fontWeight={"extrabold"}>
+                <Text as={"span"} fontSize={"xl"} fontWeight={"extrabold"}>
                   {item.title}
                 </Text>
                 <Text as="span" fontSize={"xl"} fontWeight={"bold"}>

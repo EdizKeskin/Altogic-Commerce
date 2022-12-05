@@ -23,6 +23,7 @@ import AuthRedirect from "./pages/Auth/authRedirect";
 import { AuthenticationProvider } from "./context/authContext";
 import RequiresAuth from "./components/routes/requiresAuth";
 import RequiresNotAuth from "./components/routes/requiresNotAuth";
+import Sessions from "./pages/Profile/sessions";
 
 function App() {
   const [products, setProducts] = useState(null);
@@ -621,6 +622,14 @@ function App() {
                 element={
                   <RequiresAuth>
                     <Basket />
+                  </RequiresAuth>
+                }
+              />
+              <Route
+                path="/sessions"
+                element={
+                  <RequiresAuth>
+                    <Sessions />
                   </RequiresAuth>
                 }
               />

@@ -17,7 +17,9 @@ export const LangProvider = ({ children }) => {
 
   return (
     <LangContext.Provider value={values}>
-      <IntlProvider messages={Messages[lang]} locale={lang}>{children}</IntlProvider>
+      <IntlProvider messages={Messages[lang]} locale={lang}>
+        {children}
+      </IntlProvider>
     </LangContext.Provider>
   );
 };

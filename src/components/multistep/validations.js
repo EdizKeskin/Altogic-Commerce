@@ -13,7 +13,7 @@ const validations = yup.object().shape({
     .string()
     .min(3, "Last Name must be at least 3 characters.")
     .required("Required field."),
-    address: yup
+  address: yup
     .string()
     .min(3, "Address must be at least 3 characters.")
     .required("Required field."),

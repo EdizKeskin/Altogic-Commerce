@@ -13,7 +13,9 @@ const BasketProvider = ({ children }) => {
 
   const addToBasket = (data, findBasketItem) => {
     if (!findBasketItem) {
-      return setItems((items) => [data, ...items]), setNotification(notification + 1);
+      return (
+        setItems((items) => [data, ...items]), setNotification(notification + 1)
+      );
     }
     const filtered = items.filter((item) => item._id !== findBasketItem._id);
     setItems(filtered);

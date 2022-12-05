@@ -18,7 +18,6 @@ import Multistep from "./multistep/multiStep";
 function BasketSidebar({ items, totalPrice }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-
   return (
     <Flex
       py={10}
@@ -57,11 +56,7 @@ function BasketSidebar({ items, totalPrice }) {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <Multistep
-              onClose={onClose}
-              price={totalPrice}
-              names={items}
-            />
+            <Multistep onClose={onClose} price={totalPrice} names={items} />
           </ModalBody>
         </ModalContent>
       </Modal>

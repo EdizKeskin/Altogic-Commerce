@@ -11,9 +11,8 @@ import { Link, useParams } from "react-router-dom";
 import ProductCard from "../../components/productCard";
 import CustomSpinner from "../../components/spinner";
 
-function Categories({products}) {
+function Categories({ products }) {
   const { category } = useParams();
-
 
   if (products === null) return <CustomSpinner />;
 

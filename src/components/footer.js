@@ -1,4 +1,11 @@
-import { Box, ButtonGroup, IconButton, Stack, Text, Tooltip } from "@chakra-ui/react";
+import {
+  Box,
+  ButtonGroup,
+  IconButton,
+  Stack,
+  Text,
+  Tooltip,
+} from "@chakra-ui/react";
 import { FaGithub, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import React from "react";
 

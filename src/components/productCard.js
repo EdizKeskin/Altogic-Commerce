@@ -15,7 +15,7 @@ import { useBasket } from "../context/basketContext";
 import { BsFillBasketFill } from "react-icons/bs";
 
 function ProductCard({ item }) {
-  const { addToBasket, items,notification, setNotification } = useBasket();
+  const { addToBasket, items, notification, setNotification } = useBasket();
   const toast = useToast();
 
   const findBasketItem = items.find(
@@ -181,7 +181,8 @@ function ProductCard({ item }) {
                       position: "bottom-right",
                     });
                     findBasketItem && setNotification(notification - 1);
-                    addToBasket(item, findBasketItem)}}
+                    addToBasket(item, findBasketItem);
+                  }}
                 >
                   {findBasketItem ? (
                     <Icon
