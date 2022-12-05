@@ -14,7 +14,6 @@ export const createBucketForProfilePictures = async () => {
 export const uploadProfilePicture = async (picture) => {
   try {
     if (altogic.auth.getUser().profilePicture) {
-    
       if (altogic.auth.getUser().profilePicture.includes("c1-na.altogic.com")) {
         await altogic.storage
           .bucket(PROFILE_PICTURES)
@@ -25,6 +24,7 @@ export const uploadProfilePicture = async (picture) => {
       .bucket(PROFILE_PICTURES)
       .upload(`profile_picture-${altogic.auth.getUser()._id}`, picture, {
         createBucket: true,
+        isPublic: true,
       });
   } catch (error) {
     console.error(error);
@@ -69,6 +69,14 @@ export const removeProfilePhoto = async () => {
     return await altogic.storage
       .bucket(PROFILE_PICTURES)
       .deleteFiles([`profile_picture-${altogic.auth.getUser()._id}`]);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getUserById = async (id) => {
+  try {
+    return await altogic.db.model("users").object(id).get();
   } catch (error) {
     console.error(error);
   }

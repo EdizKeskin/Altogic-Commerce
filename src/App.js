@@ -24,9 +24,13 @@ import { AuthenticationProvider } from "./context/authContext";
 import RequiresAuth from "./components/routes/requiresAuth";
 import RequiresNotAuth from "./components/routes/requiresNotAuth";
 import Sessions from "./pages/Profile/sessions";
+import RequiresAdmin from "./components/routes/requiresAdmin";
+import Admin from "./pages/Admin/admin";
+import { getUserById } from "./api/storage";
 
 function App() {
   const [products, setProducts] = useState(null);
+  const [admin, setAdmin] = useState(false);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -37,6 +41,14 @@ function App() {
       }
     };
     getProducts();
+  }, []);
+  
+  useEffect(() => {
+    async function fetchUser() {
+      const result = await getUserById(altogic.auth.getUser()._id);
+      setAdmin(result.data.admin);
+    }
+    fetchUser();
   }, []);
 
   const bg = useColorModeValue("white", "#000000");
@@ -630,6 +642,16 @@ function App() {
                 element={
                   <RequiresAuth>
                     <Sessions />
+                  </RequiresAuth>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <RequiresAuth>
+                    <RequiresAdmin admin={admin}>
+                      <Admin />
+                    </RequiresAdmin>
                   </RequiresAuth>
                 }
               />

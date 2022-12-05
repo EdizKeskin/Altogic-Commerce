@@ -7,7 +7,9 @@ function Register(props) {
   const type = props.type;
 
   const signin = (provider) => {
-    altogic.auth.signInWithProvider(provider);
+    altogic.auth.signInWithProvider(provider,{
+      admin: false
+    });
   };
 
   return (

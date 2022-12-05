@@ -63,7 +63,6 @@ export default function Multistep({ onClose, price, name, names }) {
   const { setItems, setNotification } = useBasket();
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(33.33);
-  console.log(formik.isValid);
 
   const createOrder = async () => {
     const result = await altogic.db.model("order").object().create({

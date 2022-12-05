@@ -186,7 +186,7 @@ function Profile() {
                   py={2}
                   rounded={"md"}
                   shadow={"sm"}
-                  _loading={removeLoading}
+                  isloading={removeLoading}
                   onClick={removePhoto}
                 >
                   Remove Profile Picture

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -31,6 +31,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/authContext";
 import altogic from "../api/altogic";
+import { getUserById } from "../api/storage";
 
 const DesktopNav = () => {
   return (
@@ -112,12 +113,21 @@ const MobileNav = () => {
 
 function Navbar() {
   const { items, notification } = useBasket();
+  const [admin, setAdmin] = useState(false);
   const { isOpen, onToggle } = useDisclosure();
   const { isAuth, signOutCurrentSession } = useAuth();
   const size = useBreakpointValue({ base: "sm", sm: "md" });
   const { lang, setLang } = useLang();
   const btnColor = useColorModeValue("white.50", "gray.600");
   const { colorMode, toggleColorMode } = useColorMode();
+  useEffect(() => {
+    async function fetchUser() {
+      const result = await getUserById(altogic.auth.getUser()._id);
+      setAdmin(result.data.admin);
+    }
+    fetchUser();
+  }, []);
+
   const langBtnHandler = () => {
     if (lang === "tr-TR") {
       setLang("en-US");
@@ -125,7 +135,6 @@ function Navbar() {
       setLang("tr-TR");
     }
   };
-  console.log(isAuth);
 
   return (
     <Box data-aos="fade-down">
@@ -260,6 +269,13 @@ function Navbar() {
                       <Button variant={"link"}>Profile</Button>
                     </MenuItem>
                   </Link>
+                  {admin === true && (
+                    <Link to="/admin">
+                      <MenuItem as={"span"}>
+                        <Button variant={"link"}>Admin</Button>
+                      </MenuItem>
+                    </Link>
+                  )}
 
                   <Link to="/sessions">
                     <MenuItem as={"span"}>Sessions</MenuItem>
@@ -269,7 +285,7 @@ function Navbar() {
                     as={"span"}
                     onClick={(event) => {
                       event.preventDefault();
-                      signOutCurrentSession()();
+                      signOutCurrentSession();
                     }}
                   >
                     <Button variant={"link"} colorScheme="red">

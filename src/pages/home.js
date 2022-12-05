@@ -4,13 +4,10 @@ import Header from "../components/header";
 import CustomSpinner from "../components/spinner";
 import ProductCard from "../components/productCard";
 import Footer from "../components/footer";
-import altogic from "../api/altogic";
+import React, {  } from "react";
 
 function Home({ products }) {
   if (products === null) return <CustomSpinner />;
-
-  const test = altogic.auth.getUser();
-  console.log(test);
 
   return (
     <Box minh="100vh">
