@@ -28,13 +28,13 @@ function Profile() {
 
   const [loading, setLoading] = useState(false);
   const [removeLoading, setRemoveLoading] = useState(false);
+  const pp = altogic.auth.getUser().profilePicture;
 
   useEffect(() => {
-    if (altogic.auth.getUser().profilePicture) {
-      setProfilePicture(altogic.auth.getUser().profilePicture);
+    if (pp) {
+      setProfilePicture(pp);
     }
-    //eslint-disable-next-line
-  }, [altogic.auth.getUser().profilePicture]);
+  }, [pp]);
 
   const handleFileSelect = async (event) => {
     setLoading(true);
@@ -114,7 +114,7 @@ function Profile() {
           <Avatar
             size={"xl"}
             src={profilePicture}
-            alt={"Avatar Alt"}
+            alt={"Profile"}
             mb={4}
             pos={"relative"}
             referrerPolicy="no-referrer"
@@ -123,7 +123,7 @@ function Profile() {
           <Avatar
             size={"xl"}
             src={profilePicture}
-            alt={"Avatar Alt"}
+            alt={"Uploaded Profile"}
             mb={4}
             pos={"relative"}
             referrerPolicy="no-referrer"
@@ -186,7 +186,7 @@ function Profile() {
                   py={2}
                   rounded={"md"}
                   shadow={"sm"}
-                  isloading={removeLoading}
+                  isLoading={removeLoading}
                   onClick={removePhoto}
                 >
                   Remove Profile Picture

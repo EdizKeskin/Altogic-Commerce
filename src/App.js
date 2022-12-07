@@ -27,6 +27,8 @@ import Sessions from "./pages/Profile/sessions";
 import RequiresAdmin from "./components/routes/requiresAdmin";
 import Admin from "./pages/Admin/admin";
 import { getUserById } from "./api/storage";
+import Orders from "./pages/Admin/orders/orders";
+import AdminProducts from "./pages/Admin/products/adminProducts";
 
 function App() {
   const [products, setProducts] = useState(null);
@@ -651,6 +653,26 @@ function App() {
                   <RequiresAuth>
                     <RequiresAdmin admin={admin}>
                       <Admin />
+                    </RequiresAdmin>
+                  </RequiresAuth>
+                }
+              />
+              <Route
+                path="/admin/orders"
+                element={
+                  <RequiresAuth>
+                    <RequiresAdmin admin={admin}>
+                      <Orders />
+                    </RequiresAdmin>
+                  </RequiresAuth>
+                }
+              />
+              <Route
+                path="/admin/products"
+                element={
+                  <RequiresAuth>
+                    <RequiresAdmin admin={admin}>
+                      <AdminProducts />
                     </RequiresAdmin>
                   </RequiresAuth>
                 }
