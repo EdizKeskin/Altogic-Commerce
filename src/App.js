@@ -29,6 +29,7 @@ import Admin from "./pages/Admin/admin";
 import { getUserById } from "./api/storage";
 import Orders from "./pages/Admin/orders/orders";
 import AdminProducts from "./pages/Admin/products/adminProducts";
+import NewProduct from "./pages/Admin/newProduct/newProduct";
 
 function App() {
   const [products, setProducts] = useState(null);
@@ -44,7 +45,7 @@ function App() {
     };
     getProducts();
   }, []);
-  
+
   useEffect(() => {
     async function fetchUser() {
       const result = await getUserById(altogic.auth.getUser()._id);
@@ -673,6 +674,16 @@ function App() {
                   <RequiresAuth>
                     <RequiresAdmin admin={admin}>
                       <AdminProducts />
+                    </RequiresAdmin>
+                  </RequiresAuth>
+                }
+              />
+              <Route
+                path="/admin/products/newproduct"
+                element={
+                  <RequiresAuth>
+                    <RequiresAdmin admin={admin}>
+                      <NewProduct />
                     </RequiresAdmin>
                   </RequiresAuth>
                 }

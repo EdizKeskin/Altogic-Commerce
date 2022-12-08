@@ -186,7 +186,7 @@ function AdminProducts() {
           Products
         </Text>
         <Box display={"flex"} alignItems="center">
-          <Link to="/admin/products/new">
+          <Link to="/admin/products/newproduct">
             <Button colorScheme={"teal"} size="md" mr={2}>
               Add Product
             </Button>
