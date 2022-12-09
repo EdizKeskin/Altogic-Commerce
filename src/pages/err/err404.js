@@ -2,7 +2,7 @@ import { Box, Heading, Text, Button } from "@chakra-ui/react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
-function err404() {
+function Err404() {
   return (
     <Box textAlign="center" py={10} px={6} data-aos="fade-up">
       <Heading
@@ -28,4 +28,4 @@ function err404() {
     </Box>
   );
 }
-export default err404;
+export default Err404;

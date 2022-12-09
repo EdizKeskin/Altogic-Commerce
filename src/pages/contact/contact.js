@@ -28,6 +28,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
 function Contact() {
+  
   function getRandom() {
     return Math.floor(
       Math.pow(10, 12 - 1) + Math.random() * 9 * Math.pow(10, 12 - 1)

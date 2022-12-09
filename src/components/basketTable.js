@@ -63,7 +63,7 @@ function BasketTable() {
                 justifyItems={"center"}
                 textAlign={"center"}
               >
-                <Link to={`/${item.link}`}>
+                <Link to={`/product/${item.link}`}>
                   <Image
                     src={item.images[0]}
                     objectFit="cover"
@@ -82,7 +82,7 @@ function BasketTable() {
                   }}
                 >
                   <ButtonGroup variant="solid" size="sm">
-                    <Link to={`/${item.link}`}>
+                    <Link to={`/product/${item.link}`}>
                       <IconButton
                         colorScheme="blue"
                         icon={<BsBoxArrowUpRight />}

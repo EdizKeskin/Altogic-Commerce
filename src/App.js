@@ -1,6 +1,6 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Box, useColorModeValue } from "@chakra-ui/react";
 
 import AOS from "aos";
@@ -606,8 +606,9 @@ function App() {
           <div>
             <Navbar />
             <Routes>
+            <Route path="*" element={<Err404 />} />
               <Route path="/" element={<Home products={products} />} />
-              <Route path="/:id" element={<Detail products={products} />} />
+              <Route path="/product/:id" element={<Detail products={products} />} />
               <Route
                 path="/categories/:category"
                 element={<Categories products={products} />}
@@ -622,7 +623,6 @@ function App() {
                   </RequiresNotAuth>
                 }
               />
-              <Route path="*" element={<Err404 />} />
               <Route path="/auth-redirect" element={<AuthRedirect />} />
               <Route
                 path="/profile"

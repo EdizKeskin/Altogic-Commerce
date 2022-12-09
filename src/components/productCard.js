@@ -10,13 +10,14 @@ import {
 } from "@chakra-ui/react";
 import { FiShoppingCart } from "react-icons/fi";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useBasket } from "../context/basketContext";
 import { BsFillBasketFill } from "react-icons/bs";
 
 function ProductCard({ item }) {
   const { addToBasket, items, notification, setNotification } = useBasket();
   const toast = useToast();
+  const Navigate = useNavigate();
 
   const findBasketItem = items.find(
     (basket_item) => basket_item._id === item._id
@@ -39,9 +40,14 @@ function ProductCard({ item }) {
           shadow="md"
           bgSize="cover"
           bgPos="center"
+          onClick={() => {
+            Navigate(`/product/${item.link}`);
+          }}
+          _hover={{
+            cursor: "pointer",
+          }}
           backgroundImage={item.images[0]}
         ></Box>
-
         <Box
           w={"full"}
           bg="white"
@@ -116,7 +122,7 @@ function ProductCard({ item }) {
               </Flex>
             </Flex>
             <Flex alignItems={"center"}>
-              <Link to={`/${item.link}`}>
+              <Link to={`/product/${item.link}`}>
                 <Tooltip
                   label="Product Page"
                   hasArrow
