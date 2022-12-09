@@ -1,9 +1,5 @@
 const Messages = {
   "tr-TR": {
-    desc: "Biz anime kızlarını seven 4 arkadaşız. Beraber oyun oynayıp boş espirilere sabaha kadar güleriz",
-    discord: "Bizimle takılmak istersen",
-    err: "ÇABUK SİYAH TEMAYA GERİ DÖN!!",
-    card_btn: "Profil",
     title: "Özellikler",
     title_2: "En sevdiği anime kızları",
     bestSeries: "En sevdiği diziler, filmler, oyunlar vs.",
@@ -26,10 +22,6 @@ const Messages = {
     buy: "Satın Al",
   },
   "en-US": {
-    desc: "We're 4 friends who love anime girls. We play games together and laugh at stupid jokes.",
-    discord: "If you want to hang with us",
-    err: "GO BACK TO THE DARK THEME!!",
-    card_btn: "Profile",
     title: "Features",
     title_2: "Favorite anime girls",
     bestSeries: "Best series, movies, games etc.",
