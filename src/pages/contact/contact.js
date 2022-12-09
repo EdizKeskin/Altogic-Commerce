@@ -42,6 +42,8 @@ function Contact() {
   const { lang } = useLang();
   const { colorMode } = useColorMode();
 
+  
+
   const formik = useFormik({
     initialValues: {
       name: "",

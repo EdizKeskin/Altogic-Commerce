@@ -1,12 +1,11 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Box, useColorModeValue } from "@chakra-ui/react";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Particles from "react-tsparticles";
-import collection from "easter-egg-collection";
 import altogic from "./api/altogic";
 
 //COMPONENTS
@@ -30,6 +29,7 @@ import { getUserById } from "./api/storage";
 import Orders from "./pages/Admin/orders/orders";
 import AdminProducts from "./pages/Admin/products/adminProducts";
 import NewProduct from "./pages/Admin/newProduct/newProduct";
+import EditProduct from "./pages/Admin/editProduct/editProduct";
 
 function App() {
   const [products, setProducts] = useState(null);
@@ -63,7 +63,6 @@ function App() {
     });
     AOS.refresh();
   }, []);
-  console.log("TOP SECRET", collection);
   return (
     <Box>
       <Particles
@@ -674,6 +673,16 @@ function App() {
                   <RequiresAuth>
                     <RequiresAdmin admin={admin}>
                       <AdminProducts />
+                    </RequiresAdmin>
+                  </RequiresAuth>
+                }
+              />
+              <Route
+                path="/admin/products/:product_id"
+                element={
+                  <RequiresAuth>
+                    <RequiresAdmin admin={admin}>
+                      <EditProduct />
                     </RequiresAdmin>
                   </RequiresAuth>
                 }

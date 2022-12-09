@@ -32,6 +32,7 @@ import { motion } from "framer-motion";
 import { useAuth } from "../context/authContext";
 import altogic from "../api/altogic";
 import { getUserById } from "../api/storage";
+import { AiOutlineDown } from "react-icons/ai";
 
 const DesktopNav = () => {
   return (
@@ -42,6 +43,35 @@ const DesktopNav = () => {
       <Link to="/contact">
         <Text>Contact</Text>
       </Link>
+      <Menu>
+        <MenuButton variant={"link"} as={Button} rightIcon={<AiOutlineDown />}>
+          Actions
+        </MenuButton>
+        <Portal>
+          <MenuList>
+            <Link to="/categories/Car">
+              <MenuItem as={"span"}>
+                <Button variant={"link"}>Car</Button>
+              </MenuItem>
+            </Link>
+            <Link to="/categories/Home">
+              <MenuItem as={"span"}>
+                <Button variant={"link"}>Home</Button>
+              </MenuItem>
+            </Link>
+            <Link to="/categories/Technology">
+              <MenuItem as={"span"}>
+                <Button variant={"link"}>Technology</Button>
+              </MenuItem>
+            </Link>
+            <Link to="/categories/Test">
+              <MenuItem as={"span"}>
+                <Button variant={"link"}>Test</Button>
+              </MenuItem>
+            </Link>
+          </MenuList>
+        </Portal>
+      </Menu>
     </Stack>
   );
 };
@@ -63,15 +93,47 @@ const MobileNav = () => {
         py={2}
         justify={"space-between"}
         align={"center"}
+        direction={"column"}
+        alignItems={"flex-start"}
         _hover={{
           textDecoration: "none",
         }}
       >
         <Link to="/">
-          <Text fontWeight={600} color="gray.200" mb="2">
-            Products
-          </Text>
-        </Link>
+        <Text>Products</Text>
+      </Link>
+      <Link to="/contact">
+        <Text>Contact</Text>
+      </Link>
+      <Menu>
+        <MenuButton variant={"link"} as={Button} rightIcon={<AiOutlineDown />}>
+          Actions
+        </MenuButton>
+        <Portal>
+          <MenuList>
+            <Link to="/categories/Car">
+              <MenuItem as={"span"}>
+                <Button variant={"link"}>Car</Button>
+              </MenuItem>
+            </Link>
+            <Link to="/categories/Home">
+              <MenuItem as={"span"}>
+                <Button variant={"link"}>Home</Button>
+              </MenuItem>
+            </Link>
+            <Link to="/categories/Technology">
+              <MenuItem as={"span"}>
+                <Button variant={"link"}>Technology</Button>
+              </MenuItem>
+            </Link>
+            <Link to="/categories/Test">
+              <MenuItem as={"span"}>
+                <Button variant={"link"}>Test</Button>
+              </MenuItem>
+            </Link>
+          </MenuList>
+        </Portal>
+      </Menu>
       </Flex>
       <ButtonGroup size="sm" zIndex={"overlay"}>
         <Tooltip

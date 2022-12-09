@@ -1,10 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  Text,
-  Box,
-  Button,
-  Icon,
-} from "@chakra-ui/react";
+import { Text, Box, Button, Icon } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import CustomSpinner from "../../../components/spinner";
 import altogic from "../../../api/altogic";
@@ -25,8 +20,7 @@ function AdminProducts() {
       }
     };
     getProducts();
-  }, []);
-  console.log(products);
+  }, [products]);
   const globalTheme = useTheme();
   const tableTheme = useMemo(
     () =>
@@ -87,6 +81,7 @@ function AdminProducts() {
     const result = await altogic.db.model("products").object(id).delete();
     if (!result.errors && products != null) {
       setProducts(products.filter((product) => product._id !== id));
+      console.log(products);
     }
   };
 
@@ -165,6 +160,7 @@ function AdminProducts() {
         ),
       },
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 

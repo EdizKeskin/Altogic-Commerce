@@ -1,4 +1,5 @@
 //create product page
+import { useEffect, useState } from "react";
 import { FieldArray, Field, Formik } from "formik";
 import * as Yup from "yup";
 import {
@@ -11,6 +12,7 @@ import {
   useToast,
   Alert,
   AlertIcon,
+  ButtonGroup,
   Popover,
   PopoverTrigger,
   Text,
@@ -26,6 +28,9 @@ import {
 } from "@chakra-ui/react";
 import altogic from "../../../api/altogic";
 import { BsFillTrashFill } from "react-icons/bs";
+import { useParams } from "react-router-dom";
+import { getProductById } from "../../../api/storage";
+import CustomSpinner from "../../../components/spinner";
 
 function NewCheckbox(props) {
   return (
@@ -58,8 +63,9 @@ function NewCheckbox(props) {
   );
 }
 
-function NewProduct() {
+function EditProduct() {
   const toast = useToast();
+  const { product_id } = useParams();
 
   const validationSchema = Yup.object({
     title: Yup.string().required("Required"),
@@ -68,54 +74,63 @@ function NewProduct() {
     images: Yup.array().required("Required"),
     details: Yup.array().required("Required"),
   });
+  //get product by id
+  const [product, setProduct] = useState(null);
+  useEffect(() => {
+    const getProduct = async () => {
+      const result = await getProductById(product_id);
+      setProduct(result.data);
+    };
+    getProduct();
+  }, [product_id]);
+  console.log(product);
 
   const handleSubmit = async (values, bag) => {
-    const newValues = {
-      ...values,
-      price: Number(values.price),
-      images: values.images.map((image) => {
-        return image;
-      }),
-      link: values.title.replace(/\s+/g, "").toLowerCase(),
-    };
-    console.log(newValues);
-
-    const result = await altogic.endpoint.post("/products", newValues);
-
-    if (!result.errors) {
-      toast({
-        title: "Product created.",
-        desc: "We've created your product for you.",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-      });
-    } else {
-      toast({
-        title: "An error occurred.",
-        desc: "We were unable to create your product.",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
+    const { title, desc, price, images, details, categories } = values;
+    try {
+      const resp = await altogic.db
+        .model("products")
+        .object(product_id)
+        .update({
+          title,
+          desc,
+          price,
+          images,
+          details,
+          categories,
+        });
+      if (resp.errors === null) {
+        toast({
+          title: "Product updated",
+          description: "Product has been updated successfully",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
-    bag.resetForm();
   };
+
+  if (!product) {
+    return <CustomSpinner />;
+  }
 
   return (
     <Box m={5}>
       <Text fontSize="2xl" color={"white"}>
-        New Product
+        Edit Product
       </Text>
 
       <Formik
         initialValues={{
-          title: "",
-          desc: "",
-          price: "",
-          images: [],
-          details: [],
-          categories: [],
+          title: product.title,
+          desc: product.desc,
+          price: product.price,
+          images: product.images,
+          details: product.details,
+          categories: product.categories,
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
@@ -341,57 +356,66 @@ function NewProduct() {
                                   />
 
                                   <Popover>
-                                    <PopoverTrigger>
-                                      <IconButton
-                                        aria-label="Delete images"
-                                        icon={<BsFillTrashFill />}
-                                        variant="outline"
-                                        onClick={() =>
-                                          arrayHelpers.remove(index)
-                                        }
-                                      />
-                                    </PopoverTrigger>
-                                    <PopoverContent>
-                                      <PopoverArrow />
-                                      <PopoverCloseButton />
-                                      <PopoverHeader>Confirm</PopoverHeader>
-                                      <PopoverBody>
-                                        Are you sure you want to delete this
-                                        images?
-                                      </PopoverBody>
-                                      <PopoverFooter
-                                        display="flex"
-                                        justifyContent="space-between"
-                                      >
-                                        <Button
-                                          variantColor="red"
-                                          variant="outline"
-                                          onClick={() =>
-                                            arrayHelpers.remove(index)
-                                          }
+                                    {({ onClose }) => (
+                                      <>
+                                        <PopoverTrigger>
+                                          <Button
+                                            fontSize="sm"
+                                            colorScheme="red"
+                                            ml="3"
+                                            disabled={isSubmitting}
+                                          >
+                                            Remove
+                                          </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent
+                                          bgColor="gray.700"
+                                          borderRadius="lg"
+                                          size="sm"
+                                          width="fit-content"
+                                          boxShadow="dark-lg"
                                         >
-                                          Delete
-                                        </Button>
-                                        <Button
-                                          variant="outline"
-                                          onClick={() =>
-                                            arrayHelpers.remove(index)
-                                          }
-                                        >
-                                          Cancel
-                                        </Button>
-                                      </PopoverFooter>
-                                    </PopoverContent>
+                                          <PopoverArrow bgColor="gray.700" />
+                                          <PopoverBody
+                                            bgColor="gray.700"
+                                            borderRadius="lg"
+                                          >
+                                            <Text mb="3">Are you sure ?</Text>
+                                            <ButtonGroup size="sm">
+                                              <Button
+                                                colorScheme="red"
+                                                variant="link"
+                                                mr="4"
+                                                onClick={onClose}
+                                              >
+                                                Cancel
+                                              </Button>
+                                              <Button
+                                                colorScheme="teal"
+                                                ml="5"
+                                                disabled={isSubmitting}
+                                                onClick={() => {
+                                                  arrayHelpers.remove(index);
+                                                  onClose();
+                                                }}
+                                              >
+                                                Yes
+                                              </Button>
+                                            </ButtonGroup>
+                                          </PopoverBody>
+                                        </PopoverContent>
+                                      </>
+                                    )}
                                   </Popover>
                                 </Box>
                               </div>
                             ))}
                           <Button
-                            variantColor="teal"
-                            variant="outline"
+                            colorScheme="teal"
                             onClick={() => arrayHelpers.push("")}
+                            disabled={isSubmitting}
                           >
-                            Add image
+                            Add a Photo
                           </Button>
                         </div>
                       )}
@@ -416,4 +440,4 @@ function NewProduct() {
   );
 }
 
-export default NewProduct;
+export default EditProduct;

@@ -81,3 +81,11 @@ export const getUserById = async (id) => {
     console.error(error);
   }
 };
+
+export const getProductById = async (id) => {
+  try {
+    return await altogic.db.model("products").object(id).get();
+  } catch (error) {
+    console.error(error);
+  }
+}

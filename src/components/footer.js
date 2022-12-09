@@ -6,7 +6,7 @@ import {
   Text,
   Tooltip,
 } from "@chakra-ui/react";
-import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import React from "react";
 
 function Footer() {
@@ -42,8 +42,24 @@ function Footer() {
                 <IconButton
                   as="a"
                   href="#"
+                  target={"_blank"}
                   aria-label="linkedin"
                   icon={<FaLinkedin fontSize="20px" />}
+                />
+              </Tooltip>
+              <Tooltip
+                label={"Twitter"}
+                hasArrow
+                bg="gray.300"
+                color="black"
+                borderRadius={"md"}
+              >
+                <IconButton
+                  as="a"
+                  href="https://twitter.com/Sharpness_4"
+                  aria-label="twitter"
+                  target={"_blank"}
+                  icon={<FaTwitter fontSize="20px" />}
                 />
               </Tooltip>
               <Tooltip
