@@ -11,6 +11,7 @@ import { BsFillTrashFill } from "react-icons/bs";
 
 function AdminProducts() {
   const [products, setProducts] = useState(null);
+  
   useEffect(() => {
     const getProducts = async () => {
       const result = await altogic.db.model("products").get();
@@ -20,7 +21,7 @@ function AdminProducts() {
       }
     };
     getProducts();
-  }, [products]);
+  }, []);
   const globalTheme = useTheme();
   const tableTheme = useMemo(
     () =>
@@ -76,14 +77,11 @@ function AdminProducts() {
     const date = new Date(createdAt);
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   };
-
   const deleteProduct = async (id) => {
     const result = await altogic.db.model("products").object(id).delete();
-    if (!result.errors && products != null) {
-      setProducts(products.filter((product) => product._id !== id));
-      console.log(products);
-    }
+    setProducts(products.filter((product) => product._id !== id));
   };
+  
 
   const columns = useMemo(
     () => [

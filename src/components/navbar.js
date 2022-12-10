@@ -45,7 +45,7 @@ const DesktopNav = () => {
       </Link>
       <Menu>
         <MenuButton variant={"link"} as={Button} rightIcon={<AiOutlineDown />}>
-          Actions
+          Categories
         </MenuButton>
         <Portal>
           <MenuList>
@@ -107,7 +107,7 @@ const MobileNav = () => {
       </Link>
       <Menu>
         <MenuButton variant={"link"} as={Button} rightIcon={<AiOutlineDown />}>
-          Actions
+          Categories
         </MenuButton>
         <Portal>
           <MenuList>
