@@ -13,7 +13,7 @@ import {
   useColorMode,
   IconButton,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React from "react";
 import { useFormik } from "formik";
 import validationSchema from "./validations";
 import { IoIosReturnLeft } from "react-icons/io";
@@ -24,25 +24,12 @@ import emailjs from "emailjs-com";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
 
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
-
 function Contact() {
-  
-  function getRandom() {
-    return Math.floor(
-      Math.pow(10, 12 - 1) + Math.random() * 9 * Math.pow(10, 12 - 1)
-    );
-  }
-
-  const [phone, setPhone] = useState(getRandom().toString());
   const bg = useColorModeValue("gray.100", "gray.700");
   const textColor = useColorModeValue("black", "white");
   const btnColor = useColorModeValue("white.50", "gray.600");
   const { lang } = useLang();
   const { colorMode } = useColorMode();
-
-  
 
   const formik = useFormik({
     initialValues: {
@@ -101,8 +88,9 @@ function Contact() {
         boxShadow="dark-lg"
         p="10"
         mt="100px"
-        boxSize={"xl"}
+        boxSize={{ base: "90%", md: "xl" }}
         mx="10px"
+        mb={{ base: "20px", md: "0" }}
         borderRadius="lg"
         maxHeight={"fit-content"}
       >
@@ -162,27 +150,6 @@ function Contact() {
                     : "Please enter your email"
                 }
               />
-            </FormControl>
-            <FormControl mt={4}>
-              <FormLabel color={textColor}>
-                <FormattedMessage id="phone" />
-              </FormLabel>
-              <Flex align={"center"} justifyContent={"space-between"}>
-                <PhoneInput
-                  country={"tr"}
-                  value={phone}
-                  onChange={(phone) => setPhone(phone)}
-                  inputClass="phone-input"
-                />
-                <motion.div whileTap={{ scale: 0.8 }}>
-                  <Button
-                    colorScheme={"red"}
-                    onClick={() => setPhone(getRandom().toString())}
-                  >
-                    no
-                  </Button>
-                </motion.div>
-              </Flex>
             </FormControl>
 
             <FormControl mt={4} isRequired>

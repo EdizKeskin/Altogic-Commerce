@@ -98,42 +98,48 @@ const MobileNav = () => {
         _hover={{
           textDecoration: "none",
         }}
+        mb={4}
       >
         <Link to="/">
-        <Text>Products</Text>
-      </Link>
-      <Link to="/contact">
-        <Text>Contact</Text>
-      </Link>
-      <Menu>
-        <MenuButton variant={"link"} as={Button} rightIcon={<AiOutlineDown />}>
-          Categories
-        </MenuButton>
-        <Portal>
-          <MenuList>
-            <Link to="/categories/Car">
-              <MenuItem as={"span"}>
-                <Button variant={"link"}>Car</Button>
-              </MenuItem>
-            </Link>
-            <Link to="/categories/Home">
-              <MenuItem as={"span"}>
-                <Button variant={"link"}>Home</Button>
-              </MenuItem>
-            </Link>
-            <Link to="/categories/Technology">
-              <MenuItem as={"span"}>
-                <Button variant={"link"}>Technology</Button>
-              </MenuItem>
-            </Link>
-            <Link to="/categories/Test">
-              <MenuItem as={"span"}>
-                <Button variant={"link"}>Test</Button>
-              </MenuItem>
-            </Link>
-          </MenuList>
-        </Portal>
-      </Menu>
+          <Text fontSize={"xl"} mb={"3"}>Products</Text>
+        </Link>
+        <Link to="/contact">
+          <Text fontSize={"xl"} mb={"3"}>Contact</Text>
+        </Link>
+        <Menu>
+          <MenuButton
+            variant={"link"}
+            as={Button}
+            rightIcon={<AiOutlineDown />}
+            fontSize={"xl"}
+          >
+            Categories
+          </MenuButton>
+          <Portal>
+            <MenuList>
+              <Link to="/categories/Car">
+                <MenuItem as={"span"}>
+                  <Button variant={"link"}>Car</Button>
+                </MenuItem>
+              </Link>
+              <Link to="/categories/Home">
+                <MenuItem as={"span"}>
+                  <Button variant={"link"}>Home</Button>
+                </MenuItem>
+              </Link>
+              <Link to="/categories/Technology">
+                <MenuItem as={"span"}>
+                  <Button variant={"link"}>Technology</Button>
+                </MenuItem>
+              </Link>
+              <Link to="/categories/Test">
+                <MenuItem as={"span"}>
+                  <Button variant={"link"}>Test</Button>
+                </MenuItem>
+              </Link>
+            </MenuList>
+          </Portal>
+        </Menu>
       </Flex>
       <ButtonGroup size="sm" zIndex={"overlay"}>
         <Tooltip

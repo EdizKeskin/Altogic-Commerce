@@ -15,22 +15,24 @@ function Register(props) {
   return (
     <Flex
       align="center"
-      width="full"
       justifyContent="center"
       data-aos="fade-up"
     >
       <Box
         bgColor="gray.700"
         boxShadow="dark-lg"
+        boxSize={{ base: "90%", md: "xl" }}
         p="10"
         mt="50px"
+        maxHeight={"fit-content"}
+        maxWidth={"fit-content"}
         borderRadius="lg"
       >
         <Box textAlign="center">
           <Heading color="white">{type}</Heading>
         </Box>
 
-        <Box my="5" textAlign="left" boxSize={"md"}>
+        <Box my="5" textAlign="left" boxSize={{base: "2xs", md:"md"}}>
           <FormControl>
             <Button
               colorScheme="teal"
