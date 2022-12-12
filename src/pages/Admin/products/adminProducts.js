@@ -1,17 +1,23 @@
-import { useEffect, useMemo, useState } from "react";
-import { Text, Box, Button, Icon } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import CustomSpinner from "../../../components/spinner";
-import altogic from "../../../api/altogic";
-import MaterialReactTable from "material-react-table";
+import { Box, Button, Icon, Text } from "@chakra-ui/react";
 import { createTheme, ThemeProvider, useTheme } from "@mui/material";
-import Swal from "sweetalert2";
-import { FaExternalLinkAlt } from "react-icons/fa";
+import MaterialReactTable from "material-react-table";
+import { useEffect, useMemo, useState } from "react";
 import { BsFillTrashFill } from "react-icons/bs";
+import { FaExternalLinkAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import altogic from "../../../api/altogic";
+import CustomSpinner from "../../../components/spinner";
 
 function AdminProducts() {
   const [products, setProducts] = useState(null);
-  
+
+  const deleteProduct = async (id) => {
+    const result = await altogic.db.model("products").object(id).delete();
+    setProducts(products.filter((product) => product._id !== id));
+    console.log(result);
+  };
+
   useEffect(() => {
     const getProducts = async () => {
       const result = await altogic.db.model("products").get();
@@ -77,11 +83,6 @@ function AdminProducts() {
     const date = new Date(createdAt);
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   };
-  const deleteProduct = async (id) => {
-    const result = await altogic.db.model("products").object(id).delete();
-    setProducts(products.filter((product) => product._id !== id));
-  };
-  
 
   const columns = useMemo(
     () => [
@@ -159,7 +160,7 @@ function AdminProducts() {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [products]
   );
 
   if (products === null) {
