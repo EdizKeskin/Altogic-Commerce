@@ -77,7 +77,9 @@ function Product({ products }) {
           >
             <BreadcrumbItem>
               <Link to="/">
-                <Button variant={"link"}>Home</Button>
+                <Button variant={"link"}>
+                  <FormattedMessage id="home_btn" />
+                </Button>
               </Link>
             </BreadcrumbItem>
             <BreadcrumbItem>

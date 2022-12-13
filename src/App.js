@@ -34,17 +34,22 @@ import EditProduct from "./pages/Admin/editProduct/editProduct";
 function App() {
   const [products, setProducts] = useState(null);
   const [admin, setAdmin] = useState(false);
+  const [sort, setSort] = useState("createdAt");
+  const [sortType, setSortType] = useState("desc");
 
   useEffect(() => {
     const getProducts = async () => {
-      const result = await altogic.db.model("products").get();
+      const result = await altogic.db
+        .model("products")
+        .sort(sort, sortType)
+        .get();
 
       if (!result.errors) {
         setProducts(result.data);
       }
     };
     getProducts();
-  }, []);
+  }, [sort, sortType]);
 
   useEffect(() => {
     async function fetchUser() {
@@ -606,7 +611,18 @@ function App() {
             <Navbar />
             <Routes>
               <Route path="*" element={<Err404 />} />
-              <Route path="/" element={<Home products={products} />} />
+              <Route
+                path="/"
+                element={
+                  <Home
+                    products={products}
+                    sort={sort}
+                    setSort={setSort}
+                    setSortType={setSortType}
+                    sortType={sortType}
+                  />
+                }
+              />
               <Route
                 path="/product/:id"
                 element={<Detail products={products} />}

@@ -33,39 +33,46 @@ import { useAuth } from "../context/authContext";
 import altogic from "../api/altogic";
 import { getUserById } from "../api/storage";
 import { AiOutlineDown } from "react-icons/ai";
+import { FormattedMessage } from "react-intl";
 
 const DesktopNav = () => {
   return (
     <Stack direction={"row"} spacing={4}>
       <Link to="/">
-        <Text>Products</Text>
+        <FormattedMessage id="products" />
       </Link>
       <Link to="/contact">
-        <Text>Contact</Text>
+        <FormattedMessage id="contact" />
       </Link>
       <Menu>
         <MenuButton variant={"link"} as={Button} rightIcon={<AiOutlineDown />}>
-          Categories
+          <FormattedMessage id="categories" />
         </MenuButton>
         <Portal>
           <MenuList>
             <Link to="/categories/Car">
-              <MenuItem as={"span"}>
-                <Button variant={"link"}>Car</Button>
+              <MenuItem as={"span"} justifyContent={"center"}>
+                <Button variant={"link"}>
+                  <FormattedMessage id="car" />
+                </Button>
               </MenuItem>
             </Link>
             <Link to="/categories/Home">
-              <MenuItem as={"span"}>
-                <Button variant={"link"}>Home</Button>
+              <MenuItem as={"span"} justifyContent={"center"}>
+                <Button variant={"link"}>
+                  <FormattedMessage id="home" />
+                </Button>
               </MenuItem>
             </Link>
             <Link to="/categories/Technology">
-              <MenuItem as={"span"}>
-                <Button variant={"link"}>Technology</Button>
+              <MenuItem as={"span"} justifyContent={"center"}>
+                <Button variant={"link"}>
+                  <FormattedMessage id="technology" />
+                </Button>
               </MenuItem>
             </Link>
             <Link to="/categories/Test">
-              <MenuItem as={"span"}>
+              <MenuItem as={"span"} justifyContent={"center"}>
                 <Button variant={"link"}>Test</Button>
               </MenuItem>
             </Link>
@@ -117,27 +124,33 @@ const MobileNav = () => {
             rightIcon={<AiOutlineDown />}
             fontSize={"xl"}
           >
-            Categories
+            <FormattedMessage id="categories" />
           </MenuButton>
           <Portal>
             <MenuList>
               <Link to="/categories/Car">
-                <MenuItem as={"span"}>
-                  <Button variant={"link"}>Car</Button>
+                <MenuItem as={"span"} justifyContent={"center"}>
+                  <Button variant={"link"}>
+                    <FormattedMessage id="car" />
+                  </Button>
                 </MenuItem>
               </Link>
               <Link to="/categories/Home">
-                <MenuItem as={"span"}>
-                  <Button variant={"link"}>Home</Button>
+                <MenuItem as={"span"} justifyContent={"center"}>
+                  <Button variant={"link"}>
+                    <FormattedMessage id="home" />
+                  </Button>
                 </MenuItem>
               </Link>
               <Link to="/categories/Technology">
-                <MenuItem as={"span"}>
-                  <Button variant={"link"}>Technology</Button>
+                <MenuItem as={"span"} justifyContent={"center"}>
+                  <Button variant={"link"}>
+                    <FormattedMessage id="technology" />
+                  </Button>
                 </MenuItem>
               </Link>
               <Link to="/categories/Test">
-                <MenuItem as={"span"}>
+                <MenuItem as={"span"} justifyContent={"center"}>
                   <Button variant={"link"}>Test</Button>
                 </MenuItem>
               </Link>
@@ -326,7 +339,7 @@ function Navbar() {
                     bg: "pink.300",
                   }}
                 >
-                  Sign Up
+                  <FormattedMessage id="signin" />
                 </Button>
               </Link>
             </>
@@ -339,7 +352,9 @@ function Navbar() {
                 <MenuList>
                   <Link to="/profile">
                     <MenuItem as={"span"}>
-                      <Button variant={"link"}>Profile</Button>
+                      <Button variant={"link"}>
+                        <FormattedMessage id="profile" />
+                      </Button>
                     </MenuItem>
                   </Link>
                   {admin === true && (
@@ -351,7 +366,11 @@ function Navbar() {
                   )}
 
                   <Link to="/sessions">
-                    <MenuItem as={"span"}>Sessions</MenuItem>
+                    <MenuItem as={"span"}>
+                      <Button variant={"link"}>
+                        <FormattedMessage id="sessions" />
+                      </Button>
+                    </MenuItem>
                   </Link>
 
                   <MenuItem
@@ -362,7 +381,7 @@ function Navbar() {
                     }}
                   >
                     <Button variant={"link"} colorScheme="red">
-                      Sign Out
+                      <FormattedMessage id="signout" />
                     </Button>
                   </MenuItem>
                 </MenuList>
