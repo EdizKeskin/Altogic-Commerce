@@ -36,7 +36,6 @@ import CustomSpinner from "../../components/spinner";
 import { motion } from "framer-motion";
 import Multistep from "../../components/multistep/multiStep";
 import Coursel from "../../components/coursel";
-//import basketContext from "../context/basketContext";
 import { useBasket } from "../../context/basketContext";
 
 function Product({ products }) {
@@ -69,7 +68,6 @@ function Product({ products }) {
         spacing={{ base: 8, md: 10 }}
         py={{ base: 18, md: 20 }}
       >
-        {/* // ? Sorun çıkarsa Box yerine Flex kullan ve Breadcrumb'ı kaldır */}
         <Box data-aos="fade-down">
           <Breadcrumb
             mt={{ base: 3, md: 0 }}
@@ -149,9 +147,11 @@ function Product({ products }) {
               <Tabs>
                 <TabList>
                   <Tab>
-                    <FormattedMessage id="title" />
+                    <FormattedMessage id="features" />
                   </Tab>
-                  <Tab>Kargo Detayları</Tab>
+                  <Tab>
+                    <FormattedMessage id="ship_details" />
+                  </Tab>
                 </TabList>
 
                 <TabPanels>
@@ -237,7 +237,11 @@ function Product({ products }) {
               )
             }
           >
-            {findBasketItem ? "Remove from basket" : "Add to basket"}
+            {findBasketItem ? (
+              <FormattedMessage id="remove_from_basket" />
+            ) : (
+              <FormattedMessage id="add_to_basket" />
+            )}
           </Button>
           <Modal size={"2xl"} isOpen={isOpen} onClose={onClose}>
             <ModalOverlay backdropFilter="blur(10px) hue-rotate(20deg)" />
@@ -254,7 +258,9 @@ function Product({ products }) {
           </Modal>
           <Stack direction="row" alignItems="center" justifyContent={"center"}>
             <MdLocalShipping />
-            <Text>2-3 business days delivery</Text>
+            <Text>
+              <FormattedMessage id="ship_time" />
+            </Text>
           </Stack>
         </Stack>
       </SimpleGrid>

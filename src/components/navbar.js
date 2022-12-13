@@ -101,10 +101,14 @@ const MobileNav = () => {
         mb={4}
       >
         <Link to="/">
-          <Text fontSize={"xl"} mb={"3"}>Products</Text>
+          <Text fontSize={"xl"} mb={"3"}>
+            Products
+          </Text>
         </Link>
         <Link to="/contact">
-          <Text fontSize={"xl"} mb={"3"}>Contact</Text>
+          <Text fontSize={"xl"} mb={"3"}>
+            Contact
+          </Text>
         </Link>
         <Menu>
           <MenuButton
@@ -243,16 +247,17 @@ function Navbar() {
           flex={{ base: 1 }}
           justify={{ base: "left", sm: "start" }}
         >
-          <Text
-            textAlign={"left"}
-            fontFamily={"heading"}
-            color="white"
-            as={"h1"}
-            fontSize="xl"
-          >
-            Logo
-          </Text>
-
+          <Link to="/">
+            <Text
+              textAlign={"left"}
+              fontFamily={"heading"}
+              color="white"
+              as={"h1"}
+              fontSize="xl"
+            >
+              Logo
+            </Text>
+          </Link>
           <Flex display={{ base: "none", sm: "flex" }} ml={10}>
             <DesktopNav />
           </Flex>

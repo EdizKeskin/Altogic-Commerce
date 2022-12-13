@@ -605,9 +605,12 @@ function App() {
           <div>
             <Navbar />
             <Routes>
-            <Route path="*" element={<Err404 />} />
+              <Route path="*" element={<Err404 />} />
               <Route path="/" element={<Home products={products} />} />
-              <Route path="/product/:id" element={<Detail products={products} />} />
+              <Route
+                path="/product/:id"
+                element={<Detail products={products} />}
+              />
               <Route
                 path="/categories/:category"
                 element={<Categories products={products} />}

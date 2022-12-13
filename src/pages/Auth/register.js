@@ -1,23 +1,29 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Flex, FormControl, Box, Heading, Button } from "@chakra-ui/react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  Flex,
+  FormControl,
+  Box,
+  Heading,
+  Button,
+  Alert,
+  AlertIcon,
+} from "@chakra-ui/react";
 import altogic from "../../api/altogic";
 
 function Register(props) {
   const type = props.type;
+  const { state } = useLocation();
+  console.log(state);
 
   const signin = (provider) => {
-    altogic.auth.signInWithProvider(provider,{
-      admin: false
+    altogic.auth.signInWithProvider(provider, {
+      admin: false,
     });
   };
 
   return (
-    <Flex
-      align="center"
-      justifyContent="center"
-      data-aos="fade-up"
-    >
+    <Flex align="center" justifyContent="center" data-aos="fade-up">
       <Box
         bgColor="gray.700"
         boxShadow="dark-lg"
@@ -31,8 +37,19 @@ function Register(props) {
         <Box textAlign="center">
           <Heading color="white">{type}</Heading>
         </Box>
-
-        <Box my="5" textAlign="left" boxSize={{base: "2xs", md:"md"}}>
+        {state && state.errors && (
+          <Alert
+            mt={"4"}
+            status="error"
+            color="white"
+            bgColor="red.600"
+            borderRadius="lg"
+          >
+            <AlertIcon color="red.900" />
+            This email is already in use.
+          </Alert>
+        )}
+        <Box my="5" textAlign="left" boxSize={{ base: "2xs", md: "md" }}>
           <FormControl>
             <Button
               colorScheme="teal"

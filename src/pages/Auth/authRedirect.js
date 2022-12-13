@@ -11,6 +11,9 @@ const AuthRedirect = () => {
   useEffect(() => {
     const getUrl = async () => {
       const resp = await altogic.auth.getAuthGrant();
+      if (resp.errors) {
+        navigate("/signup", { state: { errors: resp.errors } });
+      }
       if (resp.errors === null) {
         navigate("/profile");
         setIsAuth(true);

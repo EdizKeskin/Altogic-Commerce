@@ -56,7 +56,7 @@ function Footer() {
               >
                 <IconButton
                   as="a"
-                  href="https://twitter.com/Sharpness_4"
+                  href="https://twitter.com/EdizKeskin_"
                   aria-label="twitter"
                   target={"_blank"}
                   icon={<FaTwitter fontSize="20px" />}

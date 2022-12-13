@@ -1,17 +1,13 @@
 import {
   Text,
   Box,
-  Button,
-  useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { FormattedMessage } from "react-intl";
 import { useLang } from "../context/langContext";
 import Typewriter from "typewriter-effect";
 
 function Header() {
   const { lang } = useLang();
-  const { colorMode, toggleColorMode } = useColorMode();
   const textColor = useColorModeValue("black", "white");
   const desc =
     lang === "tr-TR"
@@ -36,7 +32,7 @@ function Header() {
       >
         Sharp Commerce
       </Text>
-      <Box textAlign={"center"}>
+      <Box textAlign={"center"} mx={10}>
         <Typewriter
           options={{
             autoStart: true,
@@ -48,16 +44,6 @@ function Header() {
           }}
         />
       </Box>
-      <Button
-        color="Black"
-        variant="link"
-        onClick={toggleColorMode}
-        mt="3"
-        fontSize={"2xl"}
-        display={colorMode === "light" ? "box" : "none"}
-      >
-        <FormattedMessage id="err" />
-      </Button>
     </Box>
   );
 }

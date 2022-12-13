@@ -13,11 +13,22 @@ import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { useBasket } from "../context/basketContext";
 import { BsFillBasketFill } from "react-icons/bs";
+import { useLang } from "../context/langContext";
 
 function ProductCard({ item }) {
   const { addToBasket, items, notification, setNotification } = useBasket();
+  const { lang } = useLang();
   const toast = useToast();
   const Navigate = useNavigate();
+
+  const addToBasketMessage = lang === "tr-TR" ? "Sepete Ekle" : "Add to Basket";
+  const removeFromBasketMessage =
+    lang === "tr-TR" ? "Sepete Çıkar" : "removeFromBaske";
+  const productPageMessage = lang === "tr-TR" ? "Ürün Sayfası" : "Product Page";
+  const adddedToBasketMessage =
+    lang === "tr-TR" ? "Sepete Eklendi" : "Added to Basket";
+  const removedFromBasketMessage =
+    lang === "tr-TR" ? "Sepetten Çıkarıldı" : "Removed from Basket";
 
   const findBasketItem = items.find(
     (basket_item) => basket_item._id === item._id
@@ -29,7 +40,7 @@ function ProductCard({ item }) {
         direction="column"
         justifyContent="center"
         alignItems="center"
-        w="sm"
+        w={{ base: "100%", sm: "sm" }}
         mx="auto"
       >
         <Box
@@ -124,7 +135,7 @@ function ProductCard({ item }) {
             <Flex alignItems={"center"}>
               <Link to={`/product/${item.link}`}>
                 <Tooltip
-                  label="Product Page"
+                  label={productPageMessage}
                   hasArrow
                   bg="gray.300"
                   color="black"
@@ -163,7 +174,9 @@ function ProductCard({ item }) {
                 </Tooltip>
               </Link>
               <Tooltip
-                label={findBasketItem ? "Remove from Basket" : "Add to Basket"}
+                label={
+                  findBasketItem ? removeFromBasketMessage : addToBasketMessage
+                }
                 hasArrow
                 bg="gray.300"
                 color="black"
@@ -179,8 +192,8 @@ function ProductCard({ item }) {
                   onClick={() => {
                     toast({
                       title: findBasketItem
-                        ? "Removed from Basket"
-                        : "Added to Basket",
+                        ? removedFromBasketMessage
+                        : adddedToBasketMessage,
                       status: findBasketItem ? "error" : "success",
                       duration: 2000,
                       isClosable: true,
