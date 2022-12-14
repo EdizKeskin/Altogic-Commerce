@@ -1,17 +1,14 @@
-..
+# E-Commerce
 
+[Live Preview](https://altogic-commerce.netlify.app/)
 
-detail
-https://prnt.sc/YV-31mdmL5e0
+[![Demo](https://i.ibb.co/Lv9x69t/Screenshot-2.png)](https://altogic-commerce.netlify.app/)
 
-sessions
+## Stack
 
-https://prnt.sc/c0PqEZy_5rVp
+- [Chakra UI](https://chakra-ui.com/) - For UI
+- [Framer Motion](https://www.framer.com/motion/) and [Aos](https://michalsnik.github.io/aos/) - For animation
+- [Formik](https://formik.org/) and [Yup](https://www.npmjs.com/package/yup) - For form validation
+- [Altogic](https://www.altogic.com/) - For backend 
 
-admin products
-
-https://prnt.sc/GwVCe5-lEf8u
-
-admin add product
-
-https://prnt.sc/mvh9mmDWtAm8
+---

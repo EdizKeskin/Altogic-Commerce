@@ -26,7 +26,7 @@ function Home({ products, sort, setSort, setSortType, sortType }) {
   const increasingByPrice =
     lang === "tr-TR" ? "Fiyata göre artan" : "Increasing by price";
   const newestProducts = lang === "tr-TR" ? "Yeni Ürünler" : "Newest Products";
-
+  
   return (
     <Box minh="100vh">
       <div data-aos="fade-up">
@@ -45,16 +45,20 @@ function Home({ products, sort, setSort, setSortType, sortType }) {
             {sort === "createdAt" && sortType === "desc" && newestProducts}
           </MenuButton>
           <MenuList>
-            <MenuItem onClick={() => {
-              setSort("price");
-              setSortType("desc");
-            }}>
+            <MenuItem
+              onClick={() => {
+                setSort("price");
+                setSortType("desc");
+              }}
+            >
               {decreasingByPrice}
             </MenuItem>
-            <MenuItem onClick={() => {
-              setSort("price");
-              setSortType("asc");
-            }}>
+            <MenuItem
+              onClick={() => {
+                setSort("price");
+                setSortType("asc");
+              }}
+            >
               {increasingByPrice}
             </MenuItem>
             <MenuItem

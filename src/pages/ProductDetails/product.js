@@ -113,6 +113,7 @@ function Product({ products }) {
           spacing={{ base: 6, md: 10 }}
           data-aos="fade-up"
           backdropFilter={"blur(4px)"}
+          mt={{ base: 10, md: 0 }}
         >
           <Box as={"header"}>
             <Heading

@@ -9,20 +9,10 @@ import { BasketProvider } from "./context/basketContext";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme";
-import { QueryClient, QueryClientProvider } from "react-query";
 
-const client = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    },
-  },
-});
 
 ReactDOM.render(
   <React.StrictMode>
-    <QueryClientProvider client={client}>
       <ChakraProvider theme={theme}>
         <LangProvider>
           <BasketProvider>
@@ -30,7 +20,6 @@ ReactDOM.render(
           </BasketProvider>
         </LangProvider>
       </ChakraProvider>
-    </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
