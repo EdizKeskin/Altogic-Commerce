@@ -57,7 +57,6 @@ function SignIn() {
     navigate("/");
   }
 
-  console.log(error);
 
   return (
     <Flex align="center" justifyContent="center" data-aos="fade-up">

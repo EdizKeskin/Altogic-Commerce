@@ -83,7 +83,6 @@ function EditProduct() {
     };
     getProduct();
   }, [product_id]);
-  console.log(product);
 
   const handleSubmit = async (values, bag) => {
     const { title, desc, price, images, details, categories } = values;

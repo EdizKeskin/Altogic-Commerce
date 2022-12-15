@@ -78,7 +78,6 @@ function NewProduct() {
       }),
       link: values.title.replace(/\s+/g, "").toLowerCase(),
     };
-    console.log(newValues);
 
     const result = await altogic.endpoint.post("/products", newValues);
 

@@ -38,7 +38,6 @@ export default function Multistep({ onClose, price, name, names }) {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  console.log(name);
 
   const formik = useFormik({
     initialValues: {

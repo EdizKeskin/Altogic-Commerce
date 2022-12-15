@@ -58,7 +58,6 @@ function SignUp() {
     if (errors) return setError(errors);
 
     if (user.emailVerified === false) {
-      console.log("Email verification status:", user.emailVerified);
       navigate("/verification");
     } else {
       navigate("/");
@@ -66,7 +65,6 @@ function SignUp() {
     bag.resetForm();
   }
 
-  console.log(error.items[0].message);
 
   return (
     <Flex align="center" justifyContent="center" data-aos="fade-up">
