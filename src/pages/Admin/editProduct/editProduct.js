@@ -360,14 +360,14 @@ function EditProduct() {
                                     {({ onClose }) => (
                                       <>
                                         <PopoverTrigger>
-                                          <Button
-                                            fontSize="sm"
-                                            colorScheme="red"
-                                            ml="3"
-                                            disabled={isSubmitting}
-                                          >
-                                            Remove
-                                          </Button>
+                                        <IconButton
+                                        aria-label="Delete images"
+                                        icon={<BsFillTrashFill />}
+                                        variant="outline"
+                                        onClick={() =>
+                                          arrayHelpers.remove(index)
+                                        }
+                                      />
                                         </PopoverTrigger>
                                         <PopoverContent
                                           bgColor="gray.700"
@@ -412,7 +412,8 @@ function EditProduct() {
                               </div>
                             ))}
                           <Button
-                            colorScheme="teal"
+                            variantColor="teal"
+                            variant="outline"
                             onClick={() => arrayHelpers.push("")}
                             disabled={isSubmitting}
                           >
