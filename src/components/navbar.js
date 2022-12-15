@@ -329,6 +329,17 @@ function Navbar() {
           </ButtonGroup>
           {isAuth === false ? (
             <>
+              <Link to="/signin">
+                <Button
+                  fontSize={"sm"}
+                  fontWeight={600}
+                  color={"white"}
+                  variant={"link"}
+                  mr={-3}
+                >
+                  <FormattedMessage id="signin" />
+                </Button>
+              </Link>
               <Link to="/signup">
                 <Button
                   fontSize={"sm"}
@@ -339,7 +350,7 @@ function Navbar() {
                     bg: "pink.300",
                   }}
                 >
-                  <FormattedMessage id="signin" />
+                  <FormattedMessage id="signup" />
                 </Button>
               </Link>
             </>

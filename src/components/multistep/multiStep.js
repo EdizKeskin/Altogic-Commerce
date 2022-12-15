@@ -296,7 +296,7 @@ export default function Multistep({ onClose, price, name, names }) {
         ) : (
           <>
             <Heading w="100%" textAlign={"center"} fontWeight="normal">
-              Ödeme Bilgileri
+              Ödeme Bilgileri (out of service)
             </Heading>
             <SimpleGrid columns={{ base: "1", md: "2" }} spacing={10}>
               <SimpleGrid columns={1} spacing={6}>

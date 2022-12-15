@@ -8,6 +8,7 @@ export const AuthenticationContext = createContext();
 const AuthenticationProvider = ({ children }) => {
   const toast = useToast();
   const [sessions, setSessions] = useState(null);
+  const [user, setUser] = useState();
   const [isAuth, setIsAuth] = useState(false);
 
   let navigate = useNavigate();
@@ -22,7 +23,9 @@ const AuthenticationProvider = ({ children }) => {
       setIsAuth(true);
       sendReq();
     }
-  }, [isAuth]);
+    setUser(user ?? null);
+    setSessions(sessions ?? null);
+  }, [isAuth,user]);
 
   const signOutCurrentSession = async () => {
     try {
@@ -99,6 +102,9 @@ const AuthenticationProvider = ({ children }) => {
     getAllSessions,
     signOutAllSessions,
     sessions,
+    user,
+    setUser,
+    setSessions,
   };
 
   return (

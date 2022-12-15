@@ -16,7 +16,6 @@ import Contact from "./pages/Contact/contact";
 import Basket from "./pages/Basket/basket";
 import Categories from "./pages/Categories/categories";
 import Navbar from "./components/navbar";
-import Register from "./pages/Auth/register";
 import Profile from "./pages/Profile/profile";
 import AuthRedirect from "./pages/Auth/authRedirect";
 import { AuthenticationProvider } from "./context/authContext";
@@ -30,6 +29,9 @@ import Orders from "./pages/Admin/orders/orders";
 import AdminProducts from "./pages/Admin/products/adminProducts";
 import NewProduct from "./pages/Admin/newProduct/newProduct";
 import EditProduct from "./pages/Admin/editProduct/editProduct";
+import Verification from "./pages/Auth/verification";
+import SignUp from "./pages/Auth/signUp";
+import SignIn from "./pages/Auth/signIn";
 
 function App() {
   const [products, setProducts] = useState(null);
@@ -632,12 +634,27 @@ function App() {
                 element={<Categories products={products} />}
               />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/signin" element={<Register type="Sign In" />} />
+              <Route
+                path="/signin"
+                element={
+                  <RequiresNotAuth>
+                    <SignIn />
+                  </RequiresNotAuth>
+                }
+              />
               <Route
                 path="/signup"
                 element={
                   <RequiresNotAuth>
-                    <Register type="Sign Up" />
+                    <SignUp />
+                  </RequiresNotAuth>
+                }
+              />
+              <Route
+                path="/verification"
+                element={
+                  <RequiresNotAuth>
+                    <Verification />
                   </RequiresNotAuth>
                 }
               />
