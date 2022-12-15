@@ -38,6 +38,7 @@ export default function Multistep({ onClose, price, name, names }) {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
+  console.log(name);
 
   const formik = useFormik({
     initialValues: {
@@ -296,7 +297,7 @@ export default function Multistep({ onClose, price, name, names }) {
         ) : (
           <>
             <Heading w="100%" textAlign={"center"} fontWeight="normal">
-              Ödeme Bilgileri (out of service)
+              Ödeme Bilgileri (out of service in this page)
             </Heading>
             <SimpleGrid columns={{ base: "1", md: "2" }} spacing={10}>
               <SimpleGrid columns={1} spacing={6}>
@@ -438,7 +439,7 @@ export default function Multistep({ onClose, price, name, names }) {
                         color={"gray.400"}
                         mr={"10px"}
                       >
-                        {name}
+                        {name.title}
                       </Text>
                     ) : (
                       names.map((item) => (

@@ -25,6 +25,7 @@ const AuthenticationProvider = ({ children }) => {
     }
     setUser(user ?? null);
     setSessions(sessions ?? null);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuth,user]);
 
   const signOutCurrentSession = async () => {
