@@ -152,6 +152,7 @@ function NewProduct() {
                       onChange={handleChange}
                       disabled={isSubmitting}
                       isInvalid={touched.title && errors.title}
+                      placeholder="Enter title"
                     />
                   </FormControl>
                   {touched.title && errors.title && (
@@ -168,7 +169,7 @@ function NewProduct() {
                     </Alert>
                   )}
                   <FormControl mb="4">
-                    <FormLabel color="white">desc</FormLabel>
+                    <FormLabel color="white">Description</FormLabel>
                     <Textarea
                       name="desc"
                       color={"white"}
@@ -178,6 +179,7 @@ function NewProduct() {
                       onChange={handleChange}
                       disabled={isSubmitting}
                       isInvalid={touched.desc && errors.desc}
+                      placeholder="Enter description"
                     />
                   </FormControl>
                   {touched.desc && errors.desc && (
