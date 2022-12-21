@@ -25,6 +25,7 @@ import {
   PopoverCloseButton,
   PopoverHeader,
   PopoverFooter,
+  Flex,
 } from "@chakra-ui/react";
 import altogic from "../../../api/altogic";
 import { BsFillTrashFill } from "react-icons/bs";
@@ -73,6 +74,10 @@ function EditProduct() {
     price: Yup.number().required("Required"),
     images: Yup.array().required("Required"),
     details: Yup.array().required("Required"),
+    discount: Yup.number().max(100, "Discount must be less than 100%").min(0),
+    categories: Yup.array()
+      .required("Select at least one")
+      .min(1, "Select at least one"),
   });
   //get product by id
   const [product, setProduct] = useState(null);
@@ -84,8 +89,9 @@ function EditProduct() {
     getProduct();
   }, [product_id]);
 
-  const handleSubmit = async (values, bag) => {
-    const { title, desc, price, images, details, categories } = values;
+  const handleSubmit = async (values) => {
+    const { title, desc, price, images, details, categories, discount } =
+      values;
     try {
       const resp = await altogic.db
         .model("products")
@@ -97,7 +103,8 @@ function EditProduct() {
           images,
           details,
           categories,
-          link : title.replace(/\s+/g, '-').toLowerCase()
+          discount,
+          link: title.replace(/\s+/g, "-").toLowerCase(),
         });
       if (resp.errors === null) {
         toast({
@@ -131,6 +138,7 @@ function EditProduct() {
           images: product.images,
           details: product.details,
           categories: product.categories,
+          discount: product.discount,
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
@@ -164,6 +172,7 @@ function EditProduct() {
                       onChange={handleChange}
                       disabled={isSubmitting}
                       isInvalid={touched.title && errors.title}
+                      placeholder="Enter title"
                     />
                   </FormControl>
                   {touched.title && errors.title && (
@@ -180,7 +189,7 @@ function EditProduct() {
                     </Alert>
                   )}
                   <FormControl mb="4">
-                    <FormLabel color="white">desc</FormLabel>
+                    <FormLabel color="white">Description</FormLabel>
                     <Textarea
                       name="desc"
                       color={"white"}
@@ -190,6 +199,7 @@ function EditProduct() {
                       onChange={handleChange}
                       disabled={isSubmitting}
                       isInvalid={touched.desc && errors.desc}
+                      placeholder="Enter description"
                     />
                   </FormControl>
                   {touched.desc && errors.desc && (
@@ -205,34 +215,79 @@ function EditProduct() {
                       {errors.desc}
                     </Alert>
                   )}
+                  <Box display={"flex"}>
+                    <Flex direction={"column"} mr={"4"}>
+                      <FormControl mb="4">
+                        <FormLabel color="white">Price</FormLabel>
+                        <Input
+                          name="price"
+                          color={"white"}
+                          type="number"
+                          value={values.price}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          disabled={isSubmitting}
+                          isInvalid={touched.price && errors.price}
+                          placeholder="0"
+                        />
+                      </FormControl>
 
-                  <FormControl mb="4">
-                    <FormLabel color="white">Price</FormLabel>
-                    <Input
-                      name="price"
-                      color={"white"}
-                      type="number"
-                      value={values.price}
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      disabled={isSubmitting}
-                      isInvalid={touched.price && errors.price}
-                    />
-                  </FormControl>
+                      {touched.price && errors.price && (
+                        <Alert
+                          status="error"
+                          color="white"
+                          bgColor="red.600"
+                          borderRadius="lg"
+                          mt="-2"
+                          mb="3"
+                        >
+                          <AlertIcon color="red.900" />
+                          {errors.price}
+                        </Alert>
+                      )}
+                    </Flex>
+                    <Flex direction={"column"}>
+                      <FormControl mb="4">
+                        <FormLabel color="white">
+                          Discount{" "}
+                          <Text
+                            as={"span"}
+                            fontSize={"sm"}
+                            fontWeight="hairline"
+                          >
+                            (in percent)
+                          </Text>
+                        </FormLabel>
+                        <Input
+                          name="discount"
+                          color={"white"}
+                          placeholder="0"
+                          max={100}
+                          min={0}
+                          type="number"
+                          value={values.discount}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          disabled={isSubmitting}
+                          isInvalid={touched.discount && errors.discount}
+                        />
+                      </FormControl>
 
-                  {touched.price && errors.price && (
-                    <Alert
-                      status="error"
-                      color="white"
-                      bgColor="red.600"
-                      borderRadius="lg"
-                      mt="-2"
-                      mb="3"
-                    >
-                      <AlertIcon color="red.900" />
-                      {errors.price}
-                    </Alert>
-                  )}
+                      {touched.discount && errors.discount && (
+                        <Alert
+                          status="error"
+                          color="white"
+                          bgColor="red.600"
+                          borderRadius="lg"
+                          mt="-2"
+                          mb="3"
+                        >
+                          <AlertIcon color="red.900" />
+                          {errors.discount}
+                        </Alert>
+                      )}
+                    </Flex>
+                  </Box>
 
                   <FormControl mb="4">
                     <FormLabel color="white">
@@ -248,7 +303,19 @@ function EditProduct() {
                       <NewCheckbox value="Test" />
                     </Stack>
                   </FormControl>
-
+                  {touched.categories && errors.categories && (
+                    <Alert
+                      status="error"
+                      color="white"
+                      bgColor="red.600"
+                      borderRadius="lg"
+                      mt="-2"
+                      mb="3"
+                    >
+                      <AlertIcon color="red.900" />
+                      {errors.categories}
+                    </Alert>
+                  )}
                   <FormControl mb="4">
                     <FormLabel color="white">Details</FormLabel>
                     <FieldArray
@@ -359,14 +426,14 @@ function EditProduct() {
                                     {({ onClose }) => (
                                       <>
                                         <PopoverTrigger>
-                                        <IconButton
-                                        aria-label="Delete images"
-                                        icon={<BsFillTrashFill />}
-                                        variant="outline"
-                                        onClick={() =>
-                                          arrayHelpers.remove(index)
-                                        }
-                                      />
+                                          <IconButton
+                                            aria-label="Delete images"
+                                            icon={<BsFillTrashFill />}
+                                            variant="outline"
+                                            onClick={() =>
+                                              arrayHelpers.remove(index)
+                                            }
+                                          />
                                         </PopoverTrigger>
                                         <PopoverContent
                                           bgColor="gray.700"

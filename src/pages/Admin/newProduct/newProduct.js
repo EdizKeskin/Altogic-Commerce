@@ -23,6 +23,7 @@ import {
   PopoverCloseButton,
   PopoverHeader,
   PopoverFooter,
+  Flex,
 } from "@chakra-ui/react";
 import altogic from "../../../api/altogic";
 import { BsFillTrashFill } from "react-icons/bs";
@@ -67,6 +68,8 @@ function NewProduct() {
     price: Yup.number().required("Required"),
     images: Yup.array().required("Required"),
     details: Yup.array().required("Required"),
+    discount: Yup.number().max(100, "Discount must be less than 100%").min(0),
+    categories: Yup.array().required("Select at least one").min(1, "Select at least one"),
   });
 
   const handleSubmit = async (values, bag) => {
@@ -115,6 +118,7 @@ function NewProduct() {
           images: [],
           details: [],
           categories: [],
+          discount: 0,
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
@@ -190,33 +194,77 @@ function NewProduct() {
                     </Alert>
                   )}
 
-                  <FormControl mb="4">
-                    <FormLabel color="white">Price</FormLabel>
-                    <Input
-                      name="price"
-                      color={"white"}
-                      type="number"
-                      value={values.price}
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      disabled={isSubmitting}
-                      isInvalid={touched.price && errors.price}
-                    />
-                  </FormControl>
+                  <Box display={"flex"}>
+                    <Flex direction={"column"} mr={"4"}>
+                      <FormControl mb="4">
+                        <FormLabel color="white">Price</FormLabel>
+                        <Input
+                          name="price"
+                          color={"white"}
+                          type="number"
+                          value={values.price}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          disabled={isSubmitting}
+                          isInvalid={touched.price && errors.price}
+                          placeholder="0"
+                        />
+                      </FormControl>
 
-                  {touched.price && errors.price && (
-                    <Alert
-                      status="error"
-                      color="white"
-                      bgColor="red.600"
-                      borderRadius="lg"
-                      mt="-2"
-                      mb="3"
-                    >
-                      <AlertIcon color="red.900" />
-                      {errors.price}
-                    </Alert>
-                  )}
+                      {touched.price && errors.price && (
+                        <Alert
+                          status="error"
+                          color="white"
+                          bgColor="red.600"
+                          borderRadius="lg"
+                          mt="-2"
+                          mb="3"
+                        >
+                          <AlertIcon color="red.900" />
+                          {errors.price}
+                        </Alert>
+                      )}
+                    </Flex>
+                    <Flex direction={"column"}>
+                      <FormControl mb="4">
+                        <FormLabel color="white">
+                          Discount{" "}
+                          <Text
+                            as={"span"}
+                            fontSize={"sm"}
+                            fontWeight="hairline"
+                          >
+                            (in percent)
+                          </Text>
+                        </FormLabel>
+                        <Input
+                          name="discount"
+                          color={"white"}
+                          placeholder="0"
+                          type="number"
+                          value={values.discount}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          disabled={isSubmitting}
+                          isInvalid={touched.discount && errors.discount}
+                        />
+                      </FormControl>
+
+                      {touched.discount && errors.discount && (
+                        <Alert
+                          status="error"
+                          color="white"
+                          bgColor="red.600"
+                          borderRadius="lg"
+                          mt="-2"
+                          mb="3"
+                        >
+                          <AlertIcon color="red.900" />
+                          {errors.discount}
+                        </Alert>
+                      )}
+                    </Flex>
+                  </Box>
 
                   <FormControl mb="4">
                     <FormLabel color="white">
@@ -232,7 +280,19 @@ function NewProduct() {
                       <NewCheckbox value="Test" />
                     </Stack>
                   </FormControl>
-
+                  {touched.categories && errors.categories && (
+                    <Alert
+                      status="error"
+                      color="white"
+                      bgColor="red.600"
+                      borderRadius="lg"
+                      mt="-2"
+                      mb="3"
+                    >
+                      <AlertIcon color="red.900" />
+                      {errors.categories}
+                    </Alert>
+                  )}
                   <FormControl mb="4">
                     <FormLabel color="white">Details</FormLabel>
                     <FieldArray

@@ -1,37 +1,36 @@
-import "./App.css";
-import { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Box, useColorModeValue } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import "./App.css";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Particles from "react-tsparticles";
 import altogic from "./api/altogic";
 
-//COMPONENTS
-import Home from "./pages/home";
-import Err404 from "./pages/Err/err404";
-import Detail from "./pages/ProductDetails/product";
-import Contact from "./pages/Contact/contact";
-import Basket from "./pages/Basket/basket";
-import Categories from "./pages/Categories/categories";
+import { getUserById } from "./api/storage";
 import Navbar from "./components/navbar";
-import Profile from "./pages/Profile/profile";
-import AuthRedirect from "./pages/Auth/authRedirect";
-import { AuthenticationProvider } from "./context/authContext";
+import RequiresAdmin from "./components/routes/requiresAdmin";
 import RequiresAuth from "./components/routes/requiresAuth";
 import RequiresNotAuth from "./components/routes/requiresNotAuth";
-import Sessions from "./pages/Profile/sessions";
-import RequiresAdmin from "./components/routes/requiresAdmin";
+import { AuthenticationProvider } from "./context/authContext";
 import Admin from "./pages/Admin/admin";
-import { getUserById } from "./api/storage";
+import EditProduct from "./pages/Admin/editProduct/editProduct";
+import NewProduct from "./pages/Admin/newProduct/newProduct";
 import Orders from "./pages/Admin/orders/orders";
 import AdminProducts from "./pages/Admin/products/adminProducts";
-import NewProduct from "./pages/Admin/newProduct/newProduct";
-import EditProduct from "./pages/Admin/editProduct/editProduct";
-import Verification from "./pages/Auth/verification";
-import SignUp from "./pages/Auth/signUp";
+import AuthRedirect from "./pages/Auth/authRedirect";
 import SignIn from "./pages/Auth/signIn";
+import SignUp from "./pages/Auth/signUp";
+import Verification from "./pages/Auth/verification";
+import Basket from "./pages/Basket/basket";
+import Categories from "./pages/Categories/categories";
+import Contact from "./pages/Contact/contact";
+import Err404 from "./pages/Err/err404";
+import Detail from "./pages/ProductDetails/product";
+import Profile from "./pages/Profile/profile";
+import Sessions from "./pages/Profile/sessions";
+import Home from "./pages/home";
 
 function App() {
   const [products, setProducts] = useState(null);

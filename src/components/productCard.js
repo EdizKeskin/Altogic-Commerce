@@ -34,6 +34,10 @@ function ProductCard({ item }) {
     (basket_item) => basket_item._id === item._id
   );
 
+  const newPrice = item.discount
+    ? item.price - (item.price * item.discount) / 100
+    : item.price;
+
   return (
     <Flex p={15}>
       <Flex
@@ -58,7 +62,23 @@ function ProductCard({ item }) {
             cursor: "pointer",
           }}
           backgroundImage={item.images[0]}
-        ></Box>
+        >
+          {item.discount !== 0 && item.discount && (
+            <Flex justifyContent="flex-end">
+              <Badge
+                backgroundColor="red.500"
+                borderRadius="md"
+                px="2"
+                py="1"
+                fontSize="sm"
+                fontWeight="bold"
+                ml="2"
+              >
+                {item.discount + "%"}
+              </Badge>
+            </Flex>
+          )}
+        </Box>
         <Box
           w={"full"}
           bg="white"
@@ -103,16 +123,29 @@ function ProductCard({ item }) {
             }}
           >
             <Flex flexDirection="column">
-              <Text
-                fontWeight="bold"
-                as="span"
-                color="gray.800"
-                _dark={{
-                  color: "gray.200",
-                }}
-              >
-                {item.price} ₺
-              </Text>
+              <Box>
+                {item.discount !== 0 && item.discount && (
+                  <Text
+                    as="span"
+                    color="gray.400"
+                    fontWeight="hairline"
+                    mr={2}
+                    textDecoration={"line-through"}
+                  >
+                    {item.price} ₺
+                  </Text>
+                )}
+                <Text
+                  fontWeight="bold"
+                  as="span"
+                  color="gray.800"
+                  _dark={{
+                    color: "gray.200",
+                  }}
+                >
+                  {newPrice} ₺
+                </Text>
+              </Box>
               <Flex flexDirection={"row"} ml="-0.8">
                 {item.categories.map((category, index) => (
                   <Link key={index} to={`/categories/${category}`}>
