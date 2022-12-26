@@ -28,7 +28,7 @@ import { useBasket } from "../../context/basketContext";
 import { useFormik } from "formik";
 import validationSchema from "./validations";
 
-export default function Multistep({ onClose, price, name, names }) {
+export default function Multistep({ onClose, price, names }) {
   //Form1
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -91,6 +91,8 @@ export default function Multistep({ onClose, price, name, names }) {
     setState("");
     setItems([]);
   };
+
+  console.log();
 
   return (
     <>
@@ -430,7 +432,7 @@ export default function Multistep({ onClose, price, name, names }) {
               <Flex flexDirection={"column"}>
                 <Flex alignItems={"center"} mb={4}>
                   <Flex flexDirection={"column"}>
-                    {!names ? (
+                    {Array.isArray(names) === false ? (
                       <Text
                         as={"span"}
                         fontSize={"sm"}
@@ -438,7 +440,7 @@ export default function Multistep({ onClose, price, name, names }) {
                         color={"gray.400"}
                         mr={"10px"}
                       >
-                        {name.title}
+                        {names.title}
                       </Text>
                     ) : (
                       names.map((item) => (
@@ -471,7 +473,7 @@ export default function Multistep({ onClose, price, name, names }) {
                     variant="solid"
                     onClick={() => {
                       createOrder();
-                      !names ? console.log("ok") : setItems([]);
+                      !names ? console.log("test") : setItems([]);
                       onClose();
                       setNotification(0);
                     }}

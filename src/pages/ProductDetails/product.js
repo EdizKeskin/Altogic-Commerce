@@ -267,7 +267,7 @@ function Product({ products }) {
             <ModalContent>
               <ModalCloseButton />
               <ModalBody>
-                <Multistep onClose={onClose} price={newPrice} name={product} />
+                <Multistep onClose={onClose} price={newPrice} names={product} />
               </ModalBody>
             </ModalContent>
           </Modal>
