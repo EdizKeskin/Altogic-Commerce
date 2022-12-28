@@ -21,9 +21,6 @@ function Admin() {
         <Link to="/admin/products">
           <Button colorScheme={"teal"}>Products</Button>
         </Link>
-        <Link to="/admin/orders">
-          <Button colorScheme={"teal"}>Orders</Button>
-        </Link>
       </ButtonGroup>
     </Box>
   );

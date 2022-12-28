@@ -15,17 +15,26 @@ import {
   IconButton,
   ButtonGroup,
   Text,
+  InputRightElement,
+  InputGroup,
 } from "@chakra-ui/react";
 import altogic from "../../api/altogic";
 import { FaDiscord, FaGithub, FaGoogle } from "react-icons/fa";
 import * as Yup from "yup";
 import { Formik } from "formik";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 function SignUp() {
   const bg = useColorModeValue("gray.100", "gray.700");
   const { state } = useLocation();
   const navigate = useNavigate();
   const [error, setError] = useState(null);
+  const [show, setShow] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const handleShow = () => setShow(!show);
+  const handleShowConfirm = () => setShowConfirm(!showConfirm);
+
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     email: Yup.string().email("Email is invalid").required("Email is required"),
@@ -65,7 +74,6 @@ function SignUp() {
     bag.resetForm();
   }
 
-
   return (
     <Flex align="center" justifyContent="center" data-aos="fade-up">
       <Flex align={"center"} justify={"center"} mt={6}>
@@ -89,15 +97,15 @@ function SignUp() {
           )}
           {error && (
             <Alert
-            mt={"4"}
-            status="error"
-            color="white"
-            bgColor="red.600"
-            borderRadius="lg"
-          >
-            <AlertIcon color="red.900" />
-            {error.items[0].message}
-          </Alert>
+              mt={"4"}
+              status="error"
+              color="white"
+              bgColor="red.600"
+              borderRadius="lg"
+            >
+              <AlertIcon color="red.900" />
+              {error.items[0].message}
+            </Alert>
           )}
 
           <Formik
@@ -184,15 +192,31 @@ function SignUp() {
                     )}
                     <FormControl id="password" mt={3}>
                       <FormLabel>Password</FormLabel>
-                      <Input
-                        type="password"
-                        value={values.password}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        disabled={isSubmitting}
-                        isInvalid={touched.password && errors.password}
-                        placeholder="Enter your password"
-                      />
+                      <InputGroup>
+                        <Input
+                          type={show ? "text" : "password"}
+                          value={values.password}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          disabled={isSubmitting}
+                          isInvalid={touched.password && errors.password}
+                          placeholder="Enter your password"
+                        />
+                        <InputRightElement width="4.5rem">
+                          <IconButton
+                            bg="transparent !important"
+                            justifyContent="flex-end"
+                            onClick={handleShow}
+                            icon={
+                              show ? (
+                                <AiOutlineEyeInvisible size={"25px"} />
+                              ) : (
+                                <AiOutlineEye size={"25px"} />
+                              )
+                            }
+                          />
+                        </InputRightElement>
+                      </InputGroup>
                     </FormControl>
                     {touched.password && errors.password && (
                       <Alert
@@ -208,17 +232,33 @@ function SignUp() {
                     )}
                     <FormControl id="passwordConfirm" mt={1}>
                       <FormLabel>Password Confirm</FormLabel>
-                      <Input
-                        type="password"
-                        value={values.passwordConfirm}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        disabled={isSubmitting}
-                        isInvalid={
-                          touched.passwordConfirm && errors.passwordConfirm
-                        }
-                        placeholder="Confirm your password"
-                      />
+                      <InputGroup>
+                        <Input
+                          type={showConfirm ? "text" : "password"}
+                          value={values.passwordConfirm}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          disabled={isSubmitting}
+                          isInvalid={
+                            touched.passwordConfirm && errors.passwordConfirm
+                          }
+                          placeholder="Confirm your password"
+                        />
+                        <InputRightElement width="4.5rem">
+                          <IconButton
+                            bg="transparent !important"
+                            justifyContent="flex-end"
+                            onClick={handleShowConfirm}
+                            icon={
+                              showConfirm ? (
+                                <AiOutlineEyeInvisible size={"25px"} />
+                              ) : (
+                                <AiOutlineEye size={"25px"} />
+                              )
+                            }
+                          />
+                        </InputRightElement>
+                      </InputGroup>
                     </FormControl>
                     {touched.passwordConfirm && errors.passwordConfirm && (
                       <Alert
