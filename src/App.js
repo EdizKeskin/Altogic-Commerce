@@ -1,6 +1,6 @@
 import { Box, useColorModeValue } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 
 import AOS from "aos";
@@ -9,11 +9,12 @@ import Particles from "react-tsparticles";
 import altogic from "./api/altogic";
 
 import { getUserById } from "./api/storage";
-import Navbar from "./components/navbar";
 import RequiresAdmin from "./components/routes/requiresAdmin";
 import RequiresAuth from "./components/routes/requiresAuth";
 import RequiresNotAuth from "./components/routes/requiresNotAuth";
-import { AuthenticationProvider } from "./context/authContext";
+import { useAuth } from "./context/authContext";
+
+import Navbar from "./components/navbar";
 import Admin from "./pages/Admin/admin";
 import EditProduct from "./pages/Admin/editProduct/editProduct";
 import NewProduct from "./pages/Admin/newProduct/newProduct";
@@ -37,6 +38,7 @@ function App() {
   const [admin, setAdmin] = useState(false);
   const [sort, setSort] = useState("createdAt");
   const [sortType, setSortType] = useState("desc");
+  const {user} = useAuth();
 
   useEffect(() => {
     const getProducts = async () => {
@@ -58,7 +60,7 @@ function App() {
       setAdmin(result.data.admin);
     }
     fetchUser();
-  }, []);
+  }, [user]);
 
   const bg = useColorModeValue("white", "#000000");
 
@@ -606,8 +608,8 @@ function App() {
           zLayers: 100,
         }}
       />
-      <Router>
-        <AuthenticationProvider>
+      <>
+        <>
           <div>
             <Navbar />
             <Routes>
@@ -734,8 +736,8 @@ function App() {
               />
             </Routes>
           </div>
-        </AuthenticationProvider>
-      </Router>
+        </>
+      </>
     </Box>
   );
 }

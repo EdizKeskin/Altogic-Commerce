@@ -294,7 +294,7 @@ function SignUp() {
                           type="submit"
                           disabled={isSubmitting || !isValid}
                         >
-                          Sign in
+                          Sign up
                         </Button>
 
                         <Link to="/signin">

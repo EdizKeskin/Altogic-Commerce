@@ -6,20 +6,25 @@ import reportWebVitals from "./reportWebVitals";
 
 import { LangProvider } from "./context/langContext";
 import { BasketProvider } from "./context/basketContext";
+import { AuthenticationProvider } from "./context/authContext";
+import { BrowserRouter as Router } from "react-router-dom";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme";
 
-
 ReactDOM.render(
   <React.StrictMode>
-      <ChakraProvider theme={theme}>
-        <LangProvider>
+    <ChakraProvider theme={theme}>
+      <LangProvider>
+        <Router>
+        <AuthenticationProvider>
           <BasketProvider>
             <App />
           </BasketProvider>
-        </LangProvider>
-      </ChakraProvider>
+        </AuthenticationProvider>
+        </Router>
+      </LangProvider>
+    </ChakraProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
