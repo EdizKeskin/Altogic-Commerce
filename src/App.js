@@ -672,7 +672,7 @@ function App() {
                 path="/basket"
                 element={
                   <RequiresAuth>
-                    <Basket />
+                    <Basket products={products} />
                   </RequiresAuth>
                 }
               />

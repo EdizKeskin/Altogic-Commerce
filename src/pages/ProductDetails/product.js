@@ -58,7 +58,7 @@ function Product({ products }) {
   const photos = product.images.map((url) => ({ image: url }));
 
   const findBasketItem = items.find(
-    (basket_item) => basket_item._id === product._id
+    (basket_item) => basket_item === product._id
   );
 
   const newPrice = product.discount

@@ -14,9 +14,12 @@ import { BsBoxArrowUpRight, BsFillTrashFill } from "react-icons/bs";
 import { useBasket } from "../context/basketContext";
 import { Link } from "react-router-dom";
 
-function BasketTable() {
+function BasketTable({products}) {
   const { items, removeFromBasket, setNotification, notification } =
     useBasket();
+
+    const newItems = products.filter((item) => items.includes(item._id));
+
   const toast = useToast();
   const bg = useColorModeValue("white", "gray.800");
   const bg2 = useColorModeValue("white", "gray.800");
@@ -36,7 +39,7 @@ function BasketTable() {
         rounded={"md"}
         border={{ base: "none", md: "1px solid" }}
       >
-        {items.map((item) => {
+        {newItems.map((item) => {
           return (
             <Flex
               key={item._id}

@@ -14,13 +14,19 @@ import { useBasket } from "../../context/basketContext";
 import { IoIosReturnLeft } from "react-icons/io";
 import BasketSidebar from "../../components/basketSidebar";
 import BasketTable from "../../components/basketTable";
+import CustomSpinner from "../../components/spinner";
 
-function Basket() {
+function Basket({ products }) {
   const { items } = useBasket();
+
   const textColor = useColorModeValue("black", "white");
   const btnColor = useColorModeValue("white.50", "gray.600");
+  if (products === null) return <CustomSpinner />;
 
-  const totalPrice = items.reduce((acc, obj) => acc + obj.price, 0);
+  const basketProducts = products.filter((item) => items.includes(item._id));
+  console.log(basketProducts);
+
+  const totalPrice = basketProducts.reduce((acc, obj) => acc + obj.price, 0);
 
   return (
     <Box minh="100vh">
@@ -77,10 +83,10 @@ function Basket() {
             gap={6}
           >
             <div data-aos="zoom-in-up">
-              <BasketTable />
+              <BasketTable products={products} />
             </div>
             <div data-aos="zoom-in-up">
-              <BasketSidebar items={items} totalPrice={totalPrice} />
+              <BasketSidebar items={basketProducts} totalPrice={totalPrice} />
             </div>
           </Grid>
         </>
