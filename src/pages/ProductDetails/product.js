@@ -61,10 +61,6 @@ function Product({ products }) {
     (basket_item) => basket_item === product._id
   );
 
-  const newPrice = product.discount
-    ? product.price - (product.price * product.discount) / 100
-    : product.price;
-
   return (
     <Container maxW={"7xl"}>
       <SimpleGrid
@@ -140,7 +136,10 @@ function Product({ products }) {
                 </Text>
               )}
               <Text color={"gray.400"} fontSize={"2xl"} fontWeight={"bold"}>
-                {newPrice} ₺
+                {product.discountedPrice
+                  ? product.discountedPrice
+                  : product.price}{" "}
+                ₺
               </Text>
             </Box>
           </Box>
@@ -267,7 +266,11 @@ function Product({ products }) {
             <ModalContent>
               <ModalCloseButton />
               <ModalBody>
-                <Multistep onClose={onClose} price={newPrice} names={product} />
+                <Multistep
+                  onClose={onClose}
+                  price={product.discountedPrice}
+                  names={product}
+                />
               </ModalBody>
             </ModalContent>
           </Modal>

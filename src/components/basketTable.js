@@ -9,6 +9,7 @@ import {
   IconButton,
   Image,
   useToast,
+  Box,
 } from "@chakra-ui/react";
 import { BsBoxArrowUpRight, BsFillTrashFill } from "react-icons/bs";
 import { useBasket } from "../context/basketContext";
@@ -76,9 +77,22 @@ function BasketTable({products}) {
                 <Text as={"span"} fontSize={"xl"} fontWeight={"extrabold"}>
                   {item.title}
                 </Text>
+                <Box>
+                {item.discount !== 0 && item.discount && (
+                  <Text
+                    as="span"
+                    color="gray.400"
+                    fontWeight="hairline"
+                    mr={2}
+                    textDecoration={"line-through"}
+                  >
+                    {item.price} ₺
+                  </Text>
+                )}
                 <Text as="span" fontSize={"xl"} fontWeight={"bold"}>
-                  {item.price} ₺
+                  {item.discountedPrice ? item.discountedPrice : item.price} ₺
                 </Text>
+                </Box>
                 <Flex
                   justify={{
                     md: "end",

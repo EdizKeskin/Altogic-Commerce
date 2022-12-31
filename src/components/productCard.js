@@ -32,10 +32,6 @@ function ProductCard({ item }) {
 
   const findBasketItem = items.find((basket_item) => basket_item === item._id);
 
-  const newPrice = item.discount
-    ? item.price - (item.price * item.discount) / 100
-    : item.price;
-
   return (
     <Flex p={15}>
       <Flex
@@ -141,7 +137,7 @@ function ProductCard({ item }) {
                     color: "gray.200",
                   }}
                 >
-                  {newPrice} ₺
+                  {item.discountedPrice ? item.discountedPrice : item.price} ₺
                 </Text>
               </Box>
               <Flex flexDirection={"row"} ml="-0.8">

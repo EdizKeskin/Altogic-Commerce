@@ -26,7 +26,9 @@ function Basket({ products }) {
   const basketProducts = products.filter((item) => items.includes(item._id));
   console.log(basketProducts);
 
-  const totalPrice = basketProducts.reduce((acc, obj) => acc + obj.price, 0);
+  const totalPrice = basketProducts.reduce((acc, obj) => {
+    return obj.discountedPrice ? acc + obj.discountedPrice : acc + obj.price;
+  }, 0);
 
   return (
     <Box minh="100vh">
