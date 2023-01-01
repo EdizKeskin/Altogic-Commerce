@@ -24,7 +24,6 @@ function Basket({ products }) {
   if (products === null) return <CustomSpinner />;
 
   const basketProducts = products.filter((item) => items.includes(item._id));
-  console.log(basketProducts);
 
   const totalPrice = basketProducts.reduce((acc, obj) => {
     return obj.discountedPrice ? acc + obj.discountedPrice : acc + obj.price;

@@ -26,6 +26,7 @@ const Messages = {
     home: "Ev Ürünleri",
     sessions: "Oturumlar",
     profile: "Profil",
+    orders: "Siparişler",
   },
   "en-US": {
     features: "Features",
@@ -54,6 +55,7 @@ const Messages = {
     technology: "Technology",
     sessions: "Sessions",
     profile: "Profile",
+    orders: "Orders",
   },
 };
 

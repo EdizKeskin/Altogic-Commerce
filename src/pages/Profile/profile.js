@@ -40,14 +40,13 @@ function Profile() {
     setLoading(true);
     await handleFileUpload(event.target.files[0]);
   };
-
   const handleFileUpload = async (file) => {
     const resp = await uploadProfilePicture(file);
     setLoading(false);
-
     if (resp.errors === null) {
       const updateResponse = await updateProfilePictureFieldOnDatabase(
-        resp.data.publicPath
+        resp.data.publicPath,
+        setProfilePicture(resp.data.publicPath)
       );
       if (updateResponse.errors === null) {
         await updateUser();

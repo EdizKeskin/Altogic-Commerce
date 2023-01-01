@@ -361,6 +361,13 @@ function Navbar() {
               </MenuButton>
               <Portal>
                 <MenuList>
+                {admin === true && (
+                    <Link to="/admin">
+                      <MenuItem as={"span"}>
+                        <Button variant={"link"} colorScheme={"green"}>Admin</Button>
+                      </MenuItem>
+                    </Link>
+                  )}
                   <Link to="/profile">
                     <MenuItem as={"span"}>
                       <Button variant={"link"}>
@@ -368,13 +375,14 @@ function Navbar() {
                       </Button>
                     </MenuItem>
                   </Link>
-                  {admin === true && (
-                    <Link to="/admin">
-                      <MenuItem as={"span"}>
-                        <Button variant={"link"}>Admin</Button>
-                      </MenuItem>
-                    </Link>
-                  )}
+                  <Link to="/orders">
+                    <MenuItem as={"span"}>
+                      <Button variant={"link"}>
+                        <FormattedMessage id="orders" />
+                      </Button>
+                    </MenuItem>
+                  </Link>
+                  
 
                   <Link to="/sessions">
                     <MenuItem as={"span"}>

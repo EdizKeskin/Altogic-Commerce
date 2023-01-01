@@ -65,20 +65,33 @@ export default function Multistep({ onClose, price, names }) {
   const [progress, setProgress] = useState(33.33);
 
   const createOrder = async () => {
-    const result = await altogic.db.model("order").object().create({
-      email: email,
-      name: firstName,
-      lastName: lastName,
-      address: address,
-      city: city,
-      state: state,
-    });
+    const result = await altogic.db
+      .model("order")
+      .object()
+      .create({
+        email: email,
+        name: firstName,
+        lastName: lastName,
+        address: address,
+        city: city,
+        state: state,
+        userId: altogic.auth.getUser()._id,
+        products: names.map((name) => {return name}),
+      });
 
     if (!result.errors) {
       toast({
         title: "Başarılı!",
         description: "Siparişiniz alındı.",
         status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Hata!",
+        description: "Siparişiniz alınamadı.",
+        status: "error",
         duration: 3000,
         isClosable: true,
       });
@@ -91,8 +104,6 @@ export default function Multistep({ onClose, price, names }) {
     setState("");
     setItems([]);
   };
-
-  console.log();
 
   return (
     <>

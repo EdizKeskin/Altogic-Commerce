@@ -26,7 +26,7 @@ function Home({ products, sort, setSort, setSortType, sortType }) {
   const increasingByPrice =
     lang === "tr-TR" ? "Fiyata göre artan" : "Increasing by price";
   const newestProducts = lang === "tr-TR" ? "Yeni Ürünler" : "Newest Products";
-  
+
   return (
     <Box minh="100vh">
       <div data-aos="fade-up">

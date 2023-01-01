@@ -229,6 +229,7 @@ function Product({ products }) {
               py={"7"}
               bg={btnBg}
               color={btnColor}
+              disabled
               textTransform={"uppercase"}
               _hover={{
                 transform: "translateY(2px)",

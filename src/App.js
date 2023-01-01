@@ -18,7 +18,7 @@ import Navbar from "./components/navbar";
 import Admin from "./pages/Admin/admin";
 import EditProduct from "./pages/Admin/editProduct/editProduct";
 import NewProduct from "./pages/Admin/newProduct/newProduct";
-import Orders from "./pages/Admin/orders/orders";
+import AdminOrders from "./pages/Admin/orders/orders";
 import AdminProducts from "./pages/Admin/products/adminProducts";
 import AuthRedirect from "./pages/Auth/authRedirect";
 import SignIn from "./pages/Auth/signIn";
@@ -32,13 +32,14 @@ import Detail from "./pages/ProductDetails/product";
 import Profile from "./pages/Profile/profile";
 import Sessions from "./pages/Profile/sessions";
 import Home from "./pages/home";
+import Orders from "./pages/Profile/orders";
 
 function App() {
   const [products, setProducts] = useState(null);
   const [admin, setAdmin] = useState(false);
   const [sort, setSort] = useState("createdAt");
   const [sortType, setSortType] = useState("desc");
-  const {user} = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     const getProducts = async () => {
@@ -685,6 +686,14 @@ function App() {
                 }
               />
               <Route
+                path="/orders"
+                element={
+                  <RequiresAuth>
+                    <Orders />
+                  </RequiresAuth>
+                }
+              />
+              <Route
                 path="/admin"
                 element={
                   <RequiresAuth>
@@ -699,7 +708,7 @@ function App() {
                 element={
                   <RequiresAuth>
                     <RequiresAdmin admin={admin}>
-                      <Orders />
+                      <AdminOrders />
                     </RequiresAdmin>
                   </RequiresAuth>
                 }
