@@ -8,11 +8,9 @@ import "aos/dist/aos.css";
 import Particles from "react-tsparticles";
 import altogic from "./api/altogic";
 
-import { getUserById } from "./api/storage";
 import RequiresAdmin from "./components/routes/requiresAdmin";
 import RequiresAuth from "./components/routes/requiresAuth";
 import RequiresNotAuth from "./components/routes/requiresNotAuth";
-import { useAuth } from "./context/authContext";
 
 import Navbar from "./components/navbar";
 import Admin from "./pages/Admin/admin";
@@ -36,10 +34,8 @@ import Orders from "./pages/Profile/orders";
 
 function App() {
   const [products, setProducts] = useState(null);
-  const [admin, setAdmin] = useState(false);
   const [sort, setSort] = useState("createdAt");
   const [sortType, setSortType] = useState("desc");
-  const { user } = useAuth();
 
   useEffect(() => {
     const getProducts = async () => {
@@ -55,13 +51,6 @@ function App() {
     getProducts();
   }, [sort, sortType]);
 
-  useEffect(() => {
-    async function fetchUser() {
-      const result = await getUserById(altogic.auth.getUser()._id);
-      setAdmin(result.data.admin);
-    }
-    fetchUser();
-  }, [user]);
 
   const bg = useColorModeValue("white", "#000000");
 
@@ -697,7 +686,7 @@ function App() {
                 path="/admin"
                 element={
                   <RequiresAuth>
-                    <RequiresAdmin admin={admin}>
+                    <RequiresAdmin>
                       <Admin />
                     </RequiresAdmin>
                   </RequiresAuth>
@@ -707,7 +696,7 @@ function App() {
                 path="/admin/orders"
                 element={
                   <RequiresAuth>
-                    <RequiresAdmin admin={admin}>
+                    <RequiresAdmin>
                       <AdminOrders />
                     </RequiresAdmin>
                   </RequiresAuth>
@@ -717,7 +706,7 @@ function App() {
                 path="/admin/products"
                 element={
                   <RequiresAuth>
-                    <RequiresAdmin admin={admin}>
+                    <RequiresAdmin>
                       <AdminProducts />
                     </RequiresAdmin>
                   </RequiresAuth>
@@ -727,7 +716,7 @@ function App() {
                 path="/admin/products/:product_id"
                 element={
                   <RequiresAuth>
-                    <RequiresAdmin admin={admin}>
+                    <RequiresAdmin>
                       <EditProduct />
                     </RequiresAdmin>
                   </RequiresAuth>
@@ -737,7 +726,7 @@ function App() {
                 path="/admin/products/newproduct"
                 element={
                   <RequiresAuth>
-                    <RequiresAdmin admin={admin}>
+                    <RequiresAdmin>
                       <NewProduct />
                     </RequiresAdmin>
                   </RequiresAuth>

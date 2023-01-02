@@ -61,6 +61,7 @@ function SignUp() {
       password,
       {
         name: name,
+        admin: false,
       }
     );
 
