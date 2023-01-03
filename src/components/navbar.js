@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Box,
   Flex,
@@ -30,8 +30,6 @@ import { useLang } from "../context/langContext";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/authContext";
-import altogic from "../api/altogic";
-import { getUserById } from "../api/storage";
 import { AiOutlineDown } from "react-icons/ai";
 import { FormattedMessage } from "react-intl";
 
