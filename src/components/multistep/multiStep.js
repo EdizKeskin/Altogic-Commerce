@@ -12,8 +12,7 @@ import {
   Input,
   Select,
   SimpleGrid,
-  InputGroup,
-  Textarea,
+
   Text,
   Image,
 } from "@chakra-ui/react";
@@ -76,9 +75,10 @@ export default function Multistep({ onClose, price, names }) {
         city: city,
         state: state,
         userId: altogic.auth.getUser()._id,
-        products: names.map((name) => {return name}),
+        products: names.map((name) => {
+          return name;
+        }),
       });
-
     if (!result.errors) {
       toast({
         title: "Başarılı!",
@@ -312,82 +312,6 @@ export default function Multistep({ onClose, price, names }) {
               Ödeme Bilgileri (out of service in this page)
             </Heading>
             <SimpleGrid columns={{ base: "1", md: "2" }} spacing={10}>
-              <SimpleGrid columns={1} spacing={6}>
-                <FormControl as={GridItem} colSpan={[3, 1]}>
-                  <FormLabel
-                    fontSize="sm"
-                    fontWeight="md"
-                    color="gray.700"
-                    value={""}
-                    _dark={{
-                      color: "gray.50",
-                    }}
-                  >
-                    Kart numarası
-                  </FormLabel>
-                  <InputGroup size="sm">
-                    <Input
-                      name="cardNumber"
-                      type="number"
-                      maxLength="16"
-                      minLength="16"
-                      placeholder="Card Number"
-                      focusBorderColor="brand.400"
-                      rounded="md"
-                    />
-                  </InputGroup>
-                </FormControl>
-
-                <FormControl mr="5%">
-                  <FormLabel fontWeight={"normal"}>
-                    Kart Üzerindeki İsim
-                  </FormLabel>
-                  <Input name="cardName" placeholder="Kart Üzerindeki İsim" />
-                </FormControl>
-                <Flex flexDirection={"row"}>
-                  <FormControl mr="2">
-                    <FormLabel fontWeight={"normal"}>MM/YY</FormLabel>
-                    <Input
-                      name="expired"
-                      placeholder="MM/YY"
-                      w={"90px"}
-                      maxLength="4"
-                    />
-                  </FormControl>
-
-                  <FormControl>
-                    <FormLabel fontWeight={"normal"}>Güvenlik kodu</FormLabel>
-                    <Input
-                      name="cvv"
-                      placeholder="CVV2"
-                      w={"90px"}
-                      maxLength="4"
-                    />
-                  </FormControl>
-                </Flex>
-
-                <FormControl mt={"-4"}>
-                  <FormLabel
-                    fontSize="sm"
-                    fontWeight="md"
-                    color="gray.700"
-                    _dark={{
-                      color: "gray.50",
-                    }}
-                  >
-                    Satıcıya not
-                  </FormLabel>
-                  <Textarea
-                    placeholder="Lorem, ipsum dolor sit amet consectetur adipisicing."
-                    rows={3}
-                    shadow="sm"
-                    focusBorderColor="brand.400"
-                    fontSize={{
-                      sm: "sm",
-                    }}
-                  />
-                </FormControl>
-              </SimpleGrid>
               <Flex
                 alignItems="center"
                 justifyContent="center"

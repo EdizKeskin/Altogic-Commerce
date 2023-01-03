@@ -2,6 +2,7 @@ import { useToast } from "@chakra-ui/react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import altogic from "../api/altogic";
+import { getUserById } from "../api/storage";
 
 export const AuthenticationContext = createContext();
 
@@ -10,6 +11,10 @@ const AuthenticationProvider = ({ children }) => {
   const [sessions, setSessions] = useState(null);
   const [user, setUser] = useState();
   const [isAuth, setIsAuth] = useState(false);
+  const [admin, setAdmin] = useState();
+  const [profilePicture, setProfilePicture] = useState(
+    require("../images/pp_blank.png")
+  );
 
   let navigate = useNavigate();
 
@@ -23,10 +28,23 @@ const AuthenticationProvider = ({ children }) => {
       setIsAuth(true);
       sendReq();
     }
+    if (isAuth === true) {
+      async function fetchAdmin() {
+        const result = await getUserById(altogic.auth.getUser()._id);
+        setAdmin(result.data.admin);
+      }
+      const pp = altogic.auth.getUser().profilePicture;
+
+      if (pp) {
+        setProfilePicture(pp);
+      }
+
+      fetchAdmin();
+    }
     setUser(user ?? null);
     setSessions(sessions ?? null);
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuth,user]);
+  }, [isAuth, user]);
 
   const signOutCurrentSession = async () => {
     try {
@@ -106,6 +124,9 @@ const AuthenticationProvider = ({ children }) => {
     user,
     setUser,
     setSessions,
+    admin,
+    profilePicture,
+    setProfilePicture
   };
 
   return (

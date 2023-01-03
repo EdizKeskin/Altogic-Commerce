@@ -18,23 +18,16 @@ import {
   deleteProfilePictureFieldOnDatabase,
 } from "../../api/storage";
 import altogic from "../../api/altogic";
+import { useAuth } from "../../context/authContext";
 
 function Profile() {
   const toast = useToast();
-  const [profilePicture, setProfilePicture] = useState(
-    require("../../images/pp_blank.png")
-  );
+  const {profilePicture, setProfilePicture} = useAuth();
   const name = altogic.auth.getUser().name;
 
   const [loading, setLoading] = useState(false);
   const [removeLoading, setRemoveLoading] = useState(false);
-  const pp = altogic.auth.getUser().profilePicture;
-
-  useEffect(() => {
-    if (pp) {
-      setProfilePicture(pp);
-    }
-  }, [pp]);
+  
 
   const handleFileSelect = async (event) => {
     setLoading(true);

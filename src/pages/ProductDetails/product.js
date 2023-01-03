@@ -61,6 +61,9 @@ function Product({ products }) {
     (basket_item) => basket_item === product._id
   );
 
+
+  const arrayProduct = [product];
+  
   return (
     <Container maxW={"7xl"}>
       <SimpleGrid
@@ -229,7 +232,6 @@ function Product({ products }) {
               py={"7"}
               bg={btnBg}
               color={btnColor}
-              disabled
               textTransform={"uppercase"}
               _hover={{
                 transform: "translateY(2px)",
@@ -239,7 +241,6 @@ function Product({ products }) {
             >
               <FormattedMessage id="buy" />
             </Button>
-            {/* sepete ekle */}
           </motion.div>
           <Button
             colorScheme={findBasketItem ? "red" : "teal"}
@@ -270,7 +271,7 @@ function Product({ products }) {
                 <Multistep
                   onClose={onClose}
                   price={product.discountedPrice}
-                  names={product}
+                  names={arrayProduct}
                 />
               </ModalBody>
             </ModalContent>

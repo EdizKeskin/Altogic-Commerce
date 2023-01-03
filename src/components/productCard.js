@@ -55,6 +55,7 @@ function ProductCard({ item }) {
           _hover={{
             cursor: "pointer",
           }}
+          loading="lazy"
           backgroundImage={item.images[0]}
         >
           {item.discount !== 0 && item.discount && (

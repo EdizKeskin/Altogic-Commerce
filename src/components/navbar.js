@@ -7,7 +7,7 @@ import {
   Button,
   Stack,
   Collapse,
-  useBreakpointValue,
+  useBreakpointValue, 
   useDisclosure,
   ButtonGroup,
   useColorMode,
@@ -198,20 +198,13 @@ const MobileNav = () => {
 
 function Navbar() {
   const { items, notification } = useBasket();
-  const [admin, setAdmin] = useState(false);
   const { isOpen, onToggle } = useDisclosure();
-  const { isAuth, signOutCurrentSession } = useAuth();
+  const { isAuth, signOutCurrentSession, admin } = useAuth();
   const size = useBreakpointValue({ base: "sm", sm: "md" });
   const { lang, setLang } = useLang();
   const btnColor = useColorModeValue("white.50", "gray.600");
   const { colorMode, toggleColorMode } = useColorMode();
-  useEffect(() => {
-    async function fetchUser() {
-      const result = await getUserById(altogic.auth.getUser()._id);
-      setAdmin(result.data.admin);
-    }
-    fetchUser();
-  }, []);
+  const { profilePicture } = useAuth();
 
   const langBtnHandler = () => {
     if (lang === "tr-TR") {
@@ -357,14 +350,16 @@ function Navbar() {
           ) : (
             <Menu>
               <MenuButton>
-                <Avatar src={altogic.auth.getUser().profilePicture} />
+                <Avatar src={profilePicture} />
               </MenuButton>
               <Portal>
                 <MenuList>
-                {admin === true && (
+                  {admin === true && (
                     <Link to="/admin">
                       <MenuItem as={"span"}>
-                        <Button variant={"link"} colorScheme={"green"}>Admin</Button>
+                        <Button variant={"link"} colorScheme={"green"}>
+                          Admin
+                        </Button>
                       </MenuItem>
                     </Link>
                   )}
@@ -382,7 +377,6 @@ function Navbar() {
                       </Button>
                     </MenuItem>
                   </Link>
-                  
 
                   <Link to="/sessions">
                     <MenuItem as={"span"}>

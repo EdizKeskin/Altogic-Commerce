@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import CustomSpinner from "../../../components/spinner";
 import altogic from "../../../api/altogic";
 import MaterialReactTable from "material-react-table";
-import { createTheme, ThemeProvider, useTheme } from "@mui/material";
+import { createTheme, ThemeProvider, useTheme, Divider } from "@mui/material";
 
 function Orders() {
   const [orders, setOrders] = useState(null);
@@ -74,7 +74,6 @@ function Orders() {
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   };
 
-
   const columns = useMemo(
     () => [
       {
@@ -118,7 +117,7 @@ function Orders() {
         mt={"20px"}
       >
         <Text fontSize="2xl" color={"white"}>
-        Orders
+          Orders
         </Text>
         <Box display={"flex"} alignItems="center">
           <Text fontSize="lg" color={"white"}>
@@ -131,6 +130,32 @@ function Orders() {
           <MaterialReactTable
             data={orders}
             columns={columns}
+            renderDetailPanel={({ row }) => {
+              console.log(row.original);
+              return (
+                <Box>
+                  <Text fontSize={"18px"}>
+                    <b>Order Details:</b>
+                  </Text>
+                  <br />
+                  <Text>Order ID: {row.original._id}</Text>
+                  <Text>Order Date: {row.original.createdAt}</Text>
+                  <br />
+                  <Text fontSize={"18px"}>
+                    <b>Products:</b>
+                  </Text>
+                  {row.original.products.map((product) => {
+                    return (
+                      <Box key={product._id}>
+                        <Text mt={"10px"}>Product Name: {product.title}</Text>
+                        <Text mb={"10px"}>Product Price: {product.price}</Text>
+                        <Divider />
+                      </Box>
+                    );
+                  })}
+                </Box>
+              );
+            }}
             renderRowActions={(record) => (
               <>
                 <Link to={`/admin/orders/${record._id}`}>

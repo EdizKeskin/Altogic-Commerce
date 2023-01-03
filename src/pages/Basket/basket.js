@@ -45,6 +45,7 @@ function Basket({ products }) {
             alignItems={"center"}
             display="flex"
             py={10}
+            mt={{ base: 10, sm: 0 }}
             flexDirection="column"
           >
             <Alert

@@ -95,8 +95,6 @@ export const Example = () => {
 
   if (orders === null) return <CustomSpinner />;
 
-  console.log(orders);
-
   return (
     <ThemeProvider theme={tableTheme}>
       <MaterialReactTable
@@ -125,7 +123,7 @@ export const Example = () => {
               </Text>
               {row.original.products.map((product) => {
                 return (
-                  <Box>
+                  <Box key={product._id}>
                     <Text mt={"10px"}>Product Name: {product.title}</Text>
                     <Text mb={"10px"}>Product Price: {product.price}</Text>
                     <Divider />

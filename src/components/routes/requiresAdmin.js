@@ -1,19 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Navigate } from "react-router-dom";
-import { getUserById } from "../../api/storage";
-import altogic from "../../api/altogic";
 import CustomSpinner from "../spinner";
+import { useAuth } from "../../context/authContext";
 
 const RequiresAdmin = ({ children }) => {
-  const [admin, setAdmin] = useState();
+  const { admin } = useAuth();
 
-  useEffect(() => {
-    async function fetchUser() {
-      const result = await getUserById(altogic.auth.getUser()._id);
-      setAdmin(result.data.admin);
-    }
-    fetchUser();
-  }, []);
   if (admin === undefined) {
     return <CustomSpinner />;
   }
