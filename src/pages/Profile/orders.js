@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import altogic from "../../api/altogic";
 import CustomSpinner from "../../components/spinner";
 import { Box, Text } from "@chakra-ui/react";
