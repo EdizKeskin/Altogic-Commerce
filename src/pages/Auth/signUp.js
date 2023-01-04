@@ -275,16 +275,6 @@ function SignUp() {
                     )}
                     <Stack spacing={10}>
                       <Flex direction="column">
-                        <Stack
-                          direction={{ base: "column", sm: "row" }}
-                          align={"start"}
-                          justify={"flex-end"}
-                          mt={3}
-                        >
-                          <Button variant={"link"} color={"blue.400"}>
-                            Forgot password?
-                          </Button>
-                        </Stack>
                         <Button
                           bg={"blue.400"}
                           color={"white"}

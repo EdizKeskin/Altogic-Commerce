@@ -79,6 +79,7 @@ export default function Multistep({ onClose, price, names }) {
           return name;
         }),
       });
+
     if (!result.errors) {
       toast({
         title: "Başarılı!",

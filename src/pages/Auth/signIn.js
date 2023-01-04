@@ -194,23 +194,13 @@ function SignIn() {
                     )}
                     <Stack spacing={10}>
                       <Flex direction="column">
-                        <Stack
-                          direction={{ base: "column", sm: "row" }}
-                          align={"start"}
-                          justify={"flex-end"}
-                          mt={3}
-                        >
-                          <Button variant={"link"} color={"blue.400"}>
-                            Forgot password?
-                          </Button>
-                        </Stack>
                         <Button
                           bg={"blue.400"}
                           color={"white"}
                           _hover={{
                             bg: "blue.500",
                           }}
-                          mt={3}
+                          mt={5}
                           type="submit"
                           disabled={isSubmitting || !isValid}
                         >
