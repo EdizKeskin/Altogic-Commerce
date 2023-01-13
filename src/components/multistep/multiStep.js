@@ -27,7 +27,7 @@ import { useBasket } from "../../context/basketContext";
 import { useFormik } from "formik";
 import validationSchema from "./validations";
 
-export default function Multistep({ onClose, price, names }) {
+export default function Multistep({ onClose, price, products }) {
   //Form1
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -75,8 +75,8 @@ export default function Multistep({ onClose, price, names }) {
         city: city,
         state: state,
         userId: altogic.auth.getUser()._id,
-        products: names.map((name) => {
-          return name;
+        products: products.map((product) => {
+          return product;
         }),
       });
 
@@ -368,7 +368,7 @@ export default function Multistep({ onClose, price, names }) {
               <Flex flexDirection={"column"}>
                 <Flex alignItems={"center"} mb={4}>
                   <Flex flexDirection={"column"}>
-                    {Array.isArray(names) === false ? (
+                    {Array.isArray(products) === false ? (
                       <Text
                         as={"span"}
                         fontSize={"sm"}
@@ -376,10 +376,10 @@ export default function Multistep({ onClose, price, names }) {
                         color={"gray.400"}
                         mr={"10px"}
                       >
-                        {names.title}
+                        {products.title}
                       </Text>
                     ) : (
-                      names.map((item) => (
+                      products.map((item) => (
                         <Text
                           key={item._id}
                           as={"span"}
@@ -409,7 +409,7 @@ export default function Multistep({ onClose, price, names }) {
                     variant="solid"
                     onClick={() => {
                       createOrder();
-                      !names ? console.log("test") : setItems([]);
+                      !products ? console.log("test") : setItems([]);
                       onClose();
                       setNotification(0);
                     }}

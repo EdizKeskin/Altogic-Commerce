@@ -56,7 +56,7 @@ function BasketSidebar({ items, totalPrice }) {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <Multistep onClose={onClose} price={totalPrice} names={items} />
+            <Multistep onClose={onClose} price={totalPrice} products={items} />
           </ModalBody>
         </ModalContent>
       </Modal>

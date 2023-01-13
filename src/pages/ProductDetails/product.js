@@ -271,7 +271,7 @@ function Product({ products }) {
                 <Multistep
                   onClose={onClose}
                   price={product.discountedPrice}
-                  names={arrayProduct}
+                  products={arrayProduct}
                 />
               </ModalBody>
             </ModalContent>
