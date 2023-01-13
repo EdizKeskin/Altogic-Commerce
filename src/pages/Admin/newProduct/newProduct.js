@@ -79,7 +79,6 @@ function NewProduct() {
       images: values.images.map((image) => {
         return image;
       }),
-      link: values.title.replace(/\s+/g, "").toLowerCase(),
     };
 
     const result = await altogic.endpoint.post("/products", newValues);

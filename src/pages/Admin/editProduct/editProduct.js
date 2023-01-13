@@ -104,7 +104,6 @@ function EditProduct() {
           details,
           categories,
           discount,
-          link: title.replace(/\s+/g, "-").toLowerCase(),
         });
       if (resp.errors === null) {
         toast({
