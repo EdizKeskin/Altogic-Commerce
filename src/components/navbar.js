@@ -7,7 +7,7 @@ import {
   Button,
   Stack,
   Collapse,
-  useBreakpointValue, 
+  useBreakpointValue,
   useDisclosure,
   ButtonGroup,
   useColorMode,
@@ -66,6 +66,13 @@ const DesktopNav = () => {
               <MenuItem as={"span"} justifyContent={"center"}>
                 <Button variant={"link"}>
                   <FormattedMessage id="technology" />
+                </Button>
+              </MenuItem>
+            </Link>
+            <Link to="/categories/Book">
+              <MenuItem as={"span"} justifyContent={"center"}>
+                <Button variant={"link"}>
+                  <FormattedMessage id="book" />
                 </Button>
               </MenuItem>
             </Link>
@@ -144,6 +151,13 @@ const MobileNav = () => {
                 <MenuItem as={"span"} justifyContent={"center"}>
                   <Button variant={"link"}>
                     <FormattedMessage id="technology" />
+                  </Button>
+                </MenuItem>
+              </Link>
+              <Link to="/categories/Book">
+                <MenuItem as={"span"} justifyContent={"center"}>
+                  <Button variant={"link"}>
+                    <FormattedMessage id="book" />
                   </Button>
                 </MenuItem>
               </Link>

@@ -27,6 +27,7 @@ const Messages = {
     sessions: "Oturumlar",
     profile: "Profil",
     orders: "Siparişler",
+    book: "Kitap",
   },
   "en-US": {
     features: "Features",
@@ -56,6 +57,7 @@ const Messages = {
     sessions: "Sessions",
     profile: "Profile",
     orders: "Orders",
+    book: "Book",
   },
 };
 

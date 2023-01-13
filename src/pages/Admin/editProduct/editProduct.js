@@ -299,6 +299,7 @@ function EditProduct() {
                       <NewCheckbox value="Car" />
                       <NewCheckbox value="Home" />
                       <NewCheckbox value="Technology" />
+                      <NewCheckbox value="Book" />
                       <NewCheckbox value="Test" />
                     </Stack>
                   </FormControl>
