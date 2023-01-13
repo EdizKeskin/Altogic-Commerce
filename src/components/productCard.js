@@ -50,7 +50,7 @@ function ProductCard({ item }) {
           bgSize="cover"
           bgPos="center"
           onClick={() => {
-            Navigate(`/product/${item.link}`);
+            Navigate(`/product/${item._id}`);
           }}
           _hover={{
             cursor: "pointer",
@@ -161,7 +161,7 @@ function ProductCard({ item }) {
               </Flex>
             </Flex>
             <Flex alignItems={"center"}>
-              <Link to={`/product/${item.link}`}>
+              <Link to={`/product/${item._id}`}>
                 <Tooltip
                   label={productPageMessage}
                   hasArrow

@@ -51,7 +51,7 @@ function Product({ products }) {
 
   if (products === null) return <CustomSpinner />;
 
-  const product = products.find((item) => item.link === id);
+  const product = products.find((item) => item._id === id);
   const right = product.details.slice(0, 3);
   const left = product.details.slice(3, 6);
 
