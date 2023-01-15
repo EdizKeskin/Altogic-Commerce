@@ -61,8 +61,8 @@ function Home({ products, sort, setSort, setSortType, sortType }) {
       </div>
 
       <Box display={"flex"} justifyContent={"flex-end"} px={15}>
-        <Box mr={3}>
-          <AutoComplete rollNavigation data-aos="zoom-in-up">
+        <Box mr={3} data-aos="zoom-in-up">
+          <AutoComplete rollNavigation>
             <InputGroup w={"fit-content"}>
               <InputLeftElement>
                 <FaSearch />
