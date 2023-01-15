@@ -6,18 +6,26 @@ import {
   MenuItem,
   MenuList,
   Button,
-  Input,
   InputLeftElement,
   InputGroup,
+  Avatar,
+  Text,
 } from "@chakra-ui/react";
+import {
+  AutoComplete,
+  AutoCompleteInput,
+  AutoCompleteItem,
+  AutoCompleteList,
+} from "@choc-ui/chakra-autocomplete";
 import Header from "../components/header";
-
 import CustomSpinner from "../components/spinner";
 import ProductCard from "../components/productCard";
 import Footer from "../components/footer";
 import React, { useState } from "react";
-import { AiOutlineDown, AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineCaretDown } from "react-icons/ai";
 import { useLang } from "../context/langContext";
+import { Link } from "react-router-dom";
+import { FaSearch } from "react-icons/fa";
 
 function Home({ products, sort, setSort, setSortType, sortType }) {
   const { lang } = useLang();
@@ -51,22 +59,49 @@ function Home({ products, sort, setSort, setSortType, sortType }) {
       <div data-aos="fade-up">
         <Header />
       </div>
+
       <Box display={"flex"} justifyContent={"flex-end"} px={15}>
-        <InputGroup w={"fit-content"} data-aos="zoom-in-up" mr={3}>
-          <InputLeftElement pointerEvents="none">
-            <AiOutlineSearch />
-          </InputLeftElement>
-          <Input
-            placeholder="Search..."
-            bg={"gray.700"}
-            value={searchText}
-            onChange={handleChange}
-          />
-        </InputGroup>
+        <Box mr={3}>
+          <AutoComplete rollNavigation data-aos="zoom-in-up">
+            <InputGroup w={"fit-content"}>
+              <InputLeftElement>
+                <FaSearch />
+              </InputLeftElement>
+              <AutoCompleteInput
+                variant="filled"
+                placeholder="Search..."
+                value={searchText}
+                onChange={handleChange}
+                bg={"gray.700"}
+                _hover={{ bg: "gray.700" }}
+                _focus={{ bg: "gray.700" }}
+              />
+            </InputGroup>
+            <AutoCompleteList>
+              {products.map((product, oid) => (
+                <Link key={`option-${oid}`} to={`/product/${product._id}`}>
+                  <AutoCompleteItem
+                    value={product.title}
+                    label={product.categories[0]}
+                    textTransform="capitalize"
+                    align="center"
+                  >
+                    <Avatar
+                      size="sm"
+                      name={product.title}
+                      src={product.images[0]}
+                    />
+                    <Text ml="4">{product.title}</Text>
+                  </AutoCompleteItem>
+                </Link>
+              ))}
+            </AutoCompleteList>
+          </AutoComplete>
+        </Box>
         <Menu>
           <MenuButton
             as={Button}
-            rightIcon={<AiOutlineDown />}
+            rightIcon={<AiOutlineCaretDown />}
             bg={"gray.700"}
             data-aos="zoom-in-up"
           >

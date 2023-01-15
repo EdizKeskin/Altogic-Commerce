@@ -12,7 +12,6 @@ import {
   Input,
   Select,
   SimpleGrid,
-
   Text,
   Image,
 } from "@chakra-ui/react";
