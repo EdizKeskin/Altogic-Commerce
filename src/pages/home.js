@@ -27,9 +27,11 @@ import { useLang } from "../context/langContext";
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 
-function Home({ products, sort, setSort, setSortType, sortType }) {
+function Home({ products }) {
   const { lang } = useLang();
   const [searchText, setSearchText] = useState("");
+  const [sort, setSort] = useState("createdAt");
+  const [sortType, setSortType] = useState("desc");
 
   if (products === null) return <CustomSpinner />;
 
@@ -54,6 +56,23 @@ function Home({ products, sort, setSort, setSortType, sortType }) {
     );
   });
 
+  const sortedProducts = filteredProducts.sort((a, b) => {
+    if (sort === "price") {
+      if (sortType === "desc") {
+        return b.price - a.price;
+      } else {
+        return a.price - b.price;
+      }
+    } else {
+      if (sortType === "desc") {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      } else {
+        return new Date(a.createdAt) - new Date(b.createdAt);
+      }
+    }
+  });
+
+
   return (
     <Box minh="100vh">
       <div data-aos="fade-up">
@@ -61,8 +80,8 @@ function Home({ products, sort, setSort, setSortType, sortType }) {
       </div>
 
       <Box display={"flex"} justifyContent={"flex-end"} px={15}>
-        <Box mr={3} data-aos="zoom-in-up">
-          <AutoComplete rollNavigation>
+        <Box mr={3} data-aos="zoom-in-up" zIndex={"overlay"}>
+          <AutoComplete rollNavigation >
             <InputGroup w={"fit-content"}>
               <InputLeftElement>
                 <FaSearch />
@@ -147,7 +166,7 @@ function Home({ products, sort, setSort, setSortType, sortType }) {
         gap={6}
         mt={"4"}
       >
-        {filteredProducts.map((data, i) => (
+        {sortedProducts.map((data, i) => (
           <div key={i} data-aos="zoom-in-up">
             <ProductCard item={data} />
           </div>

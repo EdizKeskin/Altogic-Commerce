@@ -35,14 +35,12 @@ import Orders from "./pages/Profile/orders";
 
 function App() {
   const [products, setProducts] = useState(null);
-  const [sort, setSort] = useState("createdAt");
-  const [sortType, setSortType] = useState("desc");
+  
 
   useEffect(() => {
     const getProducts = async () => {
       const result = await altogic.db
         .model("products")
-        .sort(sort, sortType)
         .get();
 
       if (!result.errors) {
@@ -50,12 +48,8 @@ function App() {
       }
     };
     getProducts();
-  }, [sort, sortType]);
+  }, []);
   const particlesInit = useCallback(async (engine) => {
-    console.log(engine);
-    // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
-    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-    // starting from v2 you can add only the features you need reducing the bundle size
     await loadFull(engine);
   }, []);
 
@@ -81,10 +75,6 @@ function App() {
                 element={
                   <Home
                     products={products}
-                    sort={sort}
-                    setSort={setSort}
-                    setSortType={setSortType}
-                    sortType={sortType}
                   />
                 }
               />
