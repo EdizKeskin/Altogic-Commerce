@@ -1,5 +1,5 @@
 import { Box, useColorModeValue } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 
@@ -7,6 +7,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import Particles from "react-tsparticles";
 import altogic from "./api/altogic";
+import { loadFull } from "tsparticles";
 
 import RequiresAdmin from "./components/routes/requiresAdmin";
 import RequiresAuth from "./components/routes/requiresAuth";
@@ -50,7 +51,13 @@ function App() {
     };
     getProducts();
   }, [sort, sortType]);
-
+  const particlesInit = useCallback(async (engine) => {
+    console.log(engine);
+    // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
+    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+    // starting from v2 you can add only the features you need reducing the bundle size
+    await loadFull(engine);
+  }, []);
 
   const bg = useColorModeValue("white", "#000000");
 
@@ -63,8 +70,146 @@ function App() {
   }, []);
   return (
     <Box>
-      <Particles
+      <>
+        <>
+          <div>
+            <Navbar />
+            <Routes>
+              <Route path="*" element={<Err404 />} />
+              <Route
+                path="/"
+                element={
+                  <Home
+                    products={products}
+                    sort={sort}
+                    setSort={setSort}
+                    setSortType={setSortType}
+                    sortType={sortType}
+                  />
+                }
+              />
+              <Route
+                path="/product/:id"
+                element={<Detail products={products} />}
+              />
+              <Route
+                path="/categories/:category"
+                element={<Categories products={products} />}
+              />
+              <Route path="/contact" element={<Contact />} />
+              <Route
+                path="/signin"
+                element={
+                  <RequiresNotAuth>
+                    <SignIn />
+                  </RequiresNotAuth>
+                }
+              />
+              <Route
+                path="/signup"
+                element={
+                  <RequiresNotAuth>
+                    <SignUp />
+                  </RequiresNotAuth>
+                }
+              />
+              <Route
+                path="/verification"
+                element={
+                  <RequiresNotAuth>
+                    <Verification />
+                  </RequiresNotAuth>
+                }
+              />
+              <Route path="/auth-redirect" element={<AuthRedirect />} />
+              <Route
+                path="/profile"
+                element={
+                  <RequiresAuth>
+                    <Profile />
+                  </RequiresAuth>
+                }
+              />
+              <Route
+                path="/basket"
+                element={
+                  <RequiresAuth>
+                    <Basket products={products} />
+                  </RequiresAuth>
+                }
+              />
+              <Route
+                path="/sessions"
+                element={
+                  <RequiresAuth>
+                    <Sessions />
+                  </RequiresAuth>
+                }
+              />
+              <Route
+                path="/orders"
+                element={
+                  <RequiresAuth>
+                    <Orders />
+                  </RequiresAuth>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <RequiresAuth>
+                    <RequiresAdmin>
+                      <Admin />
+                    </RequiresAdmin>
+                  </RequiresAuth>
+                }
+              />
+              <Route
+                path="/admin/orders"
+                element={
+                  <RequiresAuth>
+                    <RequiresAdmin>
+                      <AdminOrders />
+                    </RequiresAdmin>
+                  </RequiresAuth>
+                }
+              />
+              <Route
+                path="/admin/products"
+                element={
+                  <RequiresAuth>
+                    <RequiresAdmin>
+                      <AdminProducts />
+                    </RequiresAdmin>
+                  </RequiresAuth>
+                }
+              />
+              <Route
+                path="/admin/products/:product_id"
+                element={
+                  <RequiresAuth>
+                    <RequiresAdmin>
+                      <EditProduct />
+                    </RequiresAdmin>
+                  </RequiresAuth>
+                }
+              />
+              <Route
+                path="/admin/products/newproduct"
+                element={
+                  <RequiresAuth>
+                    <RequiresAdmin>
+                      <NewProduct />
+                    </RequiresAdmin>
+                  </RequiresAuth>
+                }
+              />
+            </Routes>
+          </div>
+        </>
+        <Particles
         id="tsparticles"
+        init={particlesInit}
         options={{
           autoPlay: true,
           background: {
@@ -598,143 +743,6 @@ function App() {
           zLayers: 100,
         }}
       />
-      <>
-        <>
-          <div>
-            <Navbar />
-            <Routes>
-              <Route path="*" element={<Err404 />} />
-              <Route
-                path="/"
-                element={
-                  <Home
-                    products={products}
-                    sort={sort}
-                    setSort={setSort}
-                    setSortType={setSortType}
-                    sortType={sortType}
-                  />
-                }
-              />
-              <Route
-                path="/product/:id"
-                element={<Detail products={products} />}
-              />
-              <Route
-                path="/categories/:category"
-                element={<Categories products={products} />}
-              />
-              <Route path="/contact" element={<Contact />} />
-              <Route
-                path="/signin"
-                element={
-                  <RequiresNotAuth>
-                    <SignIn />
-                  </RequiresNotAuth>
-                }
-              />
-              <Route
-                path="/signup"
-                element={
-                  <RequiresNotAuth>
-                    <SignUp />
-                  </RequiresNotAuth>
-                }
-              />
-              <Route
-                path="/verification"
-                element={
-                  <RequiresNotAuth>
-                    <Verification />
-                  </RequiresNotAuth>
-                }
-              />
-              <Route path="/auth-redirect" element={<AuthRedirect />} />
-              <Route
-                path="/profile"
-                element={
-                  <RequiresAuth>
-                    <Profile />
-                  </RequiresAuth>
-                }
-              />
-              <Route
-                path="/basket"
-                element={
-                  <RequiresAuth>
-                    <Basket products={products} />
-                  </RequiresAuth>
-                }
-              />
-              <Route
-                path="/sessions"
-                element={
-                  <RequiresAuth>
-                    <Sessions />
-                  </RequiresAuth>
-                }
-              />
-              <Route
-                path="/orders"
-                element={
-                  <RequiresAuth>
-                    <Orders />
-                  </RequiresAuth>
-                }
-              />
-              <Route
-                path="/admin"
-                element={
-                  <RequiresAuth>
-                    <RequiresAdmin>
-                      <Admin />
-                    </RequiresAdmin>
-                  </RequiresAuth>
-                }
-              />
-              <Route
-                path="/admin/orders"
-                element={
-                  <RequiresAuth>
-                    <RequiresAdmin>
-                      <AdminOrders />
-                    </RequiresAdmin>
-                  </RequiresAuth>
-                }
-              />
-              <Route
-                path="/admin/products"
-                element={
-                  <RequiresAuth>
-                    <RequiresAdmin>
-                      <AdminProducts />
-                    </RequiresAdmin>
-                  </RequiresAuth>
-                }
-              />
-              <Route
-                path="/admin/products/:product_id"
-                element={
-                  <RequiresAuth>
-                    <RequiresAdmin>
-                      <EditProduct />
-                    </RequiresAdmin>
-                  </RequiresAuth>
-                }
-              />
-              <Route
-                path="/admin/products/newproduct"
-                element={
-                  <RequiresAuth>
-                    <RequiresAdmin>
-                      <NewProduct />
-                    </RequiresAdmin>
-                  </RequiresAuth>
-                }
-              />
-            </Routes>
-          </div>
-        </>
       </>
     </Box>
   );

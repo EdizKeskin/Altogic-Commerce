@@ -25,6 +25,7 @@
         "react-slick": "^0.29.0",
         "react-tsparticles": "^2.7.1",
         "sweetalert2": "^11.7.0",
+        "tsparticles": "^2.7.1",
         "typewriter-effect": "^2.19.0",
         "web-vitals": "^3.1.1",
         "yup": "^0.32.11"
