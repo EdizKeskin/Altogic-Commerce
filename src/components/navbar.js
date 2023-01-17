@@ -364,8 +364,8 @@ function Navbar() {
               <MenuButton>
                 <Avatar src={profilePicture} />
               </MenuButton>
-              <Portal>
-                <MenuList>
+              <Portal >
+                <MenuList zIndex={"dropdown"}>
                   {admin === true && (
                     <Link to="/admin">
                       <MenuItem as={"span"}>

@@ -80,7 +80,7 @@ function Home({ products }) {
       </div>
 
       <Box display={"flex"} justifyContent={"flex-end"} px={15}>
-        <Box mr={3} data-aos="zoom-in-up" zIndex={"overlay"}>
+        <Box mr={3} data-aos="zoom-in-up" zIndex={"3"}>
           <AutoComplete rollNavigation >
             <InputGroup w={"fit-content"}>
               <InputLeftElement>
