@@ -23,15 +23,6 @@
     box-shadow: none !important;
 }
 
-.phone-input {
-    color: black;
-}
-
-.red {
-    background-color: blue;
-    width: 500px;
-}
-
 .file {
     position: absolute;
     opacity: 0;

@@ -20,6 +20,7 @@ import {
   Portal,
   MenuList,
   MenuItem,
+  Divider,
 } from "@chakra-ui/react";
 import { useBasket } from "../context/basketContext";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
@@ -397,7 +398,7 @@ function Navbar() {
                       </Button>
                     </MenuItem>
                   </Link>
-
+                  <Divider />
                   <MenuItem
                     as={"span"}
                     onClick={(event) => {
