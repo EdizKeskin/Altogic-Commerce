@@ -1,8 +1,8 @@
 import { useState } from "react";
-import SessionTable from "../../components/sessionTable/sessionTable";
+import SessionTable from "../../components/SessionTable/SessionTable";
 import { useAuth } from "../../context/authContext";
 import { Box, Button, Container, Stack } from "@chakra-ui/react";
-import ProfileNav from "../../components/profileNav";
+import ProfileNav from "../../components/ProfileNav";
 const Sessions = () => {
   const { signOutAllSessions, sessions } = useAuth();
   const [loading, setLoading] = useState(false);

@@ -31,7 +31,7 @@ import altogic from "../../../api/altogic";
 import { BsFillTrashFill } from "react-icons/bs";
 import { useParams } from "react-router-dom";
 import { getProductById } from "../../../api/storage";
-import CustomSpinner from "../../../components/spinner";
+import CustomSpinner from "../../../components/Spinner";
 
 function NewCheckbox(props) {
   return (

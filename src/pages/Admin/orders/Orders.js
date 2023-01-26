@@ -1,33 +1,23 @@
-import { Box, Button, Icon, Text } from "@chakra-ui/react";
-import { createTheme, ThemeProvider, useTheme } from "@mui/material";
-import MaterialReactTable from "material-react-table";
 import { useEffect, useMemo, useState } from "react";
-import { BsFillTrashFill } from "react-icons/bs";
-import { FaExternalLinkAlt } from "react-icons/fa";
+import { Text, Box, Button } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
+import CustomSpinner from "../../../components/Spinner";
 import altogic from "../../../api/altogic";
-import CustomSpinner from "../../../components/spinner";
+import MaterialReactTable from "material-react-table";
+import { createTheme, ThemeProvider, useTheme, Divider } from "@mui/material";
 
-function AdminProducts() {
-  const [products, setProducts] = useState(null);
-
-  const deleteProduct = async (id) => {
-    const result = await altogic.db.model("products").object(id).delete();
-    setProducts(products.filter((product) => product._id !== id));
-    console.log(result);
-  };
-
+function Orders() {
+  const [orders, setOrders] = useState(null);
   useEffect(() => {
     const getProducts = async () => {
-      const result = await altogic.db.model("products").get();
+      const result = await altogic.db.model("order").get();
 
       if (!result.errors) {
-        setProducts(result.data);
+        setOrders(result.data);
       }
     };
     getProducts();
-  }, []);
+  }, [orders]);
   const globalTheme = useTheme();
   const tableTheme = useMemo(
     () =>
@@ -87,83 +77,32 @@ function AdminProducts() {
   const columns = useMemo(
     () => [
       {
-        accessorKey: "title", //access nested data with dot notation
+        accessorKey: "email", //access nested data with dot notation
         header: "Title",
       },
       {
-        accessorKey: "price",
-        header: "Price",
+        accessorKey: "name",
+        header: "Name",
+      },
+      {
+        accessorKey: "lastName",
+        header: "Last Name",
+      },
+      {
+        accessorKey: "address",
+        header: "Address",
       },
       {
         accessorKey: "createdAt",
         header: "Created At",
         render: (createdAt) => <p>{readableCreatedAt(createdAt)}</p>,
       },
-      {
-        accessorKey: "action",
-        header: "Action",
-        Cell: ({ row }) => (
-          <>
-            <Link to={`/admin/products/${row.original._id}`}>
-              <Button
-                color="black"
-                backgroundColor={"#81E6D9"}
-                padding={"0.25rem"}
-                borderRadius={"0.375rem"}
-                marginRight={"5px"}
-              >
-                <Icon
-                  as={FaExternalLinkAlt}
-                  h={"1.25rem"}
-                  w={"1.25rem"}
-                  alignSelf={"center"}
-                />
-              </Button>
-            </Link>
-
-            <Button
-              color={"black"}
-              backgroundColor={"#F56565"}
-              padding={"0.25rem"}
-              borderRadius={"0.375rem"}
-              variant="link"
-              onClick={() => {
-                Swal.fire({
-                  title: "Are you sure?",
-                  text: "You won't be able to revert this!",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Yes, delete it!",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    deleteProduct(row.original._id);
-                    Swal.fire(
-                      "Deleted!",
-                      "Your file has been deleted.",
-                      "success"
-                    );
-                  }
-                });
-              }}
-            >
-              <Icon
-                as={BsFillTrashFill}
-                h={"1.25rem"}
-                w={"1.25rem"}
-                alignSelf={"center"}
-              />
-            </Button>
-          </>
-        ),
-      },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [products]
+    []
   );
 
-  if (products === null) {
+  if (orders === null) {
     return <CustomSpinner />;
   }
 
@@ -178,27 +117,48 @@ function AdminProducts() {
         mt={"20px"}
       >
         <Text fontSize="2xl" color={"white"}>
-          Products
+          Orders
         </Text>
         <Box display={"flex"} alignItems="center">
-          <Link to="/admin/products/newproduct">
-            <Button colorScheme={"teal"} size="md" mr={2}>
-              Add Product
-            </Button>
-          </Link>
           <Text fontSize="lg" color={"white"}>
-            Total products: {products.length}
+            Total orders: {orders.length}
           </Text>
         </Box>
       </Box>
       <ThemeProvider theme={tableTheme}>
-        {products != null && products.length > 0 && (
+        {orders != null && orders.length > 0 && (
           <MaterialReactTable
-            data={products}
+            data={orders}
             columns={columns}
+            renderDetailPanel={({ row }) => {
+              console.log(row.original);
+              return (
+                <Box>
+                  <Text fontSize={"18px"}>
+                    <b>Order Details:</b>
+                  </Text>
+                  <br />
+                  <Text>Order ID: {row.original._id}</Text>
+                  <Text>Order Date: {row.original.createdAt}</Text>
+                  <br />
+                  <Text fontSize={"18px"}>
+                    <b>Products:</b>
+                  </Text>
+                  {row.original.products.map((product) => {
+                    return (
+                      <Box key={product._id}>
+                        <Text mt={"10px"}>Product Name: {product.title}</Text>
+                        <Text mb={"10px"}>Product Price: {product.price}</Text>
+                        <Divider />
+                      </Box>
+                    );
+                  })}
+                </Box>
+              );
+            }}
             renderRowActions={(record) => (
               <>
-                <Link to={`/admin/products/${record._id}`}>
+                <Link to={`/admin/orders/${record._id}`}>
                   <Button variant="link" color="white" fontSize="sm" mr="1">
                     Edit
                   </Button>
@@ -212,4 +172,4 @@ function AdminProducts() {
   );
 }
 
-export default AdminProducts;
+export default Orders;

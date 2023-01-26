@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import altogic from "../../api/altogic";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
-import CustomSpinner from "../../components/spinner";
+import CustomSpinner from "../../components/Spinner";
 
 const AuthRedirect = () => {
   const navigate = useNavigate();

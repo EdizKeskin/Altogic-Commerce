@@ -17,10 +17,10 @@ import {
   AutoCompleteItem,
   AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
-import Header from "../components/header";
-import CustomSpinner from "../components/spinner";
-import ProductCard from "../components/productCard";
-import Footer from "../components/footer";
+import Header from "../components/Header";
+import CustomSpinner from "../components/Spinner";
+import ProductCard from "../components/ProductCard";
+import Footer from "../components/Footer";
 import React, { useState } from "react";
 import { AiOutlineCaretDown } from "react-icons/ai";
 import { useLang } from "../context/langContext";

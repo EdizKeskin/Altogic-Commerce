@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { TiTickOutline } from "react-icons/ti";
 import Form3svg from "../images/shop.svg";
-import Multistep from "./multistep/multiStep";
+import Multistep from "./Multistep/MultiStep";
 
 function BasketSidebar({ items, totalPrice }) {
   const { isOpen, onOpen, onClose } = useDisclosure();

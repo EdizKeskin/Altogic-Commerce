@@ -1,10 +1,10 @@
 import { useEffect, useState, useMemo } from "react";
 import altogic from "../../api/altogic";
-import CustomSpinner from "../../components/spinner";
+import CustomSpinner from "../../components/Spinner";
 import { Box, Container, Stack, Text } from "@chakra-ui/react";
 import MaterialReactTable from "material-react-table";
 import { createTheme, Divider, ThemeProvider, useTheme } from "@mui/material";
-import ProfileNav from "../../components/profileNav";
+import ProfileNav from "../../components/ProfileNav";
 
 export const Example = () => {
   const [orders, setOrders] = useState(null);

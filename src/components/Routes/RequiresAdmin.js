@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import CustomSpinner from "../spinner";
+import CustomSpinner from "../Spinner";
 import { useAuth } from "../../context/authContext";
 
 const RequiresAdmin = ({ children }) => {

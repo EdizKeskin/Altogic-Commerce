@@ -8,8 +8,8 @@ import {
 import React from "react";
 import { AiOutlineRight } from "react-icons/ai";
 import { Link, useParams } from "react-router-dom";
-import ProductCard from "../../components/productCard";
-import CustomSpinner from "../../components/spinner";
+import ProductCard from "../../components/ProductCard";
+import CustomSpinner from "../../components/Spinner";
 
 function Categories({ products }) {
   const { category } = useParams();

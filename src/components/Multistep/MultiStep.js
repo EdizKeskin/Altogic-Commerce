@@ -24,7 +24,7 @@ import { useToast } from "@chakra-ui/react";
 
 import { useBasket } from "../../context/basketContext";
 import { useFormik } from "formik";
-import validationSchema from "./validations";
+import validationSchema from "./Validations";
 
 export default function Multistep({ onClose, price, products }) {
   //Form1

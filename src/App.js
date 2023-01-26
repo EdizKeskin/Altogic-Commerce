@@ -9,35 +9,35 @@ import Particles from "react-tsparticles";
 import altogic from "./api/altogic";
 import { loadFull } from "tsparticles";
 
-import RequiresAdmin from "./components/routes/requiresAdmin";
-import RequiresAuth from "./components/routes/requiresAuth";
-import RequiresNotAuth from "./components/routes/requiresNotAuth";
+import RequiresAdmin from "./components/Routes/RequiresAdmin";
+import RequiresAuth from "./components/Routes/RequiresAuth";
+import RequiresNotAuth from "./components/Routes/RequiresNotAuth";
 
-import Navbar from "./components/navbar";
-import AuthRedirect from "./pages/Auth/authRedirect";
-import SignIn from "./pages/Auth/signIn";
-import SignUp from "./pages/Auth/signUp";
-import Basket from "./pages/Basket/basket";
-import Categories from "./pages/Categories/categories";
-import Detail from "./pages/ProductDetails/product";
-import Profile from "./pages/Profile/profile";
-import Sessions from "./pages/Profile/sessions";
-import Home from "./pages/home";
-import Orders from "./pages/Profile/orders";
-import CustomSpinner from "./components/spinner";
-import Adress from "./pages/Profile/adress";
+import Navbar from "./components/Navbar";
+import AuthRedirect from "./pages/Auth/AuthRedirect";
+import SignIn from "./pages/Auth/SignIn";
+import SignUp from "./pages/Auth/SignUp";
+import Basket from "./pages/Basket/Basket";
+import Categories from "./pages/Categories/Categories";
+import Detail from "./pages/ProductDetails/Product";
+import Profile from "./pages/Profile/Profile";
+import Sessions from "./pages/Profile/Sessions";
+import Home from "./pages/Home";
+import Orders from "./pages/Profile/Orders";
+import CustomSpinner from "./components/Spinner";
+import Adress from "./pages/Profile/Adress";
 
 //Lazy components
-const Verification = lazy(() => import("./pages/Auth/verification"));
-const Err404 = lazy(() => import("./pages/Err/err404"));
-const Contact = lazy(() => import("./pages/Contact/contact"));
-const AdminOrders = lazy(() => import("./pages/Admin/orders/orders"));
+const Verification = lazy(() => import("./pages/Auth/Verification"));
+const Err404 = lazy(() => import("./pages/Err/Err404"));
+const Contact = lazy(() => import("./pages/Contact/Contact"));
+const AdminOrders = lazy(() => import("./pages/Admin/orders/Orders"));
 const AdminProducts = lazy(() =>
-  import("./pages/Admin/products/adminProducts")
+  import("./pages/Admin/products/AdminProducts")
 );
-const EditProduct = lazy(() => import("./pages/Admin/editProduct/editProduct"));
-const NewProduct = lazy(() => import("./pages/Admin/newProduct/newProduct"));
-const Admin = lazy(() => import("./pages/Admin/admin"));
+const EditProduct = lazy(() => import("./pages/Admin/editProduct/EditProduct"));
+const NewProduct = lazy(() => import("./pages/Admin/newProduct/NewProduct"));
+const Admin = lazy(() => import("./pages/Admin/Admin"));
 
 function App() {
   const [products, setProducts] = useState(null);

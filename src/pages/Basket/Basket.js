@@ -12,9 +12,9 @@ import { Link } from "react-router-dom";
 import { useBasket } from "../../context/basketContext";
 //ICONS
 import { IoIosReturnLeft } from "react-icons/io";
-import BasketSidebar from "../../components/basketSidebar";
-import BasketTable from "../../components/basketTable";
-import CustomSpinner from "../../components/spinner";
+import BasketSidebar from "../../components/BasketSidebar";
+import BasketTable from "../../components/BasketTable";
+import CustomSpinner from "../../components/Spinner";
 
 function Basket({ products }) {
   const { items } = useBasket();

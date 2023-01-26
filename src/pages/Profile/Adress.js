@@ -1,6 +1,6 @@
 import { Container, Stack, Text } from "@chakra-ui/react";
 import React from "react";
-import ProfileNav from "../../components/profileNav";
+import ProfileNav from "../../components/ProfileNav";
 
 function Adress() {
   return (
@@ -13,7 +13,7 @@ function Adress() {
         borderRadius={"md"}
       >
         <ProfileNav />
-        <Text>Comming Soon</Text>
+        <Text>I am currently working on</Text>
       </Stack>
     </Container>
   );

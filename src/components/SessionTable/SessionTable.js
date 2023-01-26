@@ -1,5 +1,5 @@
 import React from "react";
-import SessionItem from "./sessionItem";
+import SessionItem from "./SessionItem";
 
 function SessionsTable(props) {
   return (

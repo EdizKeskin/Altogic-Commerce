@@ -32,10 +32,10 @@ import { BsFillBasketFill } from "react-icons/bs";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { FormattedMessage } from "react-intl";
 import { Link, useParams } from "react-router-dom";
-import CustomSpinner from "../../components/spinner";
+import CustomSpinner from "../../components/Spinner";
 import { motion } from "framer-motion";
-import Multistep from "../../components/multistep/multiStep";
-import Coursel from "../../components/coursel";
+import Multistep from "../../components/Multistep/MultiStep";
+import Coursel from "../../components/Coursel";
 import { useBasket } from "../../context/basketContext";
 
 function Product({ products }) {

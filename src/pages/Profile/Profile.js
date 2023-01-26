@@ -23,7 +23,7 @@ import {
 } from "../../api/storage";
 import altogic from "../../api/altogic";
 import { useAuth } from "../../context/authContext";
-import ProfileNav from "../../components/profileNav";
+import ProfileNav from "../../components/ProfileNav";
 
 function Profile() {
   const toast = useToast();
