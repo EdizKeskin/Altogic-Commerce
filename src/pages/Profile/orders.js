@@ -1,9 +1,10 @@
 import { useEffect, useState, useMemo } from "react";
 import altogic from "../../api/altogic";
 import CustomSpinner from "../../components/spinner";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Container, Stack, Text } from "@chakra-ui/react";
 import MaterialReactTable from "material-react-table";
 import { createTheme, Divider, ThemeProvider, useTheme } from "@mui/material";
+import ProfileNav from "../../components/profileNav";
 
 export const Example = () => {
   const [orders, setOrders] = useState(null);
@@ -18,7 +19,6 @@ export const Example = () => {
   }, [userId]);
 
   const columns = useMemo(
-    //column definitions...
     () => [
       {
         accessorKey: "fullName",
@@ -93,48 +93,66 @@ export const Example = () => {
     [globalTheme]
   );
 
-  if (orders === null) return <CustomSpinner />;
-
   return (
-    <ThemeProvider theme={tableTheme}>
-      <MaterialReactTable
-        columns={columns}
-        data={orders}
-        enableColumnActions={false}
-        enableColumnFilters={false}
-        enablePagination={false}
-        enableSorting={false}
-        enableBottomToolbar={false}
-        enableTopToolbar={false}
-        muiTableBodyRowProps={{ hover: false }}
-        renderDetailPanel={({ row }) => {
-          console.log(row.original);
-          return (
-            <Box>
-              <Text fontSize={"18px"}>
-                <b>Order Details:</b>
-              </Text>
-              <br />
-              <Text>Order ID: {row.original._id}</Text>
-              <Text>Order Date: {row.original.createdAt}</Text>
-              <br />
-              <Text fontSize={"18px"}>
-                <b>Products:</b>
-              </Text>
-              {row.original.products.map((product) => {
-                return (
-                  <Box key={product._id}>
-                    <Text mt={"10px"}>Product Name: {product.title}</Text>
-                    <Text mb={"10px"}>Product Price: {product.price}</Text>
-                    <Divider />
-                  </Box>
-                );
-              })}
-            </Box>
-          );
-        }}
-      />
-    </ThemeProvider>
+    <>
+      <Container maxW={"7xl"} mt={10}>
+        <Stack
+          bg={"gray.800"}
+          spacing={{ base: 8, md: 10 }}
+          py={{ base: 10, md: 12 }}
+          direction={{ base: "column", md: "row" }}
+          borderRadius={"md"}
+        >
+          <ProfileNav />
+          {orders === null ? (
+            <CustomSpinner />
+          ) : (
+            <ThemeProvider theme={tableTheme}>
+              <MaterialReactTable
+                columns={columns}
+                data={orders}
+                enableColumnActions={false}
+                enableColumnFilters={false}
+                enablePagination={false}
+                enableSorting={false}
+                enableBottomToolbar={false}
+                enableTopToolbar={false}
+                muiTableBodyRowProps={{ hover: false }}
+                renderDetailPanel={({ row }) => {
+                  return (
+                    <Box>
+                      <Text fontSize={"18px"}>
+                        <b>Order Details:</b>
+                      </Text>
+                      <br />
+                      <Text>Order ID: {row.original._id}</Text>
+                      <Text>Order Date: {row.original.createdAt}</Text>
+                      <br />
+                      <Text fontSize={"18px"}>
+                        <b>Products:</b>
+                      </Text>
+                      {row.original.products.map((product) => {
+                        return (
+                          <Box key={product._id}>
+                            <Text mt={"10px"}>
+                              Product Name: {product.title}
+                            </Text>
+                            <Text mb={"10px"}>
+                              Product Price: {product.price}
+                            </Text>
+                            <Divider />
+                          </Box>
+                        );
+                      })}
+                    </Box>
+                  );
+                }}
+              />
+            </ThemeProvider>
+          )}
+        </Stack>
+      </Container>
+    </>
   );
 };
 

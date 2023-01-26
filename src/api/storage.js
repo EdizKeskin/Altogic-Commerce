@@ -53,6 +53,17 @@ export const deleteProfilePictureFieldOnDatabase = async () => {
   }
 };
 
+export const updateName = async (name) => {
+  try {
+    return await altogic.db
+      .model("users")
+      .object(altogic.auth.getUser()._id)
+      .update({ name });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const updateUser = async () => {
   try {
     const resp = await altogic.auth.getUserFromDB();

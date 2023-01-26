@@ -25,6 +25,7 @@ import Sessions from "./pages/Profile/sessions";
 import Home from "./pages/home";
 import Orders from "./pages/Profile/orders";
 import CustomSpinner from "./components/spinner";
+import Adress from "./pages/Profile/adress";
 
 //Lazy components
 const Verification = lazy(() => import("./pages/Auth/verification"));
@@ -71,8 +72,7 @@ function App() {
           <div>
             <Navbar />
             <Suspense fallback={<CustomSpinner />}>
-            <Routes>
-              
+              <Routes>
                 <Route path="*" element={<Err404 />} />
                 <Route path="/" element={<Home products={products} />} />
                 <Route
@@ -114,6 +114,14 @@ function App() {
                   element={
                     <RequiresAuth>
                       <Profile />
+                    </RequiresAuth>
+                  }
+                />
+                <Route
+                  path="/adress"
+                  element={
+                    <RequiresAuth>
+                      <Adress />
                     </RequiresAuth>
                   }
                 />
@@ -191,8 +199,7 @@ function App() {
                     </RequiresAuth>
                   }
                 />
-              
-            </Routes>
+              </Routes>
             </Suspense>
           </div>
         </>

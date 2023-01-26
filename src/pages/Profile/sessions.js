@@ -1,7 +1,8 @@
 import { useState } from "react";
 import SessionTable from "../../components/sessionTable/sessionTable";
 import { useAuth } from "../../context/authContext";
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Container, Stack } from "@chakra-ui/react";
+import ProfileNav from "../../components/profileNav";
 const Sessions = () => {
   const { signOutAllSessions, sessions } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -14,40 +15,47 @@ const Sessions = () => {
   };
 
   return (
-    <Box display={"grid"}>
-      <Box
-        m={"auto"}
-        minW={"fit-content"}
-        borderRadius={"md"}
-        shadow={"lg"}
-        mt={10}
+    <Container maxW={"7xl"} mt={10}>
+      <Stack
         bg={"gray.800"}
-        mb={10}
-        mx={{ base: 3, md: "auto" }}
+        spacing={{ base: 8, md: 10 }}
+        py={{ base: 10, md: 12 }}
+        direction={{ base: "column", md: "row" }}
+        borderRadius={"md"}
       >
-        <Box
-          border={"1px solid"}
-          borderColor={"gray.200"}
-          overflowX={"auto"}
-          m={"auto"}
-          minW={"fit-content"}
-          borderRadius={"md"}
-        >
-          {sessions !== null ? <SessionTable sessions={sessions} /> : <></>}
-          <Box textAlign={"center"}>
-            <Button
-              isLoading={loading}
-              onClick={signOutAll}
-              colorScheme={"teal"}
-              variant={"solid"}
-              my={4}
+        <ProfileNav />
+        <Box display={"grid"}>
+          <Box
+            m={"auto"}
+            minW={"fit-content"}
+            borderRadius={"md"}
+            mb={10}
+            mx={{ base: 3, md: "auto" }}
+          >
+            <Box
+              borderColor={"gray.200"}
+              overflowX={"auto"}
+              m={"auto"}
+              minW={"fit-content"}
+              borderRadius={"md"}
             >
-              Sign Out From All Sessions
-            </Button>
+              {sessions !== null ? <SessionTable sessions={sessions} /> : <></>}
+              <Box textAlign={"center"}>
+                <Button
+                  isLoading={loading}
+                  onClick={signOutAll}
+                  colorScheme={"teal"}
+                  variant={"solid"}
+                  my={4}
+                >
+                  Sign Out From All Sessions
+                </Button>
+              </Box>
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </Box>
+      </Stack>
+    </Container>
   );
 };
 export default Sessions;
