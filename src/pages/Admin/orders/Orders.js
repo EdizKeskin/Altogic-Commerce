@@ -5,6 +5,7 @@ import CustomSpinner from "../../../components/Spinner";
 import altogic from "../../../api/altogic";
 import MaterialReactTable from "material-react-table";
 import { createTheme, ThemeProvider, useTheme, Divider } from "@mui/material";
+import { formatPrice } from "../../../api/storage";
 
 function Orders() {
   const [orders, setOrders] = useState(null);
@@ -148,7 +149,7 @@ function Orders() {
                     return (
                       <Box key={product._id}>
                         <Text mt={"10px"}>Product Name: {product.title}</Text>
-                        <Text mb={"10px"}>Product Price: {product.price}</Text>
+                        <Text mb={"10px"}>Product Price: {formatPrice(product.price)}</Text>
                         <Divider />
                       </Box>
                     );

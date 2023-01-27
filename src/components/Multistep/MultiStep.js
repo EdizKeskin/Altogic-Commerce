@@ -25,6 +25,7 @@ import { useToast } from "@chakra-ui/react";
 import { useBasket } from "../../context/basketContext";
 import { useFormik } from "formik";
 import validationSchema from "./Validations";
+import { formatPrice } from "../../api/storage";
 
 export default function Multistep({ onClose, price, products }) {
   //Form1
@@ -398,7 +399,7 @@ export default function Multistep({ onClose, price, products }) {
                     fontWeight={"bold"}
                     textAlign={"right"}
                   >
-                    {price} ₺
+                    {formatPrice(price)}
                   </Text>
                 </Flex>
                 <Flex alignItems={"flex-end"} justifyContent={"flex-end"}>

@@ -14,6 +14,7 @@ import {
 import { BsBoxArrowUpRight, BsFillTrashFill } from "react-icons/bs";
 import { useBasket } from "../context/basketContext";
 import { Link } from "react-router-dom";
+import { formatPrice } from "../api/storage";
 
 function BasketTable({products}) {
   const { items, removeFromBasket, setNotification, notification } =
@@ -86,11 +87,11 @@ function BasketTable({products}) {
                     mr={2}
                     textDecoration={"line-through"}
                   >
-                    {item.price} ₺
+                    {formatPrice(item.price)}
                   </Text>
                 )}
                 <Text as="span" fontSize={"xl"} fontWeight={"bold"}>
-                  {item.discountedPrice ? item.discountedPrice : item.price} ₺
+                  {formatPrice(item.discountedPrice) ? formatPrice(item.discountedPrice) : formatPrice(item.price)}
                 </Text>
                 </Box>
                 <Flex

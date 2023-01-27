@@ -37,6 +37,7 @@ import { motion } from "framer-motion";
 import Multistep from "../../components/Multistep/MultiStep";
 import Coursel from "../../components/Coursel";
 import { useBasket } from "../../context/basketContext";
+import { formatPrice } from "../../api/storage";
 
 function Product({ products }) {
   const { addToBasket, items } = useBasket();
@@ -135,14 +136,13 @@ function Product({ products }) {
                   textDecoration={"line-through"}
                   mr={"3"}
                 >
-                  {product.price} ₺
+                  {formatPrice(product.price)} 
                 </Text>
               )}
               <Text color={"gray.400"} fontSize={"2xl"} fontWeight={"bold"}>
                 {product.discountedPrice
-                  ? product.discountedPrice
-                  : product.price}{" "}
-                ₺
+                  ? formatPrice(product.discountedPrice)
+                  : formatPrice(product.price)}{" "}
               </Text>
             </Box>
           </Box>

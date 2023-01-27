@@ -14,6 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useBasket } from "../context/basketContext";
 import { BsFillBasketFill } from "react-icons/bs";
 import { useLang } from "../context/langContext";
+import { formatPrice } from "../api/storage";
 
 function ProductCard({ item }) {
   const { addToBasket, items, notification, setNotification } = useBasket();
@@ -127,7 +128,7 @@ function ProductCard({ item }) {
                     mr={2}
                     textDecoration={"line-through"}
                   >
-                    {item.price} ₺
+                    {formatPrice(item.price)} 
                   </Text>
                 )}
                 <Text
@@ -138,7 +139,7 @@ function ProductCard({ item }) {
                     color: "gray.200",
                   }}
                 >
-                  {item.discountedPrice ? item.discountedPrice : item.price} ₺
+                  {formatPrice(item.discountedPrice) ? formatPrice(item.discountedPrice) : formatPrice(item.price)}
                 </Text>
               </Box>
               <Flex flexDirection={"row"} ml="-0.8">

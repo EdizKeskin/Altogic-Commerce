@@ -72,7 +72,6 @@ function Home({ products }) {
     }
   });
 
-
   return (
     <Box minh="100vh">
       <div data-aos="fade-up">
@@ -81,7 +80,7 @@ function Home({ products }) {
 
       <Box display={"flex"} justifyContent={"flex-end"} px={15}>
         <Box mr={3} data-aos="zoom-in-up" zIndex={"3"}>
-          <AutoComplete rollNavigation >
+          <AutoComplete rollNavigation>
             <InputGroup w={"fit-content"}>
               <InputLeftElement>
                 <FaSearch />

@@ -7,6 +7,7 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import altogic from "../../../api/altogic";
+import { formatPrice } from "../../../api/storage";
 import CustomSpinner from "../../../components/Spinner";
 
 function AdminProducts() {
@@ -93,6 +94,7 @@ function AdminProducts() {
       {
         accessorKey: "price",
         header: "Price",
+        render: (price) => <p>{formatPrice(price)}</p>,
       },
       {
         accessorKey: "createdAt",

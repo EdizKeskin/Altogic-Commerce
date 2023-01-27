@@ -100,3 +100,12 @@ export const getProductById = async (id) => {
     console.error(error);
   }
 }
+
+export function formatPrice(number) {
+  return new Intl.NumberFormat('en-EN', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(number);
+}

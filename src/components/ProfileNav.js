@@ -67,7 +67,6 @@ function ProfileNav() {
       ))}
 
       <Accordion
-        defaultIndex={[0]}
         allowMultiple
         borderTop={"none"}
         display={{ base: "block", md: "none" }}

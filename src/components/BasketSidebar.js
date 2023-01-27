@@ -12,6 +12,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { TiTickOutline } from "react-icons/ti";
+import { formatPrice } from "../api/storage";
 import Form3svg from "../images/shop.svg";
 import Multistep from "./Multistep/MultiStep";
 
@@ -39,7 +40,7 @@ function BasketSidebar({ items, totalPrice }) {
           textAlign="center"
           color={useColorModeValue("black", "white")}
         >
-          {totalPrice} ₺
+          {formatPrice(totalPrice)}
         </Text>
         <Button
           colorScheme="green"

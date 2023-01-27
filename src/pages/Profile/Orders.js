@@ -5,6 +5,7 @@ import { Box, Container, Stack, Text } from "@chakra-ui/react";
 import MaterialReactTable from "material-react-table";
 import { createTheme, Divider, ThemeProvider, useTheme } from "@mui/material";
 import ProfileNav from "../../components/ProfileNav";
+import { formatPrice } from "../../api/storage";
 
 export const Example = () => {
   const [orders, setOrders] = useState(null);
@@ -107,6 +108,7 @@ export const Example = () => {
           {orders === null ? (
             <CustomSpinner />
           ) : (
+            <Box w={"100%"}>
             <ThemeProvider theme={tableTheme}>
               <MaterialReactTable
                 columns={columns}
@@ -138,7 +140,7 @@ export const Example = () => {
                               Product Name: {product.title}
                             </Text>
                             <Text mb={"10px"}>
-                              Product Price: {product.price}
+                              Product Price: {formatPrice(product.price)}
                             </Text>
                             <Divider />
                           </Box>
@@ -149,6 +151,7 @@ export const Example = () => {
                 }}
               />
             </ThemeProvider>
+            </Box>
           )}
         </Stack>
       </Container>
