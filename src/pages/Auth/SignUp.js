@@ -17,6 +17,7 @@ import {
   Text,
   InputRightElement,
   InputGroup,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import altogic from "../../api/altogic";
 import { FaDiscord, FaGithub, FaGoogle } from "react-icons/fa";
@@ -149,7 +150,11 @@ function SignUp() {
               >
                 <Stack spacing={4}>
                   <form onSubmit={handleSubmit}>
-                    <FormControl id="name">
+                    <FormControl
+                      id="name"
+                      isRequired
+                      isInvalid={touched.name && errors.name}
+                    >
                       <FormLabel>Username</FormLabel>
                       <Input
                         type="text"
@@ -160,20 +165,16 @@ function SignUp() {
                         isInvalid={touched.name && errors.name}
                         placeholder="Enter your username"
                       />
+
+                      <FormErrorMessage>{errors.name}</FormErrorMessage>
                     </FormControl>
-                    {touched.name && errors.name && (
-                      <Alert
-                        status="error"
-                        color="white"
-                        bgColor="red.600"
-                        borderRadius="lg"
-                        my="3"
-                      >
-                        <AlertIcon color="red.900" />
-                        {errors.name}
-                      </Alert>
-                    )}
-                    <FormControl id="email" mt={3}>
+
+                    <FormControl
+                      id="email"
+                      mt={3}
+                      isRequired
+                      isInvalid={touched.email && errors.email}
+                    >
                       <FormLabel>Email address</FormLabel>
                       <Input
                         type="email"
@@ -184,20 +185,14 @@ function SignUp() {
                         isInvalid={touched.email && errors.email}
                         placeholder="Enter your email"
                       />
+                      <FormErrorMessage>{errors.email}</FormErrorMessage>
                     </FormControl>
-                    {touched.email && errors.email && (
-                      <Alert
-                        status="error"
-                        color="white"
-                        bgColor="red.600"
-                        borderRadius="lg"
-                        my="3"
-                      >
-                        <AlertIcon color="red.900" />
-                        {errors.email}
-                      </Alert>
-                    )}
-                    <FormControl id="password" mt={3}>
+                    <FormControl
+                      id="password"
+                      mt={3}
+                      isRequired
+                      isInvalid={touched.password && errors.password}
+                    >
                       <FormLabel>Password</FormLabel>
                       <InputGroup>
                         <Input
@@ -224,20 +219,16 @@ function SignUp() {
                           />
                         </InputRightElement>
                       </InputGroup>
+                      <FormErrorMessage>{errors.password}</FormErrorMessage>
                     </FormControl>
-                    {touched.password && errors.password && (
-                      <Alert
-                        status="error"
-                        color="white"
-                        bgColor="red.600"
-                        borderRadius="lg"
-                        my="3"
-                      >
-                        <AlertIcon color="red.900" />
-                        {errors.password}
-                      </Alert>
-                    )}
-                    <FormControl id="passwordConfirm" mt={1}>
+                    <FormControl
+                      id="passwordConfirm"
+                      mt={1}
+                      isRequired
+                      isInvalid={
+                        touched.passwordConfirm && errors.passwordConfirm
+                      }
+                    >
                       <FormLabel>Password Confirm</FormLabel>
                       <InputGroup>
                         <Input
@@ -266,19 +257,8 @@ function SignUp() {
                           />
                         </InputRightElement>
                       </InputGroup>
+                      <FormErrorMessage>{errors.password}</FormErrorMessage>
                     </FormControl>
-                    {touched.passwordConfirm && errors.passwordConfirm && (
-                      <Alert
-                        status="error"
-                        color="white"
-                        bgColor="red.600"
-                        borderRadius="lg"
-                        my="3"
-                      >
-                        <AlertIcon color="red.900" />
-                        {errors.passwordConfirm}
-                      </Alert>
-                    )}
                     <Stack spacing={10}>
                       <Flex direction="column">
                         <Button

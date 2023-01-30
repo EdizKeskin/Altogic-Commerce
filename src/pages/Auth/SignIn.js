@@ -17,6 +17,7 @@ import {
   ButtonGroup,
   InputRightElement,
   InputGroup,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import altogic from "../../api/altogic";
 import { FaDiscord, FaGithub, FaGoogle } from "react-icons/fa";
@@ -134,7 +135,12 @@ function SignIn() {
               >
                 <Stack spacing={4}>
                   <form onSubmit={handleSubmit}>
-                    <FormControl id="email" mt={3}>
+                    <FormControl
+                      isRequired
+                      isInvalid={touched.email && errors.email}
+                      id="email"
+                      mt={3}
+                    >
                       <FormLabel>Email address</FormLabel>
                       <Input
                         type="email"
@@ -145,20 +151,14 @@ function SignIn() {
                         isInvalid={touched.email && errors.email}
                         placeholder="Enter your email"
                       />
+                      <FormErrorMessage>{errors.email}</FormErrorMessage>
                     </FormControl>
-                    {touched.email && errors.email && (
-                      <Alert
-                        status="error"
-                        color="white"
-                        bgColor="red.600"
-                        borderRadius="lg"
-                        my="3"
-                      >
-                        <AlertIcon color="red.900" />
-                        {errors.email}
-                      </Alert>
-                    )}
-                    <FormControl id="password" mt={3}>
+                    <FormControl
+                      id="password"
+                      mt={3}
+                      isRequired
+                      isInvalid={touched.password && errors.password}
+                    >
                       <FormLabel>Password</FormLabel>
                       <InputGroup>
                         <Input
@@ -185,19 +185,8 @@ function SignIn() {
                           />
                         </InputRightElement>
                       </InputGroup>
+                      <FormErrorMessage>{errors.password}</FormErrorMessage>
                     </FormControl>
-                    {touched.password && errors.password && (
-                      <Alert
-                        status="error"
-                        color="white"
-                        bgColor="red.600"
-                        borderRadius="lg"
-                        my="3"
-                      >
-                        <AlertIcon color="red.900" />
-                        {errors.password}
-                      </Alert>
-                    )}
                     <Stack spacing={10}>
                       <Flex direction="column">
                         <Button

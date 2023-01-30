@@ -12,7 +12,6 @@ import {
   FormLabel,
   Input,
   Switch,
-  useColorMode,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import {
@@ -34,7 +33,6 @@ function Profile() {
   const [name, setName] = useState(altogic.auth.getUser().name);
   const [loading, setLoading] = useState(false);
   const [removeLoading, setRemoveLoading] = useState(false);
-  const { colorMode } = useColorMode();
   const { animations, setAnimations } = usePreferences();
 
   const handleFileSelect = async (event) => {
@@ -121,6 +119,11 @@ function Profile() {
     }
     setLoading(false);
   };
+
+  const animationsHandler = async (event) => {
+    setAnimations(event.target.checked);
+  };
+
 
   return (
     <Container maxW={"7xl"} mt={10}>
@@ -293,7 +296,7 @@ function Profile() {
                   <Box display={"flex"} alignItems={"center"}>
                     <Text mr={2}>Off</Text>
                     <Switch
-                      isChecked={colorMode === "dark" ? true : false}
+                      isChecked={true}
                       isDisabled
                     />
                     <Text ml={2}>On</Text>
@@ -311,7 +314,7 @@ function Profile() {
                     <Text mr={2}>Off</Text>
                     <Switch
                       isChecked={animations}
-                      onChange={() => setAnimations(!animations)}
+                      onChange={animationsHandler}
                     />
                     <Text ml={2}>On</Text>
                   </Box>
