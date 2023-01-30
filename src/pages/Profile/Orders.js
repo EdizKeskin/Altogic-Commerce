@@ -22,7 +22,7 @@ export const Example = () => {
   const columns = useMemo(
     () => [
       {
-        accessorKey: "fullName",
+        accessorKey: "name",
         header: "Name",
       },
       {

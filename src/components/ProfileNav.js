@@ -34,9 +34,9 @@ function ProfileNav() {
       path: "/orders",
     },
     {
-      name: "Adress",
+      name: "Address",
       icon: <IoLocationOutline />,
-      path: "/adress",
+      path: "/address",
     },
   ];
 

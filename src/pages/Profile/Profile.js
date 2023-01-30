@@ -80,7 +80,7 @@ function Profile() {
     if (resp.errors === null) {
       await deleteProfilePictureFieldOnDatabase();
       await updateUser();
-      setProfilePicture(require("../../images/pp_blank.png"));
+      setProfilePicture(require("../../assets/pp_blank.png"));
       toast({
         title: "Profile picture removed",
         status: "success",
@@ -139,7 +139,7 @@ function Profile() {
           <Box p={6} textAlign={"center"}>
             <Flex flexDirection={{ base: "column", md: "row" }}>
               <Box>
-                {profilePicture === require("../../images/pp_blank.png") ? (
+                {profilePicture === require("../../assets/pp_blank.png") ? (
                   <Avatar
                     size={"xl"}
                     src={profilePicture}
@@ -190,7 +190,7 @@ function Profile() {
                     altogic.auth.getUser().provider.slice(1)}
                 </Text>
                 <Stack spacing={4}>
-                  {profilePicture === require("../../images/pp_blank.png") ? (
+                  {profilePicture === require("../../assets/pp_blank.png") ? (
                     <Button
                       px={4}
                       py={2}

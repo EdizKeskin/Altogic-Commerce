@@ -13,7 +13,7 @@ const AuthenticationProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
   const [admin, setAdmin] = useState();
   const [profilePicture, setProfilePicture] = useState(
-    require("../images/pp_blank.png")
+    require("../assets/pp_blank.png")
   );
 
   let navigate = useNavigate();

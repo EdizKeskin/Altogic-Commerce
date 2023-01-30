@@ -26,7 +26,7 @@ const Profile = lazy(() => import('./pages/Profile/Profile'));
 const Sessions = lazy(() => import('./pages/Profile/Sessions'));
 const Home = lazy(() => import('./pages/Home'));
 const Orders = lazy(() => import('./pages/Profile/Orders'));
-const Adress = lazy(() => import('./pages/Profile/Adress'));
+const Address = lazy(() => import('./pages/Profile/Address'));
 const Verification = lazy(() => import("./pages/Auth/Verification"));
 const Err404 = lazy(() => import("./pages/Err/Err404"));
 const Contact = lazy(() => import("./pages/Contact/Contact"));
@@ -118,10 +118,10 @@ function App() {
                   }
                 />
                 <Route
-                  path="/adress"
+                  path="/address"
                   element={
                     <RequiresAuth>
-                      <Adress />
+                      <Address />
                     </RequiresAuth>
                   }
                 />

@@ -64,6 +64,21 @@ export const updateName = async (name) => {
   }
 };
 
+export const updateAddress = async (address) => {
+  try {
+    return await altogic.db
+      .model("users")
+      .object(altogic.auth.getUser()._id)
+      .update({ address: {
+        country: address.country,
+        city: address.city,
+        address: address.address,
+      } });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const updateUser = async () => {
   try {
     const resp = await altogic.auth.getUserFromDB();

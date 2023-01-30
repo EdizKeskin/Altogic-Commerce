@@ -13,8 +13,8 @@ import {
 } from "@chakra-ui/react";
 import { TiTickOutline } from "react-icons/ti";
 import { formatPrice } from "../api/storage";
-import Form3svg from "../images/shop.svg";
-import Multistep from "./Multistep/MultiStep";
+import Form3svg from "../assets/shop.svg";
+import Checkout from "./Checkout";
 
 function BasketSidebar({ items, totalPrice }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -54,10 +54,10 @@ function BasketSidebar({ items, totalPrice }) {
       </Flex>
       <Modal size={"2xl"} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay backdropFilter="blur(10px) hue-rotate(20deg)" />
-        <ModalContent>
+        <ModalContent w={"90%"}>
           <ModalCloseButton />
           <ModalBody>
-            <Multistep onClose={onClose} price={totalPrice} products={items} />
+            <Checkout onClose={onClose} price={totalPrice} products={items} />
           </ModalBody>
         </ModalContent>
       </Modal>

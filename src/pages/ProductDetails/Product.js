@@ -34,7 +34,7 @@ import { FormattedMessage } from "react-intl";
 import { Link, useParams } from "react-router-dom";
 import CustomSpinner from "../../components/Spinner";
 import { motion } from "framer-motion";
-import Multistep from "../../components/Multistep/MultiStep";
+import Checkout from "../../components/Checkout";
 import Coursel from "../../components/Coursel";
 import { useBasket } from "../../context/basketContext";
 import { formatPrice } from "../../api/storage";
@@ -266,10 +266,10 @@ function Product({ products }) {
           </Button>
           <Modal size={"2xl"} isOpen={isOpen} onClose={onClose}>
             <ModalOverlay backdropFilter="blur(10px) hue-rotate(20deg)" />
-            <ModalContent>
+            <ModalContent w={"90%"}>
               <ModalCloseButton />
-              <ModalBody>
-                <Multistep
+              <ModalBody >
+                <Checkout
                   onClose={onClose}
                   price={product.discountedPrice}
                   products={arrayProduct}
