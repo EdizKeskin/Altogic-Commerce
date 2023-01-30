@@ -6,7 +6,7 @@ const PreferencesContext = createContext();
 
 export const LangProvider = ({ children }) => {
   const [lang, setLang] = useState(localStorage.getItem("lang") || "tr-TR");
-  const [animations, setAnimations] = useState(true);
+  const [animations, setAnimations] = useState(localStorage.getItem("animations") || true);
 
   useEffect(() => {
     localStorage.setItem("lang", lang);
