@@ -28,7 +28,7 @@ function BasketSidebar({ items, totalPrice }) {
       alignItems="center"
       flexDirection={"column"}
     >
-      <Image src={Form3svg} display={{ base: "none", md: "block" }} />
+      <Image src={Form3svg} display={{ base: "none", md: "block" }} loading={"lazy"}/>
       <Flex
         flexDirection={"row"}
         justifyContent="space-between"

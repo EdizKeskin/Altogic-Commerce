@@ -172,7 +172,7 @@ export default function Multistep({ onClose, price, products }) {
                   />
                 </FormControl>
               </div>
-              <Image src={Form1svg} display={{ base: "none", md: "block" }} />
+              <Image src={Form1svg} display={{ base: "none", md: "block" }} loading={"lazy"}/>
             </SimpleGrid>
           </>
         ) : step === 2 ? (
@@ -318,7 +318,7 @@ export default function Multistep({ onClose, price, products }) {
                 justifyContent="center"
                 flexDirection={"column"}
               >
-                <Image src={Form3svg} display={{ base: "none", md: "block" }} />
+                <Image src={Form3svg} display={{ base: "none", md: "block" }} loading={"lazy"}/>
               </Flex>
             </SimpleGrid>
           </>

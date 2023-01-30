@@ -73,6 +73,7 @@ function BasketTable({products}) {
                     src={item.images[0]}
                     objectFit="cover"
                     boxSize="90px"
+                    loading={"lazy"}
                   />
                 </Link>
                 <Text as={"span"} fontSize={"xl"} fontWeight={"extrabold"}>
