@@ -16,7 +16,6 @@ import { Link, useLocation } from "react-router-dom";
 
 function ProfileNav() {
   const location = useLocation().pathname;
-  console.log(location);
 
   const buttonList = [
     {

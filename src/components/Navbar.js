@@ -10,7 +10,6 @@ import {
   useBreakpointValue,
   useDisclosure,
   ButtonGroup,
-  useColorMode,
   useColorModeValue,
   Tooltip,
   Icon,
@@ -23,11 +22,10 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import { useBasket } from "../context/basketContext";
-import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
 import { ImEarth } from "react-icons/im";
-import { useLang } from "../context/langContext";
+import { usePreferences } from "../context/preferencesContext";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/authContext";
@@ -90,9 +88,8 @@ const DesktopNav = () => {
 };
 
 const MobileNav = () => {
-  const { lang, setLang } = useLang();
+  const { lang, setLang } = usePreferences();
   const btnColor = useColorModeValue("white.50", "gray.600");
-  const { colorMode, toggleColorMode } = useColorMode();
   const langBtnHandler = () => {
     if (lang === "tr-TR") {
       setLang("en-US");
@@ -187,23 +184,6 @@ const MobileNav = () => {
             />
           </motion.div>
         </Tooltip>
-        <Tooltip
-          hasArrow
-          label={colorMode === "light" ? "Dark Mode" : "Light Mode"}
-          bg="gray.300"
-          color="black"
-          borderRadius={"md"}
-        >
-          <motion.div whileTap={{ scale: 0.8 }}>
-            <IconButton
-              onClick={toggleColorMode}
-              bgColor={btnColor}
-              icon={
-                colorMode === "light" ? <BsFillMoonFill /> : <BsFillSunFill />
-              }
-            />
-          </motion.div>
-        </Tooltip>
       </ButtonGroup>
     </Stack>
   );
@@ -214,10 +194,10 @@ function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
   const { isAuth, signOutCurrentSession, admin } = useAuth();
   const size = useBreakpointValue({ base: "sm", sm: "md" });
-  const { lang, setLang } = useLang();
+  const { lang, setLang } = usePreferences();
   const btnColor = useColorModeValue("white.50", "gray.600");
-  const { colorMode, toggleColorMode } = useColorMode();
   const { profilePicture } = useAuth();
+  const { animations } = usePreferences();
 
   const langBtnHandler = () => {
     if (lang === "tr-TR") {
@@ -228,7 +208,7 @@ function Navbar() {
   };
 
   return (
-    <Box data-aos="fade-down">
+    <Box data-aos={animations === true ? "fade-down" : "none"}>
       <Flex
         bg="gray.800"
         color="white"
@@ -294,7 +274,7 @@ function Navbar() {
             display={{ base: "none", lg: "inline-flex" }}
             size="sm"
             zIndex={"overlay"}
-            data-aos="fade-down"
+            data-aos={animations === true ? "fade-down" : "none"}
           >
             <Tooltip
               hasArrow
@@ -308,27 +288,6 @@ function Navbar() {
                   icon={<ImEarth />}
                   onClick={langBtnHandler}
                   bgColor={btnColor}
-                />
-              </motion.div>
-            </Tooltip>
-            <Tooltip
-              hasArrow
-              label={colorMode === "light" ? "Dark Mode" : "Light Mode"}
-              bg="gray.300"
-              color="black"
-              borderRadius={"md"}
-            >
-              <motion.div whileTap={{ scale: 0.8 }}>
-                <IconButton
-                  onClick={toggleColorMode}
-                  bgColor={btnColor}
-                  icon={
-                    colorMode === "light" ? (
-                      <BsFillMoonFill />
-                    ) : (
-                      <BsFillSunFill />
-                    )
-                  }
                 />
               </motion.div>
             </Tooltip>
@@ -365,7 +324,7 @@ function Navbar() {
               <MenuButton>
                 <Avatar src={profilePicture} />
               </MenuButton>
-              <Portal >
+              <Portal>
                 <MenuList zIndex={"dropdown"}>
                   {admin === true && (
                     <Link to="/admin">

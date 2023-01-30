@@ -13,12 +13,12 @@ import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { useBasket } from "../context/basketContext";
 import { BsFillBasketFill } from "react-icons/bs";
-import { useLang } from "../context/langContext";
+import { usePreferences } from "../context/preferencesContext";
 import { formatPrice } from "../api/storage";
 
 function ProductCard({ item }) {
   const { addToBasket, items, notification, setNotification } = useBasket();
-  const { lang } = useLang();
+  const { lang } = usePreferences();
   const toast = useToast();
   const Navigate = useNavigate();
 

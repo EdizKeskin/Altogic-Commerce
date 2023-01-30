@@ -23,15 +23,16 @@ import ProductCard from "../components/ProductCard";
 import Footer from "../components/Footer";
 import React, { useState } from "react";
 import { AiOutlineCaretDown } from "react-icons/ai";
-import { useLang } from "../context/langContext";
+import { usePreferences } from "../context/preferencesContext";
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 
 function Home({ products }) {
-  const { lang } = useLang();
+  const { lang } = usePreferences();
   const [searchText, setSearchText] = useState("");
   const [sort, setSort] = useState("createdAt");
   const [sortType, setSortType] = useState("desc");
+  const { animations } = usePreferences();
 
   if (products === null) return <CustomSpinner />;
 
@@ -74,12 +75,16 @@ function Home({ products }) {
 
   return (
     <Box minh="100vh">
-      <div data-aos="fade-up">
+      <div data-aos={animations === true ? "fade-up" : "none"}>
         <Header />
       </div>
 
       <Box display={"flex"} justifyContent={"flex-end"} px={15}>
-        <Box mr={3} data-aos="zoom-in-up" zIndex={"3"}>
+        <Box
+          mr={3}
+          data-aos={animations === true ? "zoom-in-up" : "none"}
+          zIndex={"3"}
+        >
           <AutoComplete rollNavigation>
             <InputGroup w={"fit-content"}>
               <InputLeftElement>
@@ -121,7 +126,7 @@ function Home({ products }) {
             as={Button}
             rightIcon={<AiOutlineCaretDown />}
             bg={"gray.700"}
-            data-aos="zoom-in-up"
+            data-aos={animations === true ? "zoom-in-up" : "none"}
           >
             {sort === "price" && sortType === "desc" && decreasingByPrice}
             {sort === "price" && sortType === "asc" && increasingByPrice}
@@ -166,7 +171,7 @@ function Home({ products }) {
         mt={"4"}
       >
         {sortedProducts.map((data, i) => (
-          <div key={i} data-aos="zoom-in-up">
+          <div key={i} data-aos={animations === true ? "zoom-in-up" : "none"}>
             <ProductCard item={data} />
           </div>
         ))}

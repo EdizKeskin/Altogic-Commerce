@@ -11,6 +11,8 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Switch,
+  useColorMode,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import {
@@ -24,6 +26,7 @@ import {
 import altogic from "../../api/altogic";
 import { useAuth } from "../../context/authContext";
 import ProfileNav from "../../components/ProfileNav";
+import { usePreferences } from "../../context/preferencesContext";
 
 function Profile() {
   const toast = useToast();
@@ -31,6 +34,8 @@ function Profile() {
   const [name, setName] = useState(altogic.auth.getUser().name);
   const [loading, setLoading] = useState(false);
   const [removeLoading, setRemoveLoading] = useState(false);
+  const { colorMode } = useColorMode();
+  const { animations, setAnimations } = usePreferences();
 
   const handleFileSelect = async (event) => {
     setLoading(true);
@@ -272,6 +277,45 @@ function Profile() {
                 >
                   Save
                 </Button>
+              </Box>
+              <Box
+                display={"flex"}
+                flexDirection={"column"}
+                ml={{ base: 0, md: 10 }}
+                mt={{ base: 10, md: 0 }}
+              >
+                <FormControl
+                  display={"flex"}
+                  flexDirection={"column"}
+                  alignItems={"center"}
+                >
+                  <FormLabel>Dark Mode</FormLabel>
+                  <Box display={"flex"} alignItems={"center"}>
+                    <Text mr={2}>Off</Text>
+                    <Switch
+                      isChecked={colorMode === "dark" ? true : false}
+                      isDisabled
+                    />
+                    <Text ml={2}>On</Text>
+                  </Box>
+                </FormControl>
+
+                <FormControl
+                  display={"flex"}
+                  flexDirection={"column"}
+                  alignItems={"center"}
+                  mt={5}
+                >
+                  <FormLabel>Animations</FormLabel>
+                  <Box display={"flex"} alignItems={"center"}>
+                    <Text mr={2}>Off</Text>
+                    <Switch
+                      isChecked={animations}
+                      onChange={() => setAnimations(!animations)}
+                    />
+                    <Text ml={2}>On</Text>
+                  </Box>
+                </FormControl>
               </Box>
             </Flex>
           </Box>

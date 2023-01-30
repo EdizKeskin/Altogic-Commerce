@@ -3,11 +3,11 @@ import {
   Box,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useLang } from "../context/langContext";
+import { usePreferences } from "../context/preferencesContext";
 import Typewriter from "typewriter-effect";
 
 function Header() {
-  const { lang } = useLang();
+  const { lang } = usePreferences();
   const textColor = useColorModeValue("black", "white");
   const desc =
     lang === "tr-TR"

@@ -1,10 +1,17 @@
 import { Box, Text, Button, Image } from "@chakra-ui/react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
+import { usePreferences } from "../../context/preferencesContext";
 
 function Err404() {
+  const { animations } = usePreferences();
   return (
-    <Box textAlign="center" py={10} px={6} data-aos="fade-up">
+    <Box
+      textAlign="center"
+      py={10}
+      px={6}
+      data-aos={animations === true ? "fade-up" : "none"}
+    >
       <Image
         src={"https://i.imgur.com/A040Lxr.png"}
         alt="404"

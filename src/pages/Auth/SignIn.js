@@ -24,6 +24,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import { useAuth } from "../../context/authContext";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { usePreferences } from "../../context/preferencesContext";
 
 function SignIn() {
   const bg = useColorModeValue("gray.100", "gray.700");
@@ -33,7 +34,8 @@ function SignIn() {
   const [error, setError] = useState(null);
   const { setUser } = useAuth();
   const { setSessions } = useAuth();
-  
+  const { animations } = usePreferences();
+
   const handleShow = () => setShow(!show);
 
   const validationSchema = Yup.object().shape({
@@ -64,7 +66,11 @@ function SignIn() {
   }
 
   return (
-    <Flex align="center" justifyContent="center" data-aos="fade-up">
+    <Flex
+      align="center"
+      justifyContent="center"
+      data-aos={animations === true ? "fade-up" : "none"}
+    >
       <Flex align={"center"} justify={"center"} mt={6}>
         <Stack spacing={8} mx={"auto"} maxW={"lg"} alignItems={"center"} px={6}>
           <Stack align={"center"}>

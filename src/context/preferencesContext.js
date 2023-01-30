@@ -2,26 +2,30 @@ import { createContext, useState, useEffect, useContext } from "react";
 import { IntlProvider } from "react-intl";
 import Messages from "./messages";
 
-const LangContext = createContext();
+const PreferencesContext = createContext();
 
 export const LangProvider = ({ children }) => {
   const [lang, setLang] = useState(localStorage.getItem("lang") || "tr-TR");
+  const [animations, setAnimations] = useState(true);
 
   useEffect(() => {
     localStorage.setItem("lang", lang);
-  }, [lang]);
+    localStorage.setItem("animations", animations);
+  }, [lang, animations]);
   const values = {
     lang,
     setLang,
+    animations,
+    setAnimations,
   };
 
   return (
-    <LangContext.Provider value={values}>
+    <PreferencesContext.Provider value={values}>
       <IntlProvider messages={Messages[lang]} locale={lang}>
         {children}
       </IntlProvider>
-    </LangContext.Provider>
+    </PreferencesContext.Provider>
   );
 };
 
-export const useLang = () => useContext(LangContext);
+export const usePreferences = () => useContext(PreferencesContext);

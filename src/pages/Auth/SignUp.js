@@ -23,6 +23,7 @@ import { FaDiscord, FaGithub, FaGoogle } from "react-icons/fa";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { usePreferences } from "../../context/preferencesContext";
 
 function SignUp() {
   const bg = useColorModeValue("gray.100", "gray.700");
@@ -31,6 +32,7 @@ function SignUp() {
   const [error, setError] = useState(null);
   const [show, setShow] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const { animations } = usePreferences();
 
   const handleShow = () => setShow(!show);
   const handleShowConfirm = () => setShowConfirm(!showConfirm);
@@ -76,7 +78,11 @@ function SignUp() {
   }
 
   return (
-    <Flex align="center" justifyContent="center" data-aos="fade-up">
+    <Flex
+      align="center"
+      justifyContent="center"
+      data-aos={animations === true ? "fade-up" : "none"}
+    >
       <Flex align={"center"} justify={"center"} mt={6}>
         <Stack spacing={8} mx={"auto"} maxW={"lg"} alignItems={"center"} px={6}>
           <Stack align={"center"}>

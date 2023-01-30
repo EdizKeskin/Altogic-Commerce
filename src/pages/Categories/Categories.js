@@ -10,9 +10,11 @@ import { AiOutlineRight } from "react-icons/ai";
 import { Link, useParams } from "react-router-dom";
 import ProductCard from "../../components/ProductCard";
 import CustomSpinner from "../../components/Spinner";
+import { usePreferences } from "../../context/preferencesContext";
 
 function Categories({ products }) {
   const { category } = useParams();
+  const { animations } = usePreferences();
 
   if (products === null) return <CustomSpinner />;
 
@@ -22,7 +24,7 @@ function Categories({ products }) {
 
   return (
     <Box minh="100vh">
-      <div data-aos="fade-up">
+      <div data-aos={animations === true ? "fade-up" : "none"}>
         <Box
           justifyContent="center"
           alignItems={"flex-start"}
@@ -62,7 +64,10 @@ function Categories({ products }) {
         mt={"5"}
       >
         {filteredProducts.map((user, index) => (
-          <div key={index} data-aos="zoom-in-up">
+          <div
+            key={index}
+            data-aos={animations === true ? "zoom-in-up" : "none"}
+          >
             <ProductCard item={user} />
           </div>
         ))}

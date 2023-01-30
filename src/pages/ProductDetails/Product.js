@@ -38,9 +38,11 @@ import Multistep from "../../components/Multistep/MultiStep";
 import Coursel from "../../components/Coursel";
 import { useBasket } from "../../context/basketContext";
 import { formatPrice } from "../../api/storage";
+import { usePreferences } from "../../context/preferencesContext";
 
 function Product({ products }) {
   const { addToBasket, items } = useBasket();
+  const { animations } = usePreferences();
 
   const { id } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -62,9 +64,8 @@ function Product({ products }) {
     (basket_item) => basket_item === product._id
   );
 
-
   const arrayProduct = [product];
-  
+
   return (
     <Container maxW={"7xl"}>
       <SimpleGrid
@@ -72,7 +73,7 @@ function Product({ products }) {
         spacing={{ base: 8, md: 10 }}
         py={{ base: 18, md: 20 }}
       >
-        <Box data-aos="fade-down">
+        <Box data-aos={animations === true ? "fade-down" : "none"}>
           <Breadcrumb
             mt={{ base: 3, md: 0 }}
             spacing="4px"
@@ -115,7 +116,7 @@ function Product({ products }) {
         </Box>
         <Stack
           spacing={{ base: 6, md: 10 }}
-          data-aos="fade-up"
+          data-aos={animations === true ? "fade-up" : "none"}
           backdropFilter={"blur(4px)"}
           mt={{ base: 10, md: 0 }}
         >
@@ -136,7 +137,7 @@ function Product({ products }) {
                   textDecoration={"line-through"}
                   mr={"3"}
                 >
-                  {formatPrice(product.price)} 
+                  {formatPrice(product.price)}
                 </Text>
               )}
               <Text color={"gray.400"} fontSize={"2xl"} fontWeight={"bold"}>

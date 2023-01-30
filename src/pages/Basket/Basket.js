@@ -10,14 +10,15 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useBasket } from "../../context/basketContext";
-//ICONS
 import { IoIosReturnLeft } from "react-icons/io";
 import BasketSidebar from "../../components/BasketSidebar";
 import BasketTable from "../../components/BasketTable";
 import CustomSpinner from "../../components/Spinner";
+import { usePreferences } from "../../context/preferencesContext";
 
 function Basket({ products }) {
   const { items } = useBasket();
+  const { animations } = usePreferences();
 
   const textColor = useColorModeValue("black", "white");
   const btnColor = useColorModeValue("white.50", "gray.600");
@@ -31,7 +32,11 @@ function Basket({ products }) {
 
   return (
     <Box minh="100vh">
-      <Flex align="center" justifyContent="center" data-aos="fade-up">
+      <Flex
+        align="center"
+        justifyContent="center"
+        data-aos={animations === true ? "fade-up" : "none"}
+      >
         <Box position={"absolute"} top={"5"} left={"5"} mt="3">
           <Link to="/">
             <IconButton icon={<IoIosReturnLeft />} bgColor={btnColor} />
@@ -71,7 +76,7 @@ function Basket({ products }) {
               letterSpacing={"10px"}
               color={textColor}
               mt={10}
-              data-aos="zoom-in-up"
+              data-aos={animations === true ? "zoom-in-up" : "none"}
             >
               Basket
             </Text>
@@ -84,10 +89,10 @@ function Basket({ products }) {
             }}
             gap={6}
           >
-            <div data-aos="zoom-in-up">
+            <div data-aos={animations === true ? "zoom-in-up" : "none"}>
               <BasketTable products={products} />
             </div>
-            <div data-aos="zoom-in-up">
+            <div data-aos={animations === true ? "zoom-in-up" : "none"}>
               <BasketSidebar items={basketProducts} totalPrice={totalPrice} />
             </div>
           </Grid>

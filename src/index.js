@@ -3,7 +3,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-import { LangProvider } from "./context/langContext";
+import { LangProvider } from "./context/preferencesContext";
 import { BasketProvider } from "./context/basketContext";
 import { AuthenticationProvider } from "./context/authContext";
 import { BrowserRouter as Router } from "react-router-dom";

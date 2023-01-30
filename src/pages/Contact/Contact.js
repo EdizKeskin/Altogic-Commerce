@@ -19,7 +19,7 @@ import validationSchema from "./validations";
 import { IoIosReturnLeft } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
-import { useLang } from "../../context/langContext";
+import { usePreferences } from "../../context/preferencesContext";
 import emailjs from "emailjs-com";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
@@ -28,8 +28,9 @@ function Contact() {
   const bg = useColorModeValue("gray.100", "gray.700");
   const textColor = useColorModeValue("black", "white");
   const btnColor = useColorModeValue("white.50", "gray.600");
-  const { lang } = useLang();
+  const { lang } = usePreferences();
   const { colorMode } = useColorMode();
+  const { animations } = usePreferences();
 
   const formik = useFormik({
     initialValues: {
@@ -75,7 +76,11 @@ function Contact() {
   });
 
   return (
-    <Flex align="center" justifyContent="center" data-aos="fade-up">
+    <Flex
+      align="center"
+      justifyContent="center"
+      data-aos={animations === true ? "fade-up" : "none"}
+    >
       <Box position={"absolute"} top={"5"} left={"5"} mt="3">
         <Link to="/">
           <IconButton icon={<IoIosReturnLeft />} bgColor={btnColor} />

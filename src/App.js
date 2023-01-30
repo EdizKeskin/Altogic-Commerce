@@ -8,6 +8,7 @@ import "aos/dist/aos.css";
 import Particles from "react-tsparticles";
 import altogic from "./api/altogic";
 import { loadFull } from "tsparticles";
+import { usePreferences } from "./context/preferencesContext";
 
 import RequiresAdmin from "./components/Routes/RequiresAdmin";
 import RequiresAuth from "./components/Routes/RequiresAuth";
@@ -41,6 +42,7 @@ const Admin = lazy(() => import("./pages/Admin/Admin"));
 
 function App() {
   const [products, setProducts] = useState(null);
+  const {animations} = usePreferences();
 
   useEffect(() => {
     const getProducts = async () => {
@@ -66,7 +68,7 @@ function App() {
     AOS.refresh();
   }, []);
   return (
-    <Box>
+    <Box bg={animations !== true && "gray.900"} minH={"100vh"}>
       <>
         <>
           <div>
@@ -203,7 +205,7 @@ function App() {
             </Suspense>
           </div>
         </>
-        <Particles
+       {animations === true && <Particles
           id="tsparticles"
           init={particlesInit}
           options={{
@@ -738,7 +740,7 @@ function App() {
             themes: [],
             zLayers: 100,
           }}
-        />
+        />} 
       </>
     </Box>
   );
