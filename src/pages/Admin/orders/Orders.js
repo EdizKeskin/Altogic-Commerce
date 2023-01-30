@@ -11,7 +11,7 @@ function Orders() {
   const [orders, setOrders] = useState(null);
   useEffect(() => {
     const getProducts = async () => {
-      const result = await altogic.db.model("order").get();
+      const result = await altogic.db.model("order").sort("createdAt", "desc").get();
 
       if (!result.errors) {
         setOrders(result.data);

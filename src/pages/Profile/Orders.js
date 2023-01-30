@@ -13,7 +13,7 @@ export const Example = () => {
   const userId = altogic.auth.getUser()._id;
   useEffect(() => {
     const userOrders = async () => {
-      const result = await altogic.db.model("order").get();
+      const result = await altogic.db.model("order").sort("createdAt", "desc").get();
       setOrders(result.data.filter((order) => order.userId === userId));
     };
     userOrders();
