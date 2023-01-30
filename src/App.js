@@ -13,22 +13,20 @@ import { usePreferences } from "./context/preferencesContext";
 import RequiresAdmin from "./components/Routes/RequiresAdmin";
 import RequiresAuth from "./components/Routes/RequiresAuth";
 import RequiresNotAuth from "./components/Routes/RequiresNotAuth";
+import CustomSpinner from "./components/Spinner";
 
 import Navbar from "./components/Navbar";
 import AuthRedirect from "./pages/Auth/AuthRedirect";
-import SignIn from "./pages/Auth/SignIn";
-import SignUp from "./pages/Auth/SignUp";
-import Basket from "./pages/Basket/Basket";
-import Categories from "./pages/Categories/Categories";
-import Detail from "./pages/ProductDetails/Product";
-import Profile from "./pages/Profile/Profile";
-import Sessions from "./pages/Profile/Sessions";
-import Home from "./pages/Home";
-import Orders from "./pages/Profile/Orders";
-import CustomSpinner from "./components/Spinner";
-import Adress from "./pages/Profile/Adress";
-
-//Lazy components
+const SignIn = lazy(() => import('./pages/Auth/SignIn'));
+const SignUp = lazy(() => import('./pages/Auth/SignUp'));
+const Basket = lazy(() => import('./pages/Basket/Basket'));
+const Categories = lazy(() => import('./pages/Categories/Categories'));
+const Detail = lazy(() => import('./pages/ProductDetails/Product'));
+const Profile = lazy(() => import('./pages/Profile/Profile'));
+const Sessions = lazy(() => import('./pages/Profile/Sessions'));
+const Home = lazy(() => import('./pages/Home'));
+const Orders = lazy(() => import('./pages/Profile/Orders'));
+const Adress = lazy(() => import('./pages/Profile/Adress'));
 const Verification = lazy(() => import("./pages/Auth/Verification"));
 const Err404 = lazy(() => import("./pages/Err/Err404"));
 const Contact = lazy(() => import("./pages/Contact/Contact"));
