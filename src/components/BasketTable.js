@@ -16,11 +16,8 @@ import { useBasket } from "../context/basketContext";
 import { Link } from "react-router-dom";
 import { formatPrice } from "../api/storage";
 
-function BasketTable({products}) {
-  const { items, removeFromBasket, setNotification, notification } =
-    useBasket();
-
-    const newItems = products.filter((item) => items.includes(item._id));
+function BasketTable({ products }) {
+  const { removeFromBasket, setNotification, notification } = useBasket();
 
   const toast = useToast();
   const bg = useColorModeValue("white", "gray.800");
@@ -41,7 +38,7 @@ function BasketTable({products}) {
         rounded={"md"}
         border={{ base: "none", md: "1px solid" }}
       >
-        {newItems.map((item) => {
+        {products.map((item) => {
           return (
             <Flex
               key={item._id}
@@ -80,20 +77,28 @@ function BasketTable({products}) {
                   {item.title}
                 </Text>
                 <Box>
-                {item.discount !== 0 && item.discount && (
-                  <Text
-                    as="span"
-                    color="gray.400"
-                    fontWeight="hairline"
-                    mr={2}
-                    textDecoration={"line-through"}
-                  >
-                    {formatPrice(item.price)}
+                  {item.discount !== 0 && item.discount && (
+                    <Text
+                      as="span"
+                      color="gray.400"
+                      fontWeight="hairline"
+                      mr={2}
+                      textDecoration={"line-through"}
+                    >
+                      {formatPrice(item.price)}
+                    </Text>
+                  )}
+                  <Text as="span" fontSize={"xl"} fontWeight={"bold"}>
+                    {formatPrice(item.discountedPrice)
+                      ? formatPrice(item.discountedPrice)
+                      : formatPrice(item.price)}{" "}
+                    {item.quantity > 1 &&
+                      `x ${item.quantity} = ${formatPrice(
+                        item.discountedPrice
+                          ? item.discountedPrice * item.quantity
+                          : item.price * item.quantity
+                      )}`}
                   </Text>
-                )}
-                <Text as="span" fontSize={"xl"} fontWeight={"bold"}>
-                  {formatPrice(item.discountedPrice) ? formatPrice(item.discountedPrice) : formatPrice(item.price)}
-                </Text>
                 </Box>
                 <Flex
                   justify={{

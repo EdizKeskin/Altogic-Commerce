@@ -13,7 +13,10 @@ export const Example = () => {
   const userId = altogic.auth.getUser()._id;
   useEffect(() => {
     const userOrders = async () => {
-      const result = await altogic.db.model("order").sort("createdAt", "desc").get();
+      const result = await altogic.db
+        .model("order")
+        .sort("createdAt", "desc")
+        .get();
       setOrders(result.data.filter((order) => order.userId === userId));
     };
     userOrders();
@@ -109,48 +112,53 @@ export const Example = () => {
             <CustomSpinner />
           ) : (
             <Box w={"100%"}>
-            <ThemeProvider theme={tableTheme}>
-              <MaterialReactTable
-                columns={columns}
-                data={orders}
-                enableColumnActions={false}
-                enableColumnFilters={false}
-                enablePagination={false}
-                enableSorting={false}
-                enableBottomToolbar={false}
-                enableTopToolbar={false}
-                muiTableBodyRowProps={{ hover: false }}
-                renderDetailPanel={({ row }) => {
-                  return (
-                    <Box>
-                      <Text fontSize={"18px"}>
-                        <b>Order Details:</b>
-                      </Text>
-                      <br />
-                      <Text>Order ID: {row.original._id}</Text>
-                      <Text>Order Date: {row.original.createdAt}</Text>
-                      <br />
-                      <Text fontSize={"18px"}>
-                        <b>Products:</b>
-                      </Text>
-                      {row.original.products.map((product) => {
-                        return (
-                          <Box key={product._id}>
-                            <Text mt={"10px"}>
-                              Product Name: {product.title}
-                            </Text>
-                            <Text mb={"10px"}>
-                              Product Price: {formatPrice(product.price)}
-                            </Text>
-                            <Divider />
-                          </Box>
-                        );
-                      })}
-                    </Box>
-                  );
-                }}
-              />
-            </ThemeProvider>
+              <ThemeProvider theme={tableTheme}>
+                <MaterialReactTable
+                  columns={columns}
+                  data={orders}
+                  enableColumnActions={false}
+                  enableColumnFilters={false}
+                  enablePagination={false}
+                  enableSorting={false}
+                  enableBottomToolbar={false}
+                  enableTopToolbar={false}
+                  muiTableBodyRowProps={{ hover: false }}
+                  renderDetailPanel={({ row }) => {
+                    return (
+                      <Box>
+                        <Text fontSize={"18px"}>
+                          <b>Order Details:</b>
+                        </Text>
+                        <br />
+                        <Text>Order ID: {row.original._id}</Text>
+                        <Text>Order Date: {row.original.createdAt}</Text>
+                        <br />
+                        <Text fontSize={"18px"}>
+                          <b>Products:</b>
+                        </Text>
+                        {row.original.products.map((product) => {
+                          return (
+                            <Box key={product._id}>
+                              <Text mt={"10px"}>
+                                Product Name: {product.title}
+                              </Text>
+                              <Text mb={"10px"}>
+                                Product Price: {formatPrice(product.price)}{" "}
+                                {product.quantity > 1
+                                  ? `x${product.quantity} = ${formatPrice(
+                                      product.price * product.quantity
+                                    )}`
+                                  : ""}
+                              </Text>
+                              <Divider />
+                            </Box>
+                          );
+                        })}
+                      </Box>
+                    );
+                  }}
+                />
+              </ThemeProvider>
             </Box>
           )}
         </Stack>

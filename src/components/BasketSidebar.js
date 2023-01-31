@@ -11,6 +11,7 @@ import {
   ModalBody,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { TiTickOutline } from "react-icons/ti";
 import { formatPrice } from "../api/storage";
 import Form3svg from "../assets/shop.svg";
@@ -18,6 +19,7 @@ import Checkout from "./Checkout";
 
 function BasketSidebar({ items, totalPrice }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [loading, setLoading] = useState(false);
 
   return (
     <Flex
@@ -28,7 +30,11 @@ function BasketSidebar({ items, totalPrice }) {
       alignItems="center"
       flexDirection={"column"}
     >
-      <Image src={Form3svg} display={{ base: "none", md: "block" }} loading={"lazy"}/>
+      <Image
+        src={Form3svg}
+        display={{ base: "none", md: "block" }}
+        loading={"lazy"}
+      />
       <Flex
         flexDirection={"row"}
         justifyContent="space-between"
@@ -57,7 +63,14 @@ function BasketSidebar({ items, totalPrice }) {
         <ModalContent w={"90%"}>
           <ModalCloseButton />
           <ModalBody>
-            <Checkout onClose={onClose} price={totalPrice} products={items} />
+            <Checkout
+              onClose={onClose}
+              price={totalPrice}
+              products={items}
+              loading={loading}
+              setLoading={setLoading}
+              quantity={items.quantity}
+            />
           </ModalBody>
         </ModalContent>
       </Modal>

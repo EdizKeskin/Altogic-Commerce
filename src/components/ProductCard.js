@@ -31,7 +31,7 @@ function ProductCard({ item }) {
   const removedFromBasketMessage =
     lang === "tr-TR" ? "Sepetten Çıkarıldı" : "Removed from Basket";
 
-  const findBasketItem = items.find((basket_item) => basket_item === item._id);
+  const findBasketItem = items.find((basket_item) => basket_item.id === item._id);
 
   return (
     <Flex p={15}>

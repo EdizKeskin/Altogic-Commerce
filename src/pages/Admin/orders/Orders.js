@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { Text, Box, Button, Breadcrumb, BreadcrumbItem } from "@chakra-ui/react";
+import {
+  Text,
+  Box,
+  Button,
+  Breadcrumb,
+  BreadcrumbItem,
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import CustomSpinner from "../../../components/Spinner";
 import altogic from "../../../api/altogic";
@@ -12,7 +18,10 @@ function Orders() {
   const [orders, setOrders] = useState(null);
   useEffect(() => {
     const getProducts = async () => {
-      const result = await altogic.db.model("order").sort("createdAt", "desc").get();
+      const result = await altogic.db
+        .model("order")
+        .sort("createdAt", "desc")
+        .get();
 
       if (!result.errors) {
         setOrders(result.data);
@@ -172,7 +181,14 @@ function Orders() {
                     return (
                       <Box key={product._id}>
                         <Text mt={"10px"}>Product Name: {product.title}</Text>
-                        <Text mb={"10px"}>Product Price: {formatPrice(product.price)}</Text>
+                        <Text mb={"10px"}>
+                          Product Price: {formatPrice(product.price)}{" "}
+                          {product.quantity > 1
+                            ? `x${product.quantity} = ${formatPrice(
+                                product.price * product.quantity
+                              )}`
+                            : ""}
+                        </Text>
                         <Divider />
                       </Box>
                     );

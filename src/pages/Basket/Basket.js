@@ -4,13 +4,10 @@ import {
   Box,
   Text,
   Grid,
-  IconButton,
   useColorModeValue,
   Flex,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
 import { useBasket } from "../../context/basketContext";
-import { IoIosReturnLeft } from "react-icons/io";
 import BasketSidebar from "../../components/BasketSidebar";
 import BasketTable from "../../components/BasketTable";
 import CustomSpinner from "../../components/Spinner";
@@ -21,28 +18,26 @@ function Basket({ products }) {
   const { animations } = usePreferences();
 
   const textColor = useColorModeValue("black", "white");
-  const btnColor = useColorModeValue("white.50", "gray.600");
   if (products === null) return <CustomSpinner />;
 
-  const basketProducts = products.filter((item) => items.includes(item._id));
+  const basketProducts = products.filter((item) => {
+    return items.find((basketItem) => basketItem.id === item._id);
+  });
+  basketProducts.forEach((item) => {
+    const basketItem = items.find((basketItem) => basketItem.id === item._id);
+    item.quantity = basketItem.quantity;
+  });
 
   const totalPrice = basketProducts.reduce((acc, obj) => {
-    return obj.discountedPrice ? acc + obj.discountedPrice : acc + obj.price;
+    return obj.discountedPrice
+      ? acc + obj.discountedPrice * obj.quantity
+      : acc + obj.price * obj.quantity;
   }, 0);
+  console.log(totalPrice);
+  console.log(basketProducts);
 
   return (
     <Box minh="100vh">
-      <Flex
-        align="center"
-        justifyContent="center"
-        data-aos={animations === true ? "fade-up" : "none"}
-      >
-        <Box position={"absolute"} top={"5"} left={"5"} mt="3">
-          <Link to="/">
-            <IconButton icon={<IoIosReturnLeft />} bgColor={btnColor} />
-          </Link>
-        </Box>
-      </Flex>
       {items.length < 1 && (
         <>
           <Box
@@ -90,7 +85,7 @@ function Basket({ products }) {
             gap={6}
           >
             <div data-aos={animations === true ? "zoom-in-up" : "none"}>
-              <BasketTable products={products} />
+              <BasketTable products={basketProducts} />
             </div>
             <div data-aos={animations === true ? "zoom-in-up" : "none"}>
               <BasketSidebar items={basketProducts} totalPrice={totalPrice} />

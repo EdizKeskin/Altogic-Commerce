@@ -25,6 +25,11 @@ import {
   ModalContent,
   ModalCloseButton,
   ModalBody,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/react";
 import { MdLocalShipping } from "react-icons/md";
 import { AiOutlineRight } from "react-icons/ai";
@@ -39,10 +44,12 @@ import Coursel from "../../components/Coursel";
 import { useBasket } from "../../context/basketContext";
 import { formatPrice } from "../../api/storage";
 import { usePreferences } from "../../context/preferencesContext";
+import { useState } from "react";
 
 function Product({ products }) {
-  const { addToBasket, items } = useBasket();
+  const { addToBasket, items, quantity, setQuantity } = useBasket();
   const { animations } = usePreferences();
+  const [loading, setLoading] = useState(false);
 
   const { id } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -61,10 +68,14 @@ function Product({ products }) {
   const photos = product.images.map((url) => ({ image: url }));
 
   const findBasketItem = items.find(
-    (basket_item) => basket_item === product._id
+    (basket_item) => basket_item.id === product._id
   );
 
   const arrayProduct = [product];
+  arrayProduct[0].quantity = quantity;
+  console.log("arrayProduct", arrayProduct);
+
+  const lastPrice = product.discountedPrice * quantity;
 
   return (
     <Container maxW={"7xl"}>
@@ -225,6 +236,23 @@ function Product({ products }) {
               </Tabs>
             </Accordion>
           </Stack>
+          <Box display={"flex"} alignItems={"center"}>
+            <Text fontSize={"lg"} mr={4}>
+              Quantity:
+            </Text>
+            <NumberInput
+              defaultValue={1}
+              min={1}
+              max={5}
+              onChange={(value) => setQuantity(value)}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </Box>
           <motion.div whileTap={{ scale: 0.8 }}>
             <Button
               onClick={onOpen}
@@ -239,6 +267,7 @@ function Product({ products }) {
                 boxShadow: "lg",
               }}
               mb={{ base: "6", md: "0" }}
+              isLoading={loading}
             >
               <FormattedMessage id="buy" />
             </Button>
@@ -246,6 +275,7 @@ function Product({ products }) {
           <Button
             colorScheme={findBasketItem ? "red" : "teal"}
             onClick={() => addToBasket(product, findBasketItem)}
+            isLoading={loading}
             _hover={{
               transform: "translateY(2px)",
               boxShadow: "lg",
@@ -268,11 +298,13 @@ function Product({ products }) {
             <ModalOverlay backdropFilter="blur(10px) hue-rotate(20deg)" />
             <ModalContent w={"90%"}>
               <ModalCloseButton />
-              <ModalBody >
+              <ModalBody>
                 <Checkout
                   onClose={onClose}
-                  price={product.discountedPrice}
+                  price={lastPrice}
                   products={arrayProduct}
+                  setLoading={setLoading}
+                  loading={loading}
                 />
               </ModalBody>
             </ModalContent>

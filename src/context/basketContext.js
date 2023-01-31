@@ -5,25 +5,33 @@ const defaultBasket = JSON.parse(localStorage.getItem("basket")) || [];
 
 const BasketProvider = ({ children }) => {
   const [items, setItems] = useState(defaultBasket);
+  const [quantity, setQuantity] = useState(1);
   const [notification, setNotification] = useState(items.length);
 
   useEffect(() => {
     localStorage.setItem("basket", JSON.stringify(items));
-  }, [items]);
+    console.log(quantity);
+  }, [items, quantity]);
 
   const addToBasket = (data, findBasketItem) => {
     if (!findBasketItem) {
       return (
-        setItems((items) => [data._id, ...items]),
+        setItems((items) => [
+          ...items,
+          {
+            id: data._id,
+            quantity: quantity,
+          },
+        ]),
         setNotification(notification + 1)
       );
     }
-    const filtered = items.filter((item) => item !== findBasketItem);
+    const filtered = items.filter((item) => item.id !== findBasketItem.id);
     setItems(filtered);
   };
 
   const removeFromBasket = (item_id) => {
-    const filtered = items.filter((item) => item !== item_id);
+    const filtered = items.filter((item) => item.id !== item_id);
     setItems(filtered);
   };
 
@@ -37,6 +45,8 @@ const BasketProvider = ({ children }) => {
     addToBasket,
     removeFromBasket,
     emptyBasket,
+    quantity,
+    setQuantity,
   };
 
   return (
