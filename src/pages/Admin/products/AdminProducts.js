@@ -1,7 +1,8 @@
-import { Box, Button, Icon, Text } from "@chakra-ui/react";
+import { Box, Breadcrumb, BreadcrumbItem, Button, Icon, Text } from "@chakra-ui/react";
 import { createTheme, ThemeProvider, useTheme } from "@mui/material";
 import MaterialReactTable from "material-react-table";
 import { useEffect, useMemo, useState } from "react";
+import { AiOutlineRight } from "react-icons/ai";
 import { BsFillTrashFill } from "react-icons/bs";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -179,9 +180,32 @@ function AdminProducts() {
         mx={"20px"}
         mt={"20px"}
       >
-        <Text fontSize="2xl" color={"white"}>
-          Products
-        </Text>
+        <Box
+          justifyContent="center"
+          alignItems={"flex-start"}
+          display="flex"
+          flexDirection="column"
+        >
+          <Breadcrumb
+            mt={{ base: 3, md: 0 }}
+            spacing="4px"
+            mb={4}
+            separator={<AiOutlineRight color="gray.500" />}
+          >
+            <BreadcrumbItem>
+              <Link to="/admin">
+                <Button variant={"link"}>Admin</Button>
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+              <Link to={`/admin/products`}>
+                <Button variant={"link"} textTransform={"capitalize"}>
+                  Products
+                </Button>
+              </Link>
+            </BreadcrumbItem>
+          </Breadcrumb>
+        </Box>
         <Box display={"flex"} alignItems="center">
           <Link to="/admin/products/newproduct">
             <Button colorScheme={"teal"} size="md" mr={2}>

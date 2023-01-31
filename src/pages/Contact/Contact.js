@@ -11,12 +11,10 @@ import {
   useColorModeValue,
   Textarea,
   useColorMode,
-  IconButton,
 } from "@chakra-ui/react";
 import React from "react";
 import { useFormik } from "formik";
 import validationSchema from "./validations";
-import { IoIosReturnLeft } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { usePreferences } from "../../context/preferencesContext";
@@ -27,7 +25,6 @@ import { motion } from "framer-motion";
 function Contact() {
   const bg = useColorModeValue("gray.100", "gray.700");
   const textColor = useColorModeValue("black", "white");
-  const btnColor = useColorModeValue("white.50", "gray.600");
   const { lang } = usePreferences();
   const { colorMode } = useColorMode();
   const { animations } = usePreferences();
@@ -81,18 +78,12 @@ function Contact() {
       justifyContent="center"
       data-aos={animations === true ? "fade-up" : "none"}
     >
-      <Box position={"absolute"} top={"5"} left={"5"} mt="3">
-        <Link to="/">
-          <IconButton icon={<IoIosReturnLeft />} bgColor={btnColor} />
-        </Link>
-      </Box>
-
       <Box
         bgColor={bg}
         backdropFilter={"blur(2px)"}
         boxShadow="dark-lg"
         p="10"
-        mt="100px"
+        mt={10}
         boxSize={{ base: "90%", md: "xl" }}
         mx="10px"
         mb={{ base: "20px", md: "0" }}

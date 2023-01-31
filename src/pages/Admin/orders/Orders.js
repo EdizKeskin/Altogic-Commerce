@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
-import { Text, Box, Button } from "@chakra-ui/react";
+import { Text, Box, Button, Breadcrumb, BreadcrumbItem } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import CustomSpinner from "../../../components/Spinner";
 import altogic from "../../../api/altogic";
 import MaterialReactTable from "material-react-table";
 import { createTheme, ThemeProvider, useTheme, Divider } from "@mui/material";
 import { formatPrice } from "../../../api/storage";
+import { AiOutlineRight } from "react-icons/ai";
 
 function Orders() {
   const [orders, setOrders] = useState(null);
@@ -18,7 +19,7 @@ function Orders() {
       }
     };
     getProducts();
-  }, [orders]);
+  }, []);
   const globalTheme = useTheme();
   const tableTheme = useMemo(
     () =>
@@ -117,9 +118,32 @@ function Orders() {
         mx={"20px"}
         mt={"20px"}
       >
-        <Text fontSize="2xl" color={"white"}>
-          Orders
-        </Text>
+        <Box
+          justifyContent="center"
+          alignItems={"flex-start"}
+          display="flex"
+          flexDirection="column"
+        >
+          <Breadcrumb
+            mt={{ base: 3, md: 0 }}
+            spacing="4px"
+            mb={4}
+            separator={<AiOutlineRight color="gray.500" />}
+          >
+            <BreadcrumbItem>
+              <Link to="/admin">
+                <Button variant={"link"}>Admin</Button>
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+              <Link to={`/admin/orders`}>
+                <Button variant={"link"} textTransform={"capitalize"}>
+                  Orders
+                </Button>
+              </Link>
+            </BreadcrumbItem>
+          </Breadcrumb>
+        </Box>
         <Box display={"flex"} alignItems="center">
           <Text fontSize="lg" color={"white"}>
             Total orders: {orders.length}
@@ -132,7 +156,6 @@ function Orders() {
             data={orders}
             columns={columns}
             renderDetailPanel={({ row }) => {
-              console.log(row.original);
               return (
                 <Box>
                   <Text fontSize={"18px"}>
