@@ -12,6 +12,7 @@
         "@testing-library/react": "^13.4.0",
         "altogic": "^2.3.9",
         "aos": "^2.3.4",
+        "date-fns": "^2.29.3",
         "emailjs-com": "^3.2.0",
         "formik": "^2.2.9",
         "material-react-table": "^1.5.8",

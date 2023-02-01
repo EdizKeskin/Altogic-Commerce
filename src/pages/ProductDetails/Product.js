@@ -30,6 +30,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  useToast,
 } from "@chakra-ui/react";
 import { MdLocalShipping } from "react-icons/md";
 import { AiOutlineRight } from "react-icons/ai";
@@ -47,9 +48,10 @@ import { usePreferences } from "../../context/preferencesContext";
 import { useState } from "react";
 
 function Product({ products }) {
-  const { addToBasket, items, quantity, setQuantity } = useBasket();
-  const { animations } = usePreferences();
+  const { addToBasket, items, quantity, setQuantity, notification, setNotification } = useBasket();
+  const { animations, lang } = usePreferences();
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   const { id } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -58,7 +60,10 @@ function Product({ products }) {
   const titleColor = useColorModeValue("yellow.500", "yellow.300");
   const btnBg = useColorModeValue("gray.900", "gray.50");
   const btnColor = useColorModeValue("white", "gray.900");
-
+  const adddedToBasketMessage =
+    lang === "tr-TR" ? "Sepete Eklendi" : "Added to Basket";
+  const removedFromBasketMessage =
+    lang === "tr-TR" ? "Sepetten Çıkarıldı" : "Removed from Basket";
   if (products === null) return <CustomSpinner />;
 
   const product = products.find((item) => item._id === id);
@@ -73,7 +78,6 @@ function Product({ products }) {
 
   const arrayProduct = [product];
   arrayProduct[0].quantity = quantity;
-  console.log("arrayProduct", arrayProduct);
 
   const lastPrice = product.discountedPrice * quantity;
 
@@ -274,7 +278,19 @@ function Product({ products }) {
           </motion.div>
           <Button
             colorScheme={findBasketItem ? "red" : "teal"}
-            onClick={() => addToBasket(product, findBasketItem)}
+            onClick={() => {
+              toast({
+                title: findBasketItem
+                  ? removedFromBasketMessage
+                  : adddedToBasketMessage,
+                status: findBasketItem ? "error" : "success",
+                duration: 2000,
+                isClosable: true,
+                position: "bottom-right",
+              });
+              findBasketItem && setNotification(notification - 1);
+                    addToBasket(product, findBasketItem);
+            }}
             isLoading={loading}
             _hover={{
               transform: "translateY(2px)",

@@ -1,15 +1,67 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import altogic from "../../api/altogic";
 import CustomSpinner from "../../components/Spinner";
-import { Box, Container, Stack, Text } from "@chakra-ui/react";
-import MaterialReactTable from "material-react-table";
-import { createTheme, Divider, ThemeProvider, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Grid,
+  Stack,
+  Text,
+  useColorModeValue,
+  Divider,
+  Badge,
+} from "@chakra-ui/react";
+
 import ProfileNav from "../../components/ProfileNav";
 import { formatPrice } from "../../api/storage";
+import { format } from "date-fns";
+import { Link } from "react-router-dom";
 
-export const Example = () => {
+const Column = ({ title, data, badge }) => {
+  const textColor = useColorModeValue("gray.800", "white");
+  return (
+    <Box
+      mr={4}
+      display={"flex"}
+      flexDirection={"column"}
+      alignItems={{ base: "flex-start", md: "center" }}
+    >
+      <Text
+        color={textColor}
+        fontSize={"lg"}
+        fontWeight={700}
+        mb={2}
+        textTransform={"uppercase"}
+      >
+        {title}
+      </Text>
+      <Divider mb={4} />
+      {badge ? (
+        <Badge
+          bg={
+            (data === "pending" && "yellow.400") ||
+            (data === "shipped" && "teal.400") ||
+            (data === "completed" && "green.400") ||
+            (data === "canceled" && "red.400")
+          }
+          color={"gray.800"}
+          fontSize="sm"
+          p="3px 10px"
+          borderRadius="8px"
+        >
+          {data}
+        </Badge>
+      ) : (
+        <Text color={"gray.300"}>{data}</Text>
+      )}
+    </Box>
+  );
+};
+
+export const Orders = () => {
   const [orders, setOrders] = useState(null);
-
   const userId = altogic.auth.getUser()._id;
   useEffect(() => {
     const userOrders = async () => {
@@ -22,81 +74,6 @@ export const Example = () => {
     userOrders();
   }, [userId]);
 
-  const columns = useMemo(
-    () => [
-      {
-        accessorKey: "name",
-        header: "Name",
-      },
-      {
-        accessorKey: "email",
-        header: "Email",
-      },
-      {
-        accessorKey: "address",
-        header: "Address",
-      },
-    ],
-    []
-    //end
-  );
-  const globalTheme = useTheme();
-  const tableTheme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: "dark", //let's use the same dark/light mode as the global theme
-          primary: globalTheme.palette.secondary, //swap in the secondary color as the primary for the table
-          info: {
-            main: "rgb(255,122,0)", //add in a custom color for the toolbar alert background stuff
-          },
-          background: {
-            default:
-              globalTheme.palette.mode === "light"
-                ? "#1A202C" //random light yellow color for the background in light mode
-                : "#1A202C", //pure black table in dark mode for fun
-          },
-          color: {
-            default:
-              globalTheme.palette.mode === "light"
-                ? "#FFFFFF" //random light yellow color for the background in light mode
-                : "#1A202C", //pure black table in dark mode for fun
-          },
-        },
-        typography: {
-          button: {
-            textTransform: "none", //customize typography styles for all buttons in table by default
-            fontSize: "1.2rem",
-          },
-        },
-        components: {
-          MuiPaper: {
-            styleOverrides: {
-              root: {
-                margin: "20px",
-              },
-            },
-          },
-
-          MuiTooltip: {
-            styleOverrides: {
-              tooltip: {
-                fontSize: "1.1rem", //override to make tooltip font size larger
-              },
-            },
-          },
-          MuiSwitch: {
-            styleOverrides: {
-              thumb: {
-                color: "pink", //change the color of the switch thumb in the columns show/hide menu to pink
-              },
-            },
-          },
-        },
-      }),
-    [globalTheme]
-  );
-
   return (
     <>
       <Container maxW={"7xl"} mt={10}>
@@ -108,63 +85,76 @@ export const Example = () => {
           borderRadius={"md"}
         >
           <ProfileNav />
-          {orders === null ? (
-            <CustomSpinner />
-          ) : (
-            <Box w={"100%"}>
-              <ThemeProvider theme={tableTheme}>
-                <MaterialReactTable
-                  columns={columns}
-                  data={orders}
-                  enableColumnActions={false}
-                  enableColumnFilters={false}
-                  enablePagination={false}
-                  enableSorting={false}
-                  enableBottomToolbar={false}
-                  enableTopToolbar={false}
-                  muiTableBodyRowProps={{ hover: false }}
-                  renderDetailPanel={({ row }) => {
-                    return (
-                      <Box>
-                        <Text fontSize={"18px"}>
-                          <b>Order Details:</b>
-                        </Text>
-                        <br />
-                        <Text>Order ID: {row.original._id}</Text>
-                        <Text>Order Date: {row.original.createdAt}</Text>
-                        <br />
-                        <Text fontSize={"18px"}>
-                          <b>Products:</b>
-                        </Text>
-                        {row.original.products.map((product) => {
-                          return (
-                            <Box key={product._id}>
-                              <Text mt={"10px"}>
-                                Product Name: {product.title}
-                              </Text>
-                              <Text mb={"10px"}>
-                                Product Price: {formatPrice(product.price)}{" "}
-                                {product.quantity > 1
-                                  ? `x${product.quantity} = ${formatPrice(
-                                      product.price * product.quantity
-                                    )}`
-                                  : ""}
-                              </Text>
-                              <Divider />
-                            </Box>
-                          );
-                        })}
-                      </Box>
-                    );
-                  }}
-                />
-              </ThemeProvider>
-            </Box>
-          )}
+          <Flex flexDirection={"column"}>
+            <Text
+              fontSize={"2xl"}
+              fontWeight={700}
+              mb={2}
+              textTransform={"uppercase"}
+              pl={10}
+            >
+              Orders
+            </Text>
+            {orders === null ? (
+              <CustomSpinner />
+            ) : (
+              orders.map((order) => {
+                return (
+                  <Box key={order._id} w={"full"} p={10}>
+                    <Flex alignItems={"center"}>
+                      <Grid
+                        flex={1}
+                        templateColumns={{
+                          sm: "repeat(2, 1fr)",
+                          md: "repeat(4, 1fr)",
+                        }}
+                        gap="2"
+                        mr={10}
+                      >
+                        <Column
+                          title="Order Id"
+                          data={`#${order.orderNumber
+                            ?.toString()
+                            .padStart(6, "0")}`}
+                        />
+                        <Column
+                          title="Order Date"
+                          data={format(
+                            new Date(order.createdAt),
+                            "dd/MM/yyyy HH:mm"
+                          )}
+                        />
+                        <Column title="Status" data={order.status} badge />
+                        <Column
+                          title="Total"
+                          data={formatPrice(
+                            order.products.reduce((acc, product) => {
+                              return (
+                                acc + product.discountedPrice * product.quantity
+                              );
+                            }, 0)
+                          )}
+                        />
+                      </Grid>
+                      <Flex
+                        gap={1}
+                        justifyContent={"center"}
+                        alignItems={"center"}
+                      >
+                        <Link to={`/orders/${order._id}`}>
+                          <Button>View Order</Button>
+                        </Link>
+                      </Flex>
+                    </Flex>
+                  </Box>
+                );
+              })
+            )}
+          </Flex>
         </Stack>
       </Container>
     </>
   );
 };
 
-export default Example;
+export default Orders;

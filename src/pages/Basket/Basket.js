@@ -33,8 +33,6 @@ function Basket({ products }) {
       ? acc + obj.discountedPrice * obj.quantity
       : acc + obj.price * obj.quantity;
   }, 0);
-  console.log(totalPrice);
-  console.log(basketProducts);
 
   return (
     <Box minh="100vh">

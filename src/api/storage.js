@@ -69,11 +69,13 @@ export const updateAddress = async (address) => {
     return await altogic.db
       .model("users")
       .object(altogic.auth.getUser()._id)
-      .update({ address: {
-        country: address.country,
-        city: address.city,
-        address: address.address,
-      } });
+      .update({
+        address: {
+          country: address.country,
+          city: address.city,
+          address: address.address,
+        },
+      });
   } catch (error) {
     console.error(error);
   }
@@ -114,13 +116,21 @@ export const getProductById = async (id) => {
   } catch (error) {
     console.error(error);
   }
-}
+};
+
+export const getOrderById = async (id) => {
+  try {
+    return await altogic.db.model("order").object(id).get();
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export function formatPrice(number) {
-  return new Intl.NumberFormat('en-EN', {
-    style: 'currency',
-    currency: 'USD',
+  return new Intl.NumberFormat("en-EN", {
+    style: "currency",
+    currency: "USD",
     minimumFractionDigits: 2,
-    maximumFractionDigits: 2
+    maximumFractionDigits: 2,
   }).format(number);
 }

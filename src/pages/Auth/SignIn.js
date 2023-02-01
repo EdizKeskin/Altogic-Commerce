@@ -18,6 +18,8 @@ import {
   InputRightElement,
   InputGroup,
   FormErrorMessage,
+  HStack,
+  Divider,
 } from "@chakra-ui/react";
 import altogic from "../../api/altogic";
 import { FaDiscord, FaGithub, FaGoogle } from "react-icons/fa";
@@ -214,9 +216,13 @@ function SignIn() {
                             Don't have an account?
                           </Button>
                         </Link>
-                        <Text fontSize="sm" textAlign="center">
-                          Or sign in with
-                        </Text>
+                        <HStack>
+                          <Divider />
+                          <Text fontSize="sm" whiteSpace="nowrap" color="muted">
+                            or continue with
+                          </Text>
+                          <Divider />
+                        </HStack>
                         <ButtonGroup
                           justifyContent={"center"}
                           textAlign={"center"}
