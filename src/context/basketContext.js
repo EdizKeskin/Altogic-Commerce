@@ -10,7 +10,6 @@ const BasketProvider = ({ children }) => {
 
   useEffect(() => {
     localStorage.setItem("basket", JSON.stringify(items));
-    console.log(quantity);
   }, [items, quantity]);
 
   const addToBasket = (data, findBasketItem) => {

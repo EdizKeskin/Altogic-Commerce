@@ -17,6 +17,26 @@ import { Link, useParams } from "react-router-dom";
 import { formatPrice, getOrderById } from "../../api/storage";
 import CustomSpinner from "../../components/Spinner";
 
+const Column = ({ title, data }) => {
+  const textColor = useColorModeValue("gray.800", "white");
+  return (
+    <Box mr={4} display={"flex"} flexDirection={"column"} alignItems={"center"}>
+      <Text
+        color={textColor}
+        fontSize={"lg"}
+        fontWeight={700}
+        mb={2}
+        textTransform={"uppercase"}
+      >
+        {title}
+      </Text>
+      <Divider mb={4} />
+
+      <Text color={"gray.300"}>{data}</Text>
+    </Box>
+  );
+};
+
 function OrderDetail({ products }) {
   const { order_id } = useParams();
   const [order, setOrder] = useState(null);
@@ -30,7 +50,6 @@ function OrderDetail({ products }) {
     getProduct();
   }, [order_id]);
   if (products === null) return <CustomSpinner />;
-  console.log(order);
 
   return (
     <Container maxW={"7xl"} mt={5}>
@@ -156,37 +175,15 @@ function OrderDetail({ products }) {
                               loading={"lazy"}
                             />
                           </Link>
-                          <Text
-                            as={"span"}
-                            fontSize={"xl"}
-                            fontWeight={"extrabold"}
-                          >
-                            {item.title}
-                          </Text>
-                          <Box>
-                            {item.discount !== 0 && item.discount && (
-                              <Text
-                                as="span"
-                                color="gray.400"
-                                fontWeight="hairline"
-                                mr={2}
-                                textDecoration={"line-through"}
-                              >
-                                {formatPrice(item.price)}
-                              </Text>
-                            )}
-                            <Text as="span" fontSize={"xl"} fontWeight={"bold"}>
-                              {formatPrice(item.discountedPrice)
-                                ? formatPrice(item.discountedPrice)
-                                : formatPrice(item.price)}{" "}
-                              {item.quantity > 1 &&
-                                `x ${item.quantity} = ${formatPrice(
-                                  item.discountedPrice
-                                    ? item.discountedPrice * item.quantity
-                                    : item.price * item.quantity
-                                )}`}
-                            </Text>
-                          </Box>
+                          
+                          <Column title={"title"} data={item.title} />
+
+                          <Column title={"quantity"} data={item.quantity} />
+
+                          <Column
+                            title={"price"}
+                            data={formatPrice(item.price)}
+                          />
                         </SimpleGrid>
                       </Flex>
 

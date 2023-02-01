@@ -18,6 +18,10 @@ import ProfileNav from "../../components/ProfileNav";
 import { formatPrice } from "../../api/storage";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
+import { AiOutlineHistory } from "react-icons/ai";
+import { TbTruckLoading } from "react-icons/tb";
+import { BsBagCheck } from "react-icons/bs";
+import { MdOutlineCancel } from "react-icons/md";
 
 const Column = ({ title, data, badge }) => {
   const textColor = useColorModeValue("gray.800", "white");
@@ -51,7 +55,15 @@ const Column = ({ title, data, badge }) => {
           p="3px 10px"
           borderRadius="8px"
         >
-          {data}
+          <Flex alignItems={"center"} gap={1}>
+            {data}
+            {(data === "pending" && (
+              <AiOutlineHistory size={20} style={{ strokeWidth: "25px" }} />
+            )) ||
+              (data === "shipped" && <TbTruckLoading size={20} />) ||
+              (data === "completed" && <BsBagCheck size={20} />) ||
+              (data === "canceled" && <MdOutlineCancel size={20} />)}
+          </Flex>
         </Badge>
       ) : (
         <Text color={"gray.300"}>{data}</Text>

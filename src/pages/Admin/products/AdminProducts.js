@@ -222,15 +222,6 @@ function AdminProducts() {
           <MaterialReactTable
             data={products}
             columns={columns}
-            renderRowActions={(record) => (
-              <>
-                <Link to={`/admin/products/${record._id}`}>
-                  <Button variant="link" color="white" fontSize="sm" mr="1">
-                    Edit
-                  </Button>
-                </Link>
-              </>
-            )}
           />
         )}
       </ThemeProvider>

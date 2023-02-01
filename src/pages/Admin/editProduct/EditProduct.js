@@ -92,6 +92,7 @@ function EditProduct() {
   const handleSubmit = async (values) => {
     const { title, desc, price, images, details, categories, discount } =
       values;
+      console.log(product_id);
     try {
       const resp = await altogic.db
         .model("products")

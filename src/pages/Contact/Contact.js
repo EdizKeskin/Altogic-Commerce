@@ -44,7 +44,6 @@ function Contact() {
           values,
           process.env.REACT_APP_EMAIL_ID
         );
-        console.log("SUCCESS!");
         resetForm();
         Swal.fire({
           position: "center",

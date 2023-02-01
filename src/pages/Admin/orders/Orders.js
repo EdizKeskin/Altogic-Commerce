@@ -2,20 +2,28 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Text,
   Box,
-  Button,
   Breadcrumb,
   BreadcrumbItem,
+  Button,
+  useToast,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import CustomSpinner from "../../../components/Spinner";
 import altogic from "../../../api/altogic";
 import MaterialReactTable from "material-react-table";
 import { createTheme, ThemeProvider, useTheme, Divider } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import { formatPrice } from "../../../api/storage";
 import { AiOutlineRight } from "react-icons/ai";
+import { format } from "date-fns";
 
 function Orders() {
   const [orders, setOrders] = useState(null);
+  const toast = useToast();
+
   useEffect(() => {
     const getProducts = async () => {
       const result = await altogic.db
@@ -80,9 +88,37 @@ function Orders() {
     [globalTheme]
   );
 
-  const readableCreatedAt = (createdAt) => {
-    const date = new Date(createdAt);
-    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  const setOrderStatus = async (id) => {
+    const result = await altogic.endpoint.put(`/order/${id.id}`, {
+      status: id.status,
+    });
+
+    if (!result.errors) {
+      toast({
+        title: "Order status updated",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      if (orders) {
+        setOrders(
+          orders.map((order) => {
+            if (order._id === id.id) {
+              order.status = id.status;
+            }
+            return order;
+          })
+        );
+      }
+    } else {
+      toast({
+        title: "Error updating order status",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   const columns = useMemo(
@@ -96,17 +132,79 @@ function Orders() {
         header: "Name",
       },
       {
-        accessorKey: "lastName",
-        header: "Last Name",
-      },
-      {
-        accessorKey: "address",
-        header: "Address",
+        accessorKey: "status",
+        header: "Status",
       },
       {
         accessorKey: "createdAt",
         header: "Created At",
-        render: (createdAt) => <p>{readableCreatedAt(createdAt)}</p>,
+        Cell: ({ row }) => (
+          <p>{format(new Date(row.original.createdAt), "dd/MM/yyyy HH:mm")}</p>
+        ),
+      },
+      {
+        accessorKey: "action",
+        header: "Action",
+        Cell: ({ row }) => (
+          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <InputLabel id="demo-select-small">Status</InputLabel>
+            <Select
+              labelId="demo-select-small"
+              id="demo-select-small"
+              value={row.original.status}
+              label="Status"
+            >
+              <MenuItem
+                value={"pending"}
+                onClick={() =>
+                  setOrderStatus({
+                    id: row.original._id,
+                    status: "pending",
+                  })
+                }
+                disabled={row.original.status === "pending"}
+              >
+                Pending
+              </MenuItem>
+              <MenuItem
+                value={"shipped"}
+                onClick={() =>
+                  setOrderStatus({
+                    id: row.original._id,
+                    status: "shipped",
+                  })
+                }
+                disabled={row.original.status === "shipped"}
+              >
+                Shipped
+              </MenuItem>
+              <MenuItem
+                value={"completed"}
+                onClick={() =>
+                  setOrderStatus({
+                    id: row.original._id,
+                    status: "completed",
+                  })
+                }
+                disabled={row.original.status === "completed"}
+              >
+                Completed
+              </MenuItem>
+              <MenuItem
+                value={"canceled"}
+                onClick={() =>
+                  setOrderStatus({
+                    id: row.original._id,
+                    status: "canceled",
+                  })
+                }
+                disabled={row.original.status === "canceled"}
+              >
+                Canceled
+              </MenuItem>
+            </Select>
+          </FormControl>
+        ),
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -171,8 +269,28 @@ function Orders() {
                     <b>Order Details:</b>
                   </Text>
                   <br />
-                  <Text>Order ID: {row.original._id}</Text>
-                  <Text>Order Date: {row.original.createdAt}</Text>
+                  <Text>
+                    <b>Order ID:</b> {row.original._id}
+                  </Text>
+                  <Text>
+                    <b>Order Number:</b> {row.original.orderNumber}
+                  </Text>
+                  <Text>
+                    <b>Address:</b> {row.original.address}
+                  </Text>
+                  <Text>
+                    <b>Country:</b> {row.original.country}
+                  </Text>
+                  <Text>
+                    <b>City:</b> {row.original.city}
+                  </Text>
+                  <Text>
+                    <b>Order Date:</b>{" "}
+                    {format(
+                      new Date(row.original.createdAt),
+                      "dd/MM/yyyy HH:mm"
+                    )}
+                  </Text>
                   <br />
                   <Text fontSize={"18px"}>
                     <b>Products:</b>
@@ -180,12 +298,17 @@ function Orders() {
                   {row.original.products.map((product) => {
                     return (
                       <Box key={product._id}>
-                        <Text mt={"10px"}>Product Name: {product.title}</Text>
+                        <Text mt={"10px"}>
+                          <b>Product Name:</b> {product.title}
+                        </Text>
+                        <Text>
+                          <b>Quantity</b> {product.quantity}
+                        </Text>
                         <Text mb={"10px"}>
-                          Product Price: {formatPrice(product.price)}{" "}
+                          <b>Product Price:</b> {formatPrice(product.price)}{" "}
                           {product.quantity > 1
                             ? `x${product.quantity} = ${formatPrice(
-                                product.price * product.quantity
+                                product.discountedPrice * product.quantity
                               )}`
                             : ""}
                         </Text>
@@ -193,18 +316,19 @@ function Orders() {
                       </Box>
                     );
                   })}
+                  <Text fontSize={"18px"}>
+                    <b>Total Price:</b>{" "}
+                    {formatPrice(
+                      row.original.products.reduce(
+                        (acc, product) =>
+                          acc + product.price * product.quantity,
+                        0
+                      )
+                    )}
+                  </Text>
                 </Box>
               );
             }}
-            renderRowActions={(record) => (
-              <>
-                <Link to={`/admin/orders/${record._id}`}>
-                  <Button variant="link" color="white" fontSize="sm" mr="1">
-                    Edit
-                  </Button>
-                </Link>
-              </>
-            )}
           />
         )}
       </ThemeProvider>
