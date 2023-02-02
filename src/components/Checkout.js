@@ -29,8 +29,7 @@ export default function Checkout({
   const { setItems, setNotification } = useBasket();
   console.log(products[0].stock);
 
-  const createOrder = async (quantity) => {
-    console.log(quantity);
+  const createOrder = async () => {
     if (products.map((product) => stock < product.quantity).includes(true)) {
       toast({
         title: "Some of the products are out of stock.",
@@ -79,8 +78,8 @@ export default function Checkout({
 
     if (!result.errors) {
       toast({
-        title: "Başarılı!",
-        description: "Siparişiniz alındı.",
+        title: "Success!",
+        description: "Your order has been placed.",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -96,8 +95,8 @@ export default function Checkout({
       });
     } else {
       toast({
-        title: "Hata!",
-        description: "Siparişiniz alınamadı.",
+        title: "Error!",
+        description: "Something went wrong.",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -129,7 +128,7 @@ export default function Checkout({
       ) : (
         <Box rounded="lg" maxWidth={800} p={6} m="10px auto" as="form">
           <Heading w="100%" textAlign={"center"} fontWeight="normal">
-            Ödeme Bilgileri (out of service in this page)
+            Checkout (out of service in this page)
           </Heading>
 
           <Flex
