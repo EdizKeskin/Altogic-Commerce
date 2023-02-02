@@ -1,5 +1,6 @@
 import { Box, Breadcrumb, BreadcrumbItem, Button, Icon, Text } from "@chakra-ui/react";
 import { createTheme, ThemeProvider, useTheme } from "@mui/material";
+import { format } from "date-fns";
 import MaterialReactTable from "material-react-table";
 import { useEffect, useMemo, useState } from "react";
 import { AiOutlineRight } from "react-icons/ai";
@@ -81,11 +82,6 @@ function AdminProducts() {
     [globalTheme]
   );
 
-  const readableCreatedAt = (createdAt) => {
-    const date = new Date(createdAt);
-    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-  };
-
   const columns = useMemo(
     () => [
       {
@@ -98,9 +94,15 @@ function AdminProducts() {
         render: (price) => <p>{formatPrice(price)}</p>,
       },
       {
+        accessorKey: "stock",
+        header: "Stock",
+      },
+      {
         accessorKey: "createdAt",
         header: "Created At",
-        render: (createdAt) => <p>{readableCreatedAt(createdAt)}</p>,
+        Cell: ({ row }) => (
+          <p>{format(new Date(row.original.createdAt), "dd/MM/yyyy HH:mm")}</p>
+        ),
       },
       {
         accessorKey: "action",

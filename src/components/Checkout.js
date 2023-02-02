@@ -22,13 +22,42 @@ export default function Checkout({
   products,
   loading,
   setLoading,
+  stock,
+  setStock,
 }) {
   const toast = useToast();
   const { setItems, setNotification } = useBasket();
+  console.log(products[0].stock);
 
-  const createOrder = async () => {
+  const createOrder = async (quantity) => {
+    console.log(quantity);
+    if (products.map((product) => stock < product.quantity).includes(true)) {
+      toast({
+        title: "Some of the products are out of stock.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      onClose();
+      return;
+    }
     setLoading(true);
     const userInfos = altogic.auth.getUser();
+    if (
+      !userInfos ||
+      products.map((product) => stock < product.quantity).includes(true)
+    ) {
+      toast({
+        title: "Error!",
+        description: "Some of the products are out of stock.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      setLoading(false);
+      onClose();
+      return;
+    }
     const result = await altogic.db
       .model("order")
       .object()
@@ -55,6 +84,15 @@ export default function Checkout({
         status: "success",
         duration: 3000,
         isClosable: true,
+      });
+      products.map(async (product) => {
+        await altogic.db
+          .model("products")
+          .object(product._id)
+          .update({
+            stock: product.stock - product.quantity,
+          });
+        setStock(product.stock - product.quantity);
       });
     } else {
       toast({
@@ -170,7 +208,10 @@ export default function Checkout({
                   colorScheme="green"
                   variant="solid"
                   disabled={
-                    altogic.auth.getUser().address === undefined ? true : false
+                    altogic.auth.getUser().address === undefined ||
+                    products
+                      .map((product) => stock < product.quantity)
+                      .includes(true)
                   }
                   onClick={() => {
                     createOrder();

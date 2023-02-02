@@ -21,18 +21,31 @@ import Header from "../components/Header";
 import CustomSpinner from "../components/Spinner";
 import ProductCard from "../components/ProductCard";
 import Footer from "../components/Footer";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineCaretDown } from "react-icons/ai";
 import { usePreferences } from "../context/preferencesContext";
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
+import altogic from "../api/altogic";
 
-function Home({ products }) {
+function Home() {
   const { lang } = usePreferences();
   const [searchText, setSearchText] = useState("");
   const [sort, setSort] = useState("createdAt");
   const [sortType, setSortType] = useState("desc");
   const { animations } = usePreferences();
+  const [products, setProducts] = useState(null);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const result = await altogic.db.model("products").get();
+
+      if (!result.errors) {
+        setProducts(result.data);
+      }
+    };
+    getProducts();
+  }, []);
 
   if (products === null) return <CustomSpinner />;
 

@@ -1,12 +1,11 @@
 import { Box, useColorModeValue } from "@chakra-ui/react";
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Particles from "react-tsparticles";
-import altogic from "./api/altogic";
 import { loadFull } from "tsparticles";
 import { usePreferences } from "./context/preferencesContext";
 
@@ -41,19 +40,8 @@ const NewProduct = lazy(() => import("./pages/Admin/newProduct/NewProduct"));
 const Admin = lazy(() => import("./pages/Admin/Admin"));
 
 function App() {
-  const [products, setProducts] = useState(null);
   const { animations } = usePreferences();
 
-  useEffect(() => {
-    const getProducts = async () => {
-      const result = await altogic.db.model("products").get();
-
-      if (!result.errors) {
-        setProducts(result.data);
-      }
-    };
-    getProducts();
-  }, []);
   const particlesInit = useCallback(async (engine) => {
     await loadFull(engine);
   }, []);
@@ -76,15 +64,9 @@ function App() {
             <Suspense fallback={<CustomSpinner />}>
               <Routes>
                 <Route path="*" element={<Err404 />} />
-                <Route path="/" element={<Home products={products} />} />
-                <Route
-                  path="/product/:id"
-                  element={<Detail products={products} />}
-                />
-                <Route
-                  path="/categories/:category"
-                  element={<Categories products={products} />}
-                />
+                <Route path="/" element={<Home />} />
+                <Route path="/product/:id" element={<Detail />} />
+                <Route path="/categories/:category" element={<Categories />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route
                   path="/signin"
@@ -131,7 +113,7 @@ function App() {
                   path="/basket"
                   element={
                     <RequiresAuth>
-                      <Basket products={products} />
+                      <Basket />
                     </RequiresAuth>
                   }
                 />
@@ -155,7 +137,7 @@ function App() {
                   path="/orders/:order_id"
                   element={
                     <RequiresAuth>
-                      <OrderDetail products={products} />
+                      <OrderDetail />
                     </RequiresAuth>
                   }
                 />

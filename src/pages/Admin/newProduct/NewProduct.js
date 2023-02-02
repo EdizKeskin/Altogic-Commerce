@@ -9,21 +9,20 @@ import {
   Input,
   Textarea,
   useToast,
-  Alert,
-  AlertIcon,
   Popover,
   PopoverTrigger,
   Text,
   PopoverBody,
   PopoverArrow,
   PopoverContent,
-  Stack,
   Checkbox,
   IconButton,
   PopoverCloseButton,
   PopoverHeader,
   PopoverFooter,
   Flex,
+  SimpleGrid,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import altogic from "../../../api/altogic";
 import { BsFillTrashFill } from "react-icons/bs";
@@ -69,7 +68,10 @@ function NewProduct() {
     images: Yup.array().required("Required"),
     details: Yup.array().required("Required"),
     discount: Yup.number().max(100, "Discount must be less than 100%").min(0),
-    categories: Yup.array().required("Select at least one").min(1, "Select at least one"),
+    stock: Yup.number().required("Required"),
+    categories: Yup.array()
+      .required("Select at least one")
+      .min(1, "Select at least one"),
   });
 
   const handleSubmit = async (values, bag) => {
@@ -118,6 +120,7 @@ function NewProduct() {
           details: [],
           categories: [],
           discount: 0,
+          stock: 0,
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
@@ -141,7 +144,7 @@ function NewProduct() {
                 textAlign="left"
               >
                 <form onSubmit={handleSubmit}>
-                  <FormControl mb="4">
+                  <FormControl mb="4" isInvalid={touched.title && errors.title}>
                     <FormLabel color="white">Title</FormLabel>
                     <Input
                       name="title"
@@ -153,21 +156,10 @@ function NewProduct() {
                       isInvalid={touched.title && errors.title}
                       placeholder="Enter title"
                     />
+                    <FormErrorMessage>{errors.title}</FormErrorMessage>
                   </FormControl>
-                  {touched.title && errors.title && (
-                    <Alert
-                      status="error"
-                      color="white"
-                      bgColor="red.600"
-                      borderRadius="lg"
-                      mt="-2"
-                      mb="3"
-                    >
-                      <AlertIcon color="red.900" />
-                      {errors.title}
-                    </Alert>
-                  )}
-                  <FormControl mb="4">
+
+                  <FormControl mb="4" isInvalid={touched.desc && errors.desc}>
                     <FormLabel color="white">Description</FormLabel>
                     <Textarea
                       name="desc"
@@ -180,24 +172,18 @@ function NewProduct() {
                       isInvalid={touched.desc && errors.desc}
                       placeholder="Enter description"
                     />
+                    <FormErrorMessage>{errors.desc}</FormErrorMessage>
                   </FormControl>
-                  {touched.desc && errors.desc && (
-                    <Alert
-                      status="error"
-                      color="white"
-                      bgColor="red.600"
-                      borderRadius="lg"
-                      mt="-2"
-                      mb="3"
-                    >
-                      <AlertIcon color="red.900" />
-                      {errors.desc}
-                    </Alert>
-                  )}
 
-                  <Box display={"flex"}>
+                  <Box
+                    display={"flex"}
+                    flexDirection={{ base: "column", md: "row" }}
+                  >
                     <Flex direction={"column"} mr={"4"}>
-                      <FormControl mb="4">
+                      <FormControl
+                        mb="4"
+                        isInvalid={touched.price && errors.price}
+                      >
                         <FormLabel color="white">Price</FormLabel>
                         <Input
                           name="price"
@@ -210,24 +196,11 @@ function NewProduct() {
                           isInvalid={touched.price && errors.price}
                           placeholder="0"
                         />
+                        <FormErrorMessage>{errors.price}</FormErrorMessage>
                       </FormControl>
-
-                      {touched.price && errors.price && (
-                        <Alert
-                          status="error"
-                          color="white"
-                          bgColor="red.600"
-                          borderRadius="lg"
-                          mt="-2"
-                          mb="3"
-                        >
-                          <AlertIcon color="red.900" />
-                          {errors.price}
-                        </Alert>
-                      )}
                     </Flex>
-                    <Flex direction={"column"}>
-                      <FormControl mb="4">
+                    <Flex direction={"column"} mr={"4"}>
+                      <FormControl mb="4" isInvalid={touched.discount && errors.discount}>
                         <FormLabel color="white">
                           Discount{" "}
                           <Text
@@ -249,52 +222,45 @@ function NewProduct() {
                           disabled={isSubmitting}
                           isInvalid={touched.discount && errors.discount}
                         />
+                        <FormErrorMessage>{errors.discount}</FormErrorMessage>
                       </FormControl>
+                    </Flex>
 
-                      {touched.discount && errors.discount && (
-                        <Alert
-                          status="error"
-                          color="white"
-                          bgColor="red.600"
-                          borderRadius="lg"
-                          mt="-2"
-                          mb="3"
-                        >
-                          <AlertIcon color="red.900" />
-                          {errors.discount}
-                        </Alert>
-                      )}
+                    <Flex direction={"column"}>
+                      <FormControl mb="4" isInvalid={touched.stock && errors.stock}>
+                        <FormLabel color="white">Stock</FormLabel>
+                        <Input
+                          name="stock"
+                          color={"white"}
+                          placeholder="0"
+                          type="number"
+                          value={values.stock}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          disabled={isSubmitting}
+                          isInvalid={touched.stock && errors.stock}
+                        />
+                        <FormErrorMessage>{errors.stock}</FormErrorMessage>
+                      </FormControl>
                     </Flex>
                   </Box>
 
-                  <FormControl mb="4">
+                  <FormControl mb="4" isInvalid={touched.categories && errors.categories}>
                     <FormLabel color="white">
                       Categories{" "}
                       <Text as={"span"} fontSize={"sm"} fontWeight="hairline">
                         (Select primary category first)
                       </Text>
                     </FormLabel>
-                    <Stack spacing={4} direction="row">
+                    <SimpleGrid spacing={4} columns={{ base: 2, sm: 3, md: 5 }}>
                       <NewCheckbox value="Car" />
                       <NewCheckbox value="Home" />
                       <NewCheckbox value="Technology" />
                       <NewCheckbox value="Book" />
                       <NewCheckbox value="Test" />
-                    </Stack>
+                    </SimpleGrid>
+                    <FormErrorMessage>{errors.categories}</FormErrorMessage>
                   </FormControl>
-                  {touched.categories && errors.categories && (
-                    <Alert
-                      status="error"
-                      color="white"
-                      bgColor="red.600"
-                      borderRadius="lg"
-                      mt="-2"
-                      mb="3"
-                    >
-                      <AlertIcon color="red.900" />
-                      {errors.categories}
-                    </Alert>
-                  )}
                   <FormControl mb="4">
                     <FormLabel color="white">Details</FormLabel>
                     <FieldArray
@@ -343,7 +309,6 @@ function NewProduct() {
                                         justifyContent="space-between"
                                       >
                                         <Button
-                                          variantColor="red"
                                           variant="outline"
                                           onClick={() =>
                                             arrayHelpers.remove(index)
@@ -366,7 +331,6 @@ function NewProduct() {
                               </div>
                             ))}
                           <Button
-                            variantColor="teal"
                             variant="outline"
                             onClick={() => arrayHelpers.push("")}
                           >
@@ -425,7 +389,6 @@ function NewProduct() {
                                         justifyContent="space-between"
                                       >
                                         <Button
-                                          variantColor="red"
                                           variant="outline"
                                           onClick={() =>
                                             arrayHelpers.remove(index)
@@ -448,7 +411,6 @@ function NewProduct() {
                               </div>
                             ))}
                           <Button
-                            variantColor="teal"
                             variant="outline"
                             onClick={() => arrayHelpers.push("")}
                           >

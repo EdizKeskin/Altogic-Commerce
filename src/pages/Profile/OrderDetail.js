@@ -37,7 +37,7 @@ const Column = ({ title, data }) => {
   );
 };
 
-function OrderDetail({ products }) {
+function OrderDetail() {
   const { order_id } = useParams();
   const [order, setOrder] = useState(null);
   const bg2 = useColorModeValue("white", "gray.800");
@@ -49,7 +49,6 @@ function OrderDetail({ products }) {
     };
     getProduct();
   }, [order_id]);
-  if (products === null) return <CustomSpinner />;
 
   return (
     <Container maxW={"7xl"} mt={5}>
@@ -175,7 +174,7 @@ function OrderDetail({ products }) {
                               loading={"lazy"}
                             />
                           </Link>
-                          
+
                           <Column title={"title"} data={item.title} />
 
                           <Column title={"quantity"} data={item.quantity} />

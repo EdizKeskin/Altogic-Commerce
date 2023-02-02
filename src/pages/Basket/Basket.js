@@ -12,10 +12,23 @@ import BasketSidebar from "../../components/BasketSidebar";
 import BasketTable from "../../components/BasketTable";
 import CustomSpinner from "../../components/Spinner";
 import { usePreferences } from "../../context/preferencesContext";
+import { useEffect, useState } from "react";
+import altogic from "../../api/altogic";
 
-function Basket({ products }) {
+function Basket() {
   const { items } = useBasket();
   const { animations } = usePreferences();
+  const [products, setProducts] = useState(null);
+  useEffect(() => {
+    const getProducts = async () => {
+      const result = await altogic.db.model("products").get();
+
+      if (!result.errors) {
+        setProducts(result.data);
+      }
+    };
+    getProducts();
+  }, []);
 
   const textColor = useColorModeValue("black", "white");
   if (products === null) return <CustomSpinner />;

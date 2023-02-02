@@ -43,18 +43,37 @@ import { motion } from "framer-motion";
 import Checkout from "../../components/Checkout";
 import Coursel from "../../components/Coursel";
 import { useBasket } from "../../context/basketContext";
-import { formatPrice } from "../../api/storage";
+import { formatPrice, getProductById } from "../../api/storage";
 import { usePreferences } from "../../context/preferencesContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function Product({ products }) {
-  const { addToBasket, items, quantity, setQuantity, notification, setNotification } = useBasket();
+function Product() {
+  const {
+    addToBasket,
+    items,
+    quantity,
+    setQuantity,
+    notification,
+    setNotification,
+  } = useBasket();
   const { animations, lang } = usePreferences();
   const [loading, setLoading] = useState(false);
+  const [product, setProduct] = useState(null);
+  const [stock, setStock] = useState(0);
   const toast = useToast();
 
   const { id } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  //get product by id from api
+  useEffect(() => {
+    const getProduct = async () => {
+      const result = await getProductById(id);
+      setProduct(result.data);
+      setStock(result.data.stock);
+    };
+    getProduct();
+  }, [id, stock]);
 
   const textColor = useColorModeValue("black", "white");
   const titleColor = useColorModeValue("yellow.500", "yellow.300");
@@ -64,9 +83,9 @@ function Product({ products }) {
     lang === "tr-TR" ? "Sepete Eklendi" : "Added to Basket";
   const removedFromBasketMessage =
     lang === "tr-TR" ? "Sepetten Çıkarıldı" : "Removed from Basket";
-  if (products === null) return <CustomSpinner />;
 
-  const product = products.find((item) => item._id === id);
+  if (product === null) return <CustomSpinner />;
+
   const right = product.details.slice(0, 3);
   const left = product.details.slice(3, 6);
 
@@ -222,9 +241,9 @@ function Product({ products }) {
                         color={"gray.400"}
                         fontWeight={"300"}
                       >
-                        Ücretsiz kargo.
+                        Free Shipping
                         <br />
-                        Kargo ücreti satıcı tarafından ödenir.
+                        Shipping fee is paid by the seller
                       </Text>
                     ) : (
                       <Text
@@ -247,15 +266,25 @@ function Product({ products }) {
             <NumberInput
               defaultValue={1}
               min={1}
-              max={5}
+              max={stock < 5 ? stock : 5}
               onChange={(value) => setQuantity(value)}
+              disabled={stock < 1 ? true : false}
+              w={"min-content"}
             >
-              <NumberInputField />
+              <NumberInputField mr={5} />
               <NumberInputStepper>
                 <NumberIncrementStepper />
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput>
+          </Box>
+          <Box display={"flex"} alignItems={"center"}>
+            <Text fontSize={"lg"} mr={2}>
+              Stock:
+            </Text>
+            <Text fontSize={"lg"} color={"gray.400"} fontWeight={"300"}>
+              {stock < 1 ? "Out of stock" :  stock }
+            </Text>
           </Box>
           <motion.div whileTap={{ scale: 0.8 }}>
             <Button
@@ -266,6 +295,7 @@ function Product({ products }) {
               bg={btnBg}
               color={btnColor}
               textTransform={"uppercase"}
+              disabled={product.stock < quantity ? true : false}
               _hover={{
                 transform: "translateY(2px)",
                 boxShadow: "lg",
@@ -273,11 +303,12 @@ function Product({ products }) {
               mb={{ base: "6", md: "0" }}
               isLoading={loading}
             >
-              <FormattedMessage id="buy" />
+              {stock < 1 ? "Out of stock" : <FormattedMessage id="buy" />}
             </Button>
           </motion.div>
           <Button
             colorScheme={findBasketItem ? "red" : "teal"}
+            disabled={product.stock < quantity ? true : false}
             onClick={() => {
               toast({
                 title: findBasketItem
@@ -289,7 +320,7 @@ function Product({ products }) {
                 position: "bottom-right",
               });
               findBasketItem && setNotification(notification - 1);
-                    addToBasket(product, findBasketItem);
+              addToBasket(product, findBasketItem);
             }}
             isLoading={loading}
             _hover={{
@@ -304,7 +335,9 @@ function Product({ products }) {
               )
             }
           >
-            {findBasketItem ? (
+            {stock < 1 ? (
+              "Out of stock"
+            ) : findBasketItem ? (
               <FormattedMessage id="remove_from_basket" />
             ) : (
               <FormattedMessage id="add_to_basket" />
@@ -321,6 +354,8 @@ function Product({ products }) {
                   products={arrayProduct}
                   setLoading={setLoading}
                   loading={loading}
+                  stock={stock}
+                  setStock={setStock}
                 />
               </ModalBody>
             </ModalContent>

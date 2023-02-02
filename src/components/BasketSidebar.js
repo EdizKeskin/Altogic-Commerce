@@ -12,6 +12,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { MdOutlineCancel } from "react-icons/md";
 import { TiTickOutline } from "react-icons/ti";
 import { formatPrice } from "../api/storage";
 import Form3svg from "../assets/shop.svg";
@@ -20,6 +21,12 @@ import Checkout from "./Checkout";
 function BasketSidebar({ items, totalPrice }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState(false);
+
+  const disabled = items
+    .map((product) => product.stock < product.quantity)
+    .includes(true)
+    ? true
+    : false;
 
   return (
     <Flex
@@ -49,13 +56,20 @@ function BasketSidebar({ items, totalPrice }) {
           {formatPrice(totalPrice)}
         </Text>
         <Button
-          colorScheme="green"
+          colorScheme={disabled === true ? "gray" : "green"}
           mt={10}
           ml="5"
-          rightIcon={<TiTickOutline size="20px" />}
+          rightIcon={
+            disabled === true ? (
+              <MdOutlineCancel size={20} />
+            ) : (
+              <TiTickOutline size={20} />
+            )
+          }
+          disabled={disabled}
           onClick={onOpen}
         >
-          Complete the order
+          {disabled === true ? "Out of stock" : "Complete order"}
         </Button>
       </Flex>
       <Modal size={"2xl"} isOpen={isOpen} onClose={onClose}>

@@ -31,7 +31,9 @@ function ProductCard({ item }) {
   const removedFromBasketMessage =
     lang === "tr-TR" ? "Sepetten Çıkarıldı" : "Removed from Basket";
 
-  const findBasketItem = items.find((basket_item) => basket_item.id === item._id);
+  const findBasketItem = items.find(
+    (basket_item) => basket_item.id === item._id
+  );
 
   return (
     <Flex p={15}>
@@ -54,12 +56,12 @@ function ProductCard({ item }) {
             Navigate(`/product/${item._id}`);
           }}
           _hover={{
-            cursor: "pointer",
+            cursor: item.stock === 0 ? "not-allowed" : "pointer",
           }}
           loading="lazy"
           backgroundImage={item.images[0]}
         >
-          {item.discount !== 0 && item.discount && (
+          {item.discount !== 0 && item.discount && item.stock !== 0 && (
             <Flex justifyContent="flex-end">
               <Badge
                 backgroundColor="red.500"
@@ -72,6 +74,26 @@ function ProductCard({ item }) {
               >
                 {item.discount + "%"}
               </Badge>
+            </Flex>
+          )}
+          {item.stock === 0 && (
+            <Flex
+              justifyContent="center"
+              alignItems="center"
+              w="full"
+              h="full"
+              bg="rgba(0,0,0,0.5)"
+              rounded="lg"
+              backdropFilter={"blur(7px)"}
+            >
+              <Text
+                color="white"
+                fontWeight="bold"
+                fontSize="xl"
+                textTransform="uppercase"
+              >
+                {lang === "tr-TR" ? "Stokta Yok" : "Out of Stock"}
+              </Text>
             </Flex>
           )}
         </Box>
@@ -128,7 +150,7 @@ function ProductCard({ item }) {
                     mr={2}
                     textDecoration={"line-through"}
                   >
-                    {formatPrice(item.price)} 
+                    {formatPrice(item.price)}
                   </Text>
                 )}
                 <Text
@@ -139,7 +161,9 @@ function ProductCard({ item }) {
                     color: "gray.200",
                   }}
                 >
-                  {formatPrice(item.discountedPrice) ? formatPrice(item.discountedPrice) : formatPrice(item.price)}
+                  {formatPrice(item.discountedPrice)
+                    ? formatPrice(item.discountedPrice)
+                    : formatPrice(item.price)}
                 </Text>
               </Box>
               <Flex flexDirection={"row"} ml="-0.8">
@@ -204,7 +228,11 @@ function ProductCard({ item }) {
               </Link>
               <Tooltip
                 label={
-                  findBasketItem ? removeFromBasketMessage : addToBasketMessage
+                  item.stock === 0
+                    ? "Out of Stock"
+                    : findBasketItem
+                    ? removeFromBasketMessage
+                    : addToBasketMessage
                 }
                 hasArrow
                 bg="gray.300"
@@ -218,6 +246,7 @@ function ProductCard({ item }) {
                   px={2}
                   py={1}
                   rounded="lg"
+                  disabled={item.stock === 0}
                   onClick={() => {
                     toast({
                       title: findBasketItem

@@ -22,6 +22,7 @@ const BasketProvider = ({ children }) => {
             quantity: quantity,
           },
         ]),
+        setQuantity(1),
         setNotification(notification + 1)
       );
     }
