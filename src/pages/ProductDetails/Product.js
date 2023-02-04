@@ -82,7 +82,6 @@ function Product() {
 
   useEffect(() => {
     if (product !== null) {
-      
       setCurrentCustomerRating(
         product.rating !== undefined &&
           isAuth === true &&
@@ -173,7 +172,7 @@ function Product() {
   const handleRoute = () => {
     navigate("/signin");
   };
-
+  
   return (
     <Container maxW={"7xl"}>
       <SimpleGrid
@@ -393,9 +392,9 @@ function Product() {
             </Text>
           </Box>
           {product.stock > 0 && isAuth === true && (
-            <Box display={"flex"} alignItems={"center"} gap={3}>
+            <Box display={"flex"} alignItems={"center"} gap={3} id="rate">
               <Text fontSize={"lg"} mt={1}>
-                Rating:
+                Rate this product:
               </Text>
               <ReactStars
                 filledIcon={<FaStar />}
