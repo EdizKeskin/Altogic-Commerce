@@ -1,26 +1,28 @@
 import { Box, ButtonGroup, SimpleGrid, Text, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { AiOutlineHistory } from "react-icons/ai";
 import { BsBoxSeam } from "react-icons/bs";
 import { FiDatabase } from "react-icons/fi";
 import { GiMoneyStack } from "react-icons/gi";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { MdOutlineCancel } from "react-icons/md";
 import { Link } from "react-router-dom";
 import altogic from "../../api/altogic";
 import { formatPrice } from "../../api/storage";
 import StatsCard from "../../components/StatsCard";
+import { useProduct } from "../../context/productContext";
 
 export default function BasicStatistics() {
-  const [productsLength, setProductsLength] = useState(0);
   const [ordersLength, setOrdersLength] = useState(0);
+  const [completedOrdersLength, setcompletedOrdersLength] = useState(0);
+  const [pendingOrdersLength, setPendingOrdersLength] = useState(0);
+  const [canceledOrdersLength, setCanceledOrdersLength] = useState(0);
   const [totalEarnings, setTotalEarnings] = useState(0);
+  const { products } = useProduct();
 
   useEffect(() => {
     const getStats = async () => {
-      const productsLength = await altogic.db.model("products").get();
       const orders = await altogic.db.model("order").get();
-
-      if (!productsLength.errors) {
-        setProductsLength(productsLength.data.length);
-      }
       if (!orders.errors) {
         setOrdersLength(orders.data.length);
         let total = 0;
@@ -29,11 +31,20 @@ export default function BasicStatistics() {
             return (total += prod.price);
           });
         });
+        setcompletedOrdersLength(
+          orders.data.filter((order) => order.status === "completed").length
+        )
+        setPendingOrdersLength(
+          orders.data.filter((order) => order.status === "pending").length
+        )
+        setCanceledOrdersLength(
+          orders.data.filter((order) => order.status === "canceled").length
+        )
         setTotalEarnings(total);
       }
     };
     getStats();
-  }, []);
+  }, [products]);
 
   return (
     <Box maxW="7xl" mx={"auto"} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
@@ -46,14 +57,14 @@ export default function BasicStatistics() {
         <Text textAlign={"center"} fontSize={"4xl"} fontWeight={"bold"} mb={4}>
           Basic Statistics
         </Text>
-        <ButtonGroup >
+        <ButtonGroup>
           <Link to={"/admin/orders"}>
-            <Button variant="outline" color="primary" shadow={'xl'}>
+            <Button variant="outline" color="primary" shadow={"xl"}>
               Orders
             </Button>
           </Link>
           <Link to={"/admin/products"}>
-            <Button variant="outline" color="primary" shadow={'xl'}>
+            <Button variant="outline" color="primary" shadow={"xl"}>
               Products
             </Button>
           </Link>
@@ -77,8 +88,29 @@ export default function BasicStatistics() {
         <Link to={"/admin/products"}>
           <StatsCard
             title={"Total Products"}
-            stat={productsLength}
+            stat={products.length}
             icon={<FiDatabase size={"3em"} />}
+          />
+        </Link>
+        <Link to={"/admin/orders"}>
+          <StatsCard
+            title={"Pending Orders"}
+            stat={pendingOrdersLength}
+            icon={<AiOutlineHistory  size={"3em"} />}
+          />
+        </Link>
+        <Link to={"/admin/orders"}>
+          <StatsCard
+            title={"Completed Orders"}
+            stat={completedOrdersLength}
+            icon={<IoMdCheckmarkCircleOutline size={"3em"} />}
+          />
+        </Link>
+        <Link to={"/admin/orders"}>
+          <StatsCard
+            title={"Canceled Orders"}
+            stat={canceledOrdersLength}
+            icon={<MdOutlineCancel size={"3em"} />}
           />
         </Link>
       </SimpleGrid>

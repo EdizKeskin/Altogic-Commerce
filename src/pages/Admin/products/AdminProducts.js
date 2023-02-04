@@ -1,8 +1,15 @@
-import { Box, Breadcrumb, BreadcrumbItem, Button, Icon, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  Button,
+  Icon,
+  Text,
+} from "@chakra-ui/react";
 import { createTheme, ThemeProvider, useTheme } from "@mui/material";
 import { format } from "date-fns";
 import MaterialReactTable from "material-react-table";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { AiOutlineRight } from "react-icons/ai";
 import { BsFillTrashFill } from "react-icons/bs";
 import { FaExternalLinkAlt } from "react-icons/fa";
@@ -11,9 +18,10 @@ import Swal from "sweetalert2";
 import altogic from "../../../api/altogic";
 import { formatPrice } from "../../../api/storage";
 import CustomSpinner from "../../../components/Spinner";
+import { useProduct } from "../../../context/productContext";
 
 function AdminProducts() {
-  const [products, setProducts] = useState(null);
+  const { products, setProducts } = useProduct();
 
   const deleteProduct = async (id) => {
     const result = await altogic.db.model("products").object(id).delete();
@@ -21,16 +29,6 @@ function AdminProducts() {
     console.log(result);
   };
 
-  useEffect(() => {
-    const getProducts = async () => {
-      const result = await altogic.db.model("products").get();
-
-      if (!result.errors) {
-        setProducts(result.data);
-      }
-    };
-    getProducts();
-  }, []);
   const globalTheme = useTheme();
   const tableTheme = useMemo(
     () =>
@@ -208,23 +206,25 @@ function AdminProducts() {
             </BreadcrumbItem>
           </Breadcrumb>
         </Box>
-        <Box display={"flex"} alignItems="center">
-          <Link to="/admin/products/newproduct">
-            <Button colorScheme={"teal"} size="md" mr={2}>
-              Add Product
-            </Button>
-          </Link>
+        <Box
+          display={"flex"}
+          alignItems="center"
+          flexDirection={{ base: "column", md: "row" }}
+          gap={3}
+        >
           <Text fontSize="lg" color={"white"}>
             Total products: {products.length}
           </Text>
+          <Link to="/admin/products/newproduct">
+            <Button colorScheme={"teal"} variant={"outline"}>
+              Add Product
+            </Button>
+          </Link>
         </Box>
       </Box>
       <ThemeProvider theme={tableTheme}>
         {products != null && products.length > 0 && (
-          <MaterialReactTable
-            data={products}
-            columns={columns}
-          />
+          <MaterialReactTable data={products} columns={columns} />
         )}
       </ThemeProvider>
     </div>

@@ -48,13 +48,14 @@ import { usePreferences } from "../../context/preferencesContext";
 import { useEffect, useState } from "react";
 import ReactStars from "react-rating-stars-component";
 import altogic from "../../api/altogic";
-import { TiTick } from "react-icons/ti";
 import { useAuth } from "../../context/authContext";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { useProduct } from "../../context/productContext";
 
 function Product() {
   const { products } = useProduct();
+  const { animations, lang } = usePreferences();
+  const { isAuth } = useAuth();
   const {
     addToBasket,
     items,
@@ -63,10 +64,7 @@ function Product() {
     notification,
     setNotification,
   } = useBasket();
-  const { animations, lang } = usePreferences();
-  const { isAuth } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [averageRating, setAverageRating] = useState();
   const [isSending, setIsSending] = useState(false);
   const [currentCustomerRating, setCurrentCustomerRating] = useState();
   const toast = useToast();
@@ -82,19 +80,9 @@ function Product() {
     return acc;
   }, null);
 
-  console.log(product);
-
   useEffect(() => {
     if (product !== null) {
-      const averageRating =
-        product.rating === undefined ||
-        product.rating.length === 0 ||
-        product.rating === null
-          ? 0
-          : product.rating.reduce((a, b) => a + b.rate, 0) /
-            product.rating.length;
-
-      setAverageRating(averageRating);
+      
       setCurrentCustomerRating(
         product.rating !== undefined &&
           isAuth === true &&
@@ -132,20 +120,53 @@ function Product() {
 
   const handleRating = async (newRating) => {
     if (isSending === true || currentCustomerRating !== undefined) {
-      await altogic.db
+      const update = await altogic.db
         .model("products.rating")
         .object(currentCustomerRating._id)
         .update({ rate: newRating });
+      if (!update.errors) {
+        toast({
+          title: "Rating Updated",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+          position: "bottom-right",
+        });
+      } else {
+        toast({
+          title: "Rating Update Failed",
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+          position: "bottom-right",
+        });
+      }
     } else {
-      await altogic.db.model("products.rating").object().append(
+      const append = await altogic.db.model("products.rating").object().append(
         {
           rate: newRating,
           customerId: altogic.auth.getUser()._id,
         },
         product._id
       );
+      if (!append.errors) {
+        toast({
+          title: "Rating Added",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+          position: "bottom-right",
+        });
+      } else {
+        toast({
+          title: "Rating Add Failed",
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+          position: "bottom-right",
+        });
+      }
     }
-
     setIsSending(true);
   };
 
@@ -235,7 +256,7 @@ function Product() {
             </Box>
           </Box>
           <Box>
-            {averageRating === undefined ? (
+            {product.rating === undefined ? (
               <CustomSpinner />
             ) : (
               <Box mt={{ base: -2, md: -5 }}>
@@ -243,7 +264,7 @@ function Product() {
                   onChange={handleRating}
                   count={5}
                   value={
-                    product.rating === undefined
+                    product.rating === undefined || product.rating.length === 0
                       ? 0
                       : product.rating.reduce((a, b) => a + (b.rate || 0), 0) /
                         product.rating.length
@@ -395,7 +416,6 @@ function Product() {
                 onChange={handleRating}
                 size={24}
               />
-              {isSending === true && <TiTick color="#3cdd78" size={25} />}
             </Box>
           )}
           <motion.div whileTap={{ scale: 0.8 }}>

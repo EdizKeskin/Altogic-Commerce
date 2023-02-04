@@ -5,29 +5,18 @@ import {
   Button,
   Grid,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { AiOutlineRight } from "react-icons/ai";
 import { Link, useParams } from "react-router-dom";
-import altogic from "../../api/altogic";
 import ProductCard from "../../components/ProductCard";
 import CustomSpinner from "../../components/Spinner";
 import { usePreferences } from "../../context/preferencesContext";
+import { useProduct } from "../../context/productContext";
 
 function Categories() {
   const { category } = useParams();
   const { animations } = usePreferences();
-  const [products, setProducts] = useState(null);
-  
-  useEffect(() => {
-    const getProducts = async () => {
-      const result = await altogic.db.model("products").get();
-
-      if (!result.errors) {
-        setProducts(result.data);
-      }
-    };
-    getProducts();
-  }, []);
+  const { products } = useProduct();
 
   if (products === null) return <CustomSpinner />;
 

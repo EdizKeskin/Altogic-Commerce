@@ -34,8 +34,9 @@ function Home() {
   const [sort, setSort] = useState("createdAt");
   const [sortType, setSortType] = useState("desc");
   const { animations } = usePreferences();
-  const { products } = useProduct();
-  if (products === null) return <CustomSpinner />;
+  const { products, loading } = useProduct();
+
+  if (products === null || loading === true) return <CustomSpinner />;
 
   const decreasingByPrice =
     lang === "tr-TR" ? "Fiyata göre azalan" : "Decreasing by price";

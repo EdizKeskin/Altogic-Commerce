@@ -6,8 +6,10 @@ const ProductContext = createContext();
 const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [trigger, setTrigger] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const getProducts = async () => {
       const result = await altogic.db.model("products").get();
 
@@ -17,12 +19,14 @@ const ProductProvider = ({ children }) => {
       }
     };
     getProducts();
+    setLoading(false);
   }, [trigger]);
 
   const values = {
     products,
     setTrigger,
-    trigger
+    trigger,
+    loading,
   };
 
   return (
