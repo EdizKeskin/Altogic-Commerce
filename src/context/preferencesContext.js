@@ -6,7 +6,11 @@ const PreferencesContext = createContext();
 
 export const LangProvider = ({ children }) => {
   const [lang, setLang] = useState(localStorage.getItem("lang") || "tr-TR");
-  const [animations, setAnimations] = useState(JSON.parse(localStorage.getItem("animations")) === null ? true : JSON.parse(localStorage.getItem("animations")));
+  const [animations, setAnimations] = useState(
+    JSON.parse(localStorage.getItem("animations")) === null
+      ? true
+      : JSON.parse(localStorage.getItem("animations"))
+  );
 
   useEffect(() => {
     localStorage.setItem("lang", lang);

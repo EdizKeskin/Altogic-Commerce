@@ -238,7 +238,7 @@ function Product() {
             {averageRating === undefined ? (
               <CustomSpinner />
             ) : (
-              <>
+              <Box mt={{ base: -2, md: -5 }}>
                 <ReactStars
                   onChange={handleRating}
                   count={5}
@@ -259,7 +259,7 @@ function Product() {
                   {product.rating === undefined ? "0" : product.rating.length}{" "}
                   reviews
                 </Text>
-              </>
+              </Box>
             )}
           </Box>
 
