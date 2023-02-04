@@ -37,17 +37,24 @@ import { AiOutlineRight } from "react-icons/ai";
 import { BsFillBasketFill } from "react-icons/bs";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { FormattedMessage } from "react-intl";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import CustomSpinner from "../../components/Spinner";
 import { motion } from "framer-motion";
 import Checkout from "../../components/Checkout";
 import Coursel from "../../components/Coursel";
 import { useBasket } from "../../context/basketContext";
-import { formatPrice, getProductById } from "../../api/storage";
+import { formatPrice } from "../../api/storage";
 import { usePreferences } from "../../context/preferencesContext";
 import { useEffect, useState } from "react";
+import ReactStars from "react-rating-stars-component";
+import altogic from "../../api/altogic";
+import { TiTick } from "react-icons/ti";
+import { useAuth } from "../../context/authContext";
+import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import { useProduct } from "../../context/productContext";
 
 function Product() {
+  const { products } = useProduct();
   const {
     addToBasket,
     items,
@@ -57,23 +64,46 @@ function Product() {
     setNotification,
   } = useBasket();
   const { animations, lang } = usePreferences();
+  const { isAuth } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [product, setProduct] = useState(null);
-  const [stock, setStock] = useState(0);
+  const [averageRating, setAverageRating] = useState();
+  const [isSending, setIsSending] = useState(false);
+  const [currentCustomerRating, setCurrentCustomerRating] = useState();
   const toast = useToast();
+  const navigate = useNavigate();
 
   const { id } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  //get product by id from api
+  const product = products.reduce((acc, item) => {
+    if (item._id === id) {
+      return item;
+    }
+    return acc;
+  }, null);
+
+  console.log(product);
+
   useEffect(() => {
-    const getProduct = async () => {
-      const result = await getProductById(id);
-      setProduct(result.data);
-      setStock(result.data.stock);
-    };
-    getProduct();
-  }, [id, stock]);
+    if (product !== null) {
+      const averageRating =
+        product.rating === undefined ||
+        product.rating.length === 0 ||
+        product.rating === null
+          ? 0
+          : product.rating.reduce((a, b) => a + b.rate, 0) /
+            product.rating.length;
+
+      setAverageRating(averageRating);
+      setCurrentCustomerRating(
+        product.rating !== undefined &&
+          isAuth === true &&
+          product.rating.find(
+            (item) => item.customerId === altogic.auth.getUser()._id
+          )
+      );
+    }
+  }, [product, isSending, isAuth]);
 
   const textColor = useColorModeValue("black", "white");
   const titleColor = useColorModeValue("yellow.500", "yellow.300");
@@ -99,6 +129,29 @@ function Product() {
   arrayProduct[0].quantity = quantity;
 
   const lastPrice = product.discountedPrice * quantity;
+
+  const handleRating = async (newRating) => {
+    if (isSending === true || currentCustomerRating !== undefined) {
+      await altogic.db
+        .model("products.rating")
+        .object(currentCustomerRating._id)
+        .update({ rate: newRating });
+    } else {
+      await altogic.db.model("products.rating").object().append(
+        {
+          rate: newRating,
+          customerId: altogic.auth.getUser()._id,
+        },
+        product._id
+      );
+    }
+
+    setIsSending(true);
+  };
+
+  const handleRoute = () => {
+    navigate("/signin");
+  };
 
   return (
     <Container maxW={"7xl"}>
@@ -181,6 +234,35 @@ function Product() {
               </Text>
             </Box>
           </Box>
+          <Box>
+            {averageRating === undefined ? (
+              <CustomSpinner />
+            ) : (
+              <>
+                <ReactStars
+                  onChange={handleRating}
+                  count={5}
+                  value={
+                    product.rating === undefined
+                      ? 0
+                      : product.rating.reduce((a, b) => a + (b.rate || 0), 0) /
+                        product.rating.length
+                  }
+                  size={24}
+                  edit={false}
+                  isHalf={true}
+                  filledIcon={<FaStar />}
+                  halfIcon={<FaStarHalfAlt />}
+                  emptyIcon={<FaRegStar />}
+                />
+                <Text fontSize={"lg"} color={"gray.400"} fontWeight={"300"}>
+                  {product.rating === undefined ? "0" : product.rating.length}{" "}
+                  reviews
+                </Text>
+              </>
+            )}
+          </Box>
+
           <Stack
             spacing={{ base: 4, sm: 6 }}
             direction={"column"}
@@ -266,9 +348,9 @@ function Product() {
             <NumberInput
               defaultValue={1}
               min={1}
-              max={stock < 5 ? stock : 5}
+              max={product.stock < 5 ? product.stock : 5}
               onChange={(value) => setQuantity(value)}
-              disabled={stock < 1 ? true : false}
+              disabled={product.stock < 1 ? true : false}
               w={"min-content"}
             >
               <NumberInputField mr={5} />
@@ -280,15 +362,42 @@ function Product() {
           </Box>
           <Box display={"flex"} alignItems={"center"}>
             <Text fontSize={"lg"} mr={2}>
-              Stock:
+              product.stock:
             </Text>
             <Text fontSize={"lg"} color={"gray.400"} fontWeight={"300"}>
-              {stock < 1 ? "Out of stock" :  stock }
+              {product.stock < 1 ? "Out of product.stock" : product.stock}
             </Text>
           </Box>
+          {product.stock > 0 && isAuth === true && (
+            <Box display={"flex"} alignItems={"center"} gap={3}>
+              <Text fontSize={"lg"} mt={1}>
+                Rating:
+              </Text>
+              <ReactStars
+                filledIcon={<FaStar />}
+                halfIcon={<FaStarHalfAlt />}
+                emptyIcon={<FaRegStar />}
+                count={5}
+                value={
+                  product.rating === undefined
+                    ? 0
+                    : product.rating.find(
+                        (item) => item.customerId === altogic.auth.getUser()._id
+                      ) === undefined
+                    ? 0
+                    : product.rating.find(
+                        (item) => item.customerId === altogic.auth.getUser()._id
+                      ).rate
+                }
+                onChange={handleRating}
+                size={24}
+              />
+              {isSending === true && <TiTick color="#3cdd78" size={25} />}
+            </Box>
+          )}
           <motion.div whileTap={{ scale: 0.8 }}>
             <Button
-              onClick={onOpen}
+              onClick={isAuth === true ? onOpen : handleRoute}
               w={"full"}
               size={"lg"}
               py={"7"}
@@ -303,7 +412,11 @@ function Product() {
               mb={{ base: "6", md: "0" }}
               isLoading={loading}
             >
-              {stock < 1 ? "Out of stock" : <FormattedMessage id="buy" />}
+              {product.stock < 1 ? (
+                "Out of product.stock"
+              ) : (
+                <FormattedMessage id="buy" />
+              )}
             </Button>
           </motion.div>
           <Button
@@ -335,8 +448,8 @@ function Product() {
               )
             }
           >
-            {stock < 1 ? (
-              "Out of stock"
+            {product.stock < 1 ? (
+              "Out of product.stock"
             ) : findBasketItem ? (
               <FormattedMessage id="remove_from_basket" />
             ) : (
@@ -354,8 +467,6 @@ function Product() {
                   products={arrayProduct}
                   setLoading={setLoading}
                   loading={loading}
-                  stock={stock}
-                  setStock={setStock}
                 />
               </ModalBody>
             </ModalContent>

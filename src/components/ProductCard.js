@@ -15,6 +15,8 @@ import { useBasket } from "../context/basketContext";
 import { BsFillBasketFill } from "react-icons/bs";
 import { usePreferences } from "../context/preferencesContext";
 import { formatPrice } from "../api/storage";
+import ReactStars from "react-rating-stars-component";
+import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 
 function ProductCard({ item }) {
   const { addToBasket, items, notification, setNotification } = useBasket();
@@ -165,6 +167,22 @@ function ProductCard({ item }) {
                     ? formatPrice(item.discountedPrice)
                     : formatPrice(item.price)}
                 </Text>
+              </Box>
+              <Box mt={1}>
+                <ReactStars
+                  value={
+                    item.rating === undefined || item.rating.length === 0
+                      ? 0
+                      : item.rating.reduce((a, b) => a + (b.rate || 0), 0) /
+                        item.rating.length
+                  }
+                  edit={false}
+                  size={20}
+                  color2={"#ffd700"}
+                  filledIcon={<FaStar size={20} />}
+                  halfIcon={<FaStarHalfAlt size={20} />}
+                  emptyIcon={<FaRegStar size={20} />}
+                />
               </Box>
               <Flex flexDirection={"row"} ml="-0.8">
                 {item.categories.map((category, index) => (

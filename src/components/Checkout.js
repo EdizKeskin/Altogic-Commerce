@@ -15,6 +15,7 @@ import { useBasket } from "../context/basketContext";
 import { formatPrice } from "../api/storage";
 import { Link } from "react-router-dom";
 import CustomSpinner from "./Spinner";
+import { useProduct } from "../context/productContext";
 
 export default function Checkout({
   onClose,
@@ -27,6 +28,7 @@ export default function Checkout({
 }) {
   const toast = useToast();
   const { setItems, setNotification } = useBasket();
+  const { setTrigger } = useProduct();
   console.log(products[0].stock);
 
   const createOrder = async () => {
@@ -91,7 +93,6 @@ export default function Checkout({
           .update({
             stock: product.stock - product.quantity,
           });
-        setStock(product.stock - product.quantity);
       });
     } else {
       toast({
@@ -104,6 +105,7 @@ export default function Checkout({
     }
     setItems([]);
     setLoading(false);
+    setTrigger(true);
     onClose();
   };
 
