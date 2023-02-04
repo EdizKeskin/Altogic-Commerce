@@ -341,7 +341,10 @@ function Product() {
               </Tabs>
             </Accordion>
           </Stack>
-          <Box display={"flex"} alignItems={"center"}>
+          <Box
+            alignItems={"center"}
+            display={product.stock < 1 ? "none" : "flex"}
+          >
             <Text fontSize={"lg"} mr={4}>
               Quantity:
             </Text>
@@ -413,7 +416,7 @@ function Product() {
               isLoading={loading}
             >
               {product.stock < 1 ? (
-                "Out of product.stock"
+                "Out of product stock"
               ) : (
                 <FormattedMessage id="buy" />
               )}
