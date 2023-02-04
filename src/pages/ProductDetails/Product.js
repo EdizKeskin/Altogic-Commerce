@@ -362,7 +362,7 @@ function Product() {
           </Box>
           <Box display={"flex"} alignItems={"center"}>
             <Text fontSize={"lg"} mr={2}>
-              product.stock:
+              Stock:
             </Text>
             <Text fontSize={"lg"} color={"gray.400"} fontWeight={"300"}>
               {product.stock < 1 ? "Out of product.stock" : product.stock}
