@@ -18,6 +18,7 @@ import {
   InputRightElement,
   InputGroup,
   FormErrorMessage,
+  AlertDescription,
 } from "@chakra-ui/react";
 import altogic from "../../api/altogic";
 import { FaDiscord, FaGithub, FaGoogle } from "react-icons/fa";
@@ -92,27 +93,16 @@ function SignUp() {
             </Heading>
           </Stack>
           {state && state.errors && (
-            <Alert
-              mt={"4"}
-              status="error"
-              color="white"
-              bgColor="red.600"
-              borderRadius="lg"
-            >
-              <AlertIcon color="red.900" />
-              This email is already in use.
+            <Alert status="error" borderRadius={"md"}>
+              <AlertIcon />
+              <AlertDescription>This email is already in use.</AlertDescription>
             </Alert>
           )}
+
           {error && (
-            <Alert
-              mt={"4"}
-              status="error"
-              color="white"
-              bgColor="red.600"
-              borderRadius="lg"
-            >
-              <AlertIcon color="red.900" />
-              {error.items[0].message}
+            <Alert status="error" borderRadius={"md"}>
+              <AlertIcon />
+              <AlertDescription>{error.items[0].message}</AlertDescription>
             </Alert>
           )}
 

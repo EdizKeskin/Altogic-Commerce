@@ -172,7 +172,7 @@ function Product() {
   const handleRoute = () => {
     navigate("/signin");
   };
-  
+
   return (
     <Container maxW={"7xl"}>
       <SimpleGrid

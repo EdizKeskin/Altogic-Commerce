@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SessionTable from "../../components/SessionTable/SessionTable";
 import { useAuth } from "../../context/authContext";
-import { Box, Button, Container, Stack } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, Stack, Text } from "@chakra-ui/react";
 import ProfileNav from "../../components/ProfileNav";
 const Sessions = () => {
   const { signOutAllSessions, sessions } = useAuth();
@@ -24,36 +24,51 @@ const Sessions = () => {
         borderRadius={"md"}
       >
         <ProfileNav />
-        <Box display={"grid"}>
-          <Box
-            m={"auto"}
-            minW={"fit-content"}
-            borderRadius={"md"}
-            mb={10}
-            mx={{ base: 3, md: "auto" }}
+        <Flex flexDirection={"column"}>
+          <Text
+            fontSize={"2xl"}
+            fontWeight={700}
+            mb={2}
+            textTransform={"uppercase"}
+            pl={10}
           >
+            Sessions
+          </Text>
+          <Box display={"grid"}>
             <Box
-              borderColor={"gray.200"}
-              overflowX={"auto"}
               m={"auto"}
               minW={"fit-content"}
               borderRadius={"md"}
+              mb={10}
+              mx={{ base: 3, md: "auto" }}
             >
-              {sessions !== null ? <SessionTable sessions={sessions} /> : <></>}
-              <Box textAlign={"center"}>
-                <Button
-                  isLoading={loading}
-                  onClick={signOutAll}
-                  colorScheme={"teal"}
-                  variant={"solid"}
-                  my={4}
-                >
-                  Sign Out From All Sessions
-                </Button>
+              <Box
+                borderColor={"gray.200"}
+                overflowX={"auto"}
+                m={"auto"}
+                minW={"fit-content"}
+                borderRadius={"md"}
+              >
+                {sessions !== null ? (
+                  <SessionTable sessions={sessions} />
+                ) : (
+                  <></>
+                )}
+                <Box textAlign={"center"}>
+                  <Button
+                    isLoading={loading}
+                    onClick={signOutAll}
+                    colorScheme={"teal"}
+                    variant={"solid"}
+                    my={4}
+                  >
+                    Sign Out From All Sessions
+                  </Button>
+                </Box>
               </Box>
             </Box>
           </Box>
-        </Box>
+        </Flex>
       </Stack>
     </Container>
   );

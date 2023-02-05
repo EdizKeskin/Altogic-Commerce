@@ -12,6 +12,9 @@ import {
   useColorModeValue,
   Divider,
   Badge,
+  Alert,
+  AlertIcon,
+  AlertDescription,
 } from "@chakra-ui/react";
 
 import ProfileNav from "../../components/ProfileNav";
@@ -107,6 +110,12 @@ export const Orders = () => {
             >
               Orders
             </Text>
+            {orders?.length === 0 && (
+              <Alert status="error" borderRadius={"md"}>
+                <AlertIcon />
+                <AlertDescription>You have no orders yet.</AlertDescription>
+              </Alert>
+            )}
             {orders === null ? (
               <CustomSpinner />
             ) : (
