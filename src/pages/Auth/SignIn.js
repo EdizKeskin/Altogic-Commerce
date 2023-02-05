@@ -189,21 +189,33 @@ function SignIn() {
                       </InputGroup>
                       <FormErrorMessage>{errors.password}</FormErrorMessage>
                     </FormControl>
+
                     <Stack spacing={10}>
                       <Flex direction="column">
-                        <Button
-                          bg={"blue.400"}
-                          color={"white"}
-                          _hover={{
-                            bg: "blue.500",
-                          }}
-                          mt={5}
-                          type="submit"
-                          disabled={isSubmitting || !isValid}
-                        >
-                          Sign in
-                        </Button>
-
+                        <Flex flexDirection={"column"} mt={5} gap={5}>
+                          <Flex justifyContent={"flex-end"}>
+                            <Link to="/forgot-password">
+                              <Button
+                                variant={"link"}
+                                colorScheme="teal"
+                                textAlign={"end"}
+                              >
+                                Forgot password?
+                              </Button>
+                            </Link>
+                          </Flex>
+                          <Button
+                            bg={"blue.400"}
+                            color={"white"}
+                            _hover={{
+                              bg: "blue.500",
+                            }}
+                            type="submit"
+                            disabled={isSubmitting || !isValid}
+                          >
+                            Sign in
+                          </Button>
+                        </Flex>
                         <Link to="/signup">
                           <Button
                             colorScheme="teal"

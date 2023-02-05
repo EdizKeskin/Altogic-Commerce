@@ -17,6 +17,8 @@ import CustomSpinner from "./components/Spinner";
 import Navbar from "./components/Navbar";
 import AuthRedirect from "./pages/Auth/AuthRedirect";
 
+const ResetPassword = lazy(() => import("./pages/Auth/ResetPassword"));
+const ForgotPassword = lazy(() => import("./pages/Auth/ForgotPassword"));
 const SignIn = lazy(() => import("./pages/Auth/SignIn"));
 const SignUp = lazy(() => import("./pages/Auth/SignUp"));
 const Basket = lazy(() => import("./pages/Basket/Basket"));
@@ -81,6 +83,22 @@ function App() {
                   element={
                     <RequiresNotAuth>
                       <SignUp />
+                    </RequiresNotAuth>
+                  }
+                />
+                <Route
+                  path="/forgot-password"
+                  element={
+                    <RequiresNotAuth>
+                      <ForgotPassword />
+                    </RequiresNotAuth>
+                  }
+                />
+                <Route
+                  path="/reset-password/:accessToken"
+                  element={
+                    <RequiresNotAuth>
+                      <ResetPassword />
                     </RequiresNotAuth>
                   }
                 />

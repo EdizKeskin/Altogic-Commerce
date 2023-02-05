@@ -36,7 +36,7 @@ const Messages = {
     remove_from_basket: "Remove from Basket",
     ship_time: "2-3 business days delivery",
     signin: "Sign In",
-    signup: "Kayıt Ol",
+    signup: "Sign Up",
     signout: "Sign Out",
     home_btn: "Home",
     title_404: "Page Not Found",
