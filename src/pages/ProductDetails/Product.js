@@ -31,6 +31,10 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   useToast,
+  IconButton,
+  Tooltip,
+  Flex,
+  useClipboard,
 } from "@chakra-ui/react";
 import { MdLocalShipping } from "react-icons/md";
 import { AiOutlineRight } from "react-icons/ai";
@@ -51,6 +55,7 @@ import altogic from "../../api/altogic";
 import { useAuth } from "../../context/authContext";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { useProduct } from "../../context/productContext";
+import { BiShareAlt } from "react-icons/bi";
 
 function Product() {
   const { products } = useProduct();
@@ -69,6 +74,7 @@ function Product() {
   const [currentCustomerRating, setCurrentCustomerRating] = useState();
   const toast = useToast();
   const navigate = useNavigate();
+  const { onCopy } = useClipboard(window.location.href);
 
   const { id } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -171,6 +177,29 @@ function Product() {
 
   const handleRoute = () => {
     navigate("/signin");
+  };
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: product.title,
+          text: product.desc,
+          url: window.location.href,
+        })
+        .then(() => console.log("Successful share"))
+        .catch((error) => console.log("Error sharing", error));
+    } else {
+      toast({
+        title: "Copied to clipboard",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+        position: "bottom-right",
+      });
+
+      onCopy();
+    }
   };
 
   return (
@@ -301,6 +330,24 @@ function Product() {
             </Box>
           </Stack>
           <Stack>
+            <Flex justifyContent={"flex-end"}>
+              <Tooltip
+                label="Share"
+                aria-label="Share"
+                hasArrow
+                bg="gray.300"
+                color="black"
+                borderRadius={"md"}
+              >
+                <IconButton
+                  icon={<BiShareAlt size={25} />}
+                  onClick={handleShare}
+                  variant="outline"
+                  w={"fit-content"}
+                  colorScheme="blue"
+                />
+              </Tooltip>
+            </Flex>
             <Accordion allowToggle>
               <Tabs>
                 <TabList>
