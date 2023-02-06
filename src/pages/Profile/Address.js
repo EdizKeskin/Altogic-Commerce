@@ -2,11 +2,10 @@ import {
   Box,
   Button,
   Container,
-  Divider,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Heading,
   Input,
   Stack,
   Text,
@@ -76,6 +75,16 @@ function Address() {
         borderRadius={"md"}
       >
         <ProfileNav />
+        <Flex flexDirection={"column"}>
+        <Text
+          fontSize={"2xl"}
+          fontWeight={700}
+          mb={10}
+          textTransform={"uppercase"}
+          pl={10}
+        >
+          Add your address
+        </Text>
         <Formik
           initialValues={{
             country: initialAddress === undefined ? "" : initialAddress.country,
@@ -103,14 +112,6 @@ function Address() {
               px={{ base: 10, md: 0 }}
             >
               <form onSubmit={handleSubmit}>
-                <Heading
-                  color={"white"}
-                  textAlign={{ base: "center", md: "start" }}
-                >
-                  Add your address
-                </Heading>
-                <Divider my={4} />
-
                 <Box display={"flex"} alignItems={"center"}>
                   <FormControl
                     mr={8}
@@ -199,6 +200,7 @@ function Address() {
             </Box>
           )}
         </Formik>
+        </Flex>
       </Stack>
     </Container>
   );

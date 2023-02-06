@@ -13,6 +13,10 @@ import {
 } from "@chakra-ui/react";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
+import { AiOutlineHistory } from "react-icons/ai";
+import { BsBagCheck } from "react-icons/bs";
+import { MdOutlineCancel } from "react-icons/md";
+import { TbTruckLoading } from "react-icons/tb";
 import { Link, useParams } from "react-router-dom";
 import { formatPrice, getOrderById } from "../../api/storage";
 import CustomSpinner from "../../components/Spinner";
@@ -101,7 +105,7 @@ function OrderDetail() {
                   </Box>
                 </Box>
                 <Box>
-                  <Box display={"flex"} alignItems={"center"}>
+                  <Box display={"flex"} alignItems={"flex-start"}>
                     <Text fontSize={"lg"} fontWeight={"bold"} mb={2} mr={2}>
                       Order Status:
                     </Text>
@@ -117,7 +121,24 @@ function OrderDetail() {
                       p="3px 10px"
                       borderRadius="8px"
                     >
-                      {order.status}
+                      <Flex alignItems={"center"} gap={1}>
+                        {order.status}
+                        {(order.status === "pending" && (
+                          <AiOutlineHistory
+                            size={20}
+                            style={{ strokeWidth: "25px" }}
+                          />
+                        )) ||
+                          (order.status === "shipped" && (
+                            <TbTruckLoading size={20} />
+                          )) ||
+                          (order.status === "completed" && (
+                            <BsBagCheck size={20} />
+                          )) ||
+                          (order.status === "canceled" && (
+                            <MdOutlineCancel size={20} />
+                          ))}
+                      </Flex>
                     </Badge>
                   </Box>
                   <Box display={"flex"} alignItems={"center"}>

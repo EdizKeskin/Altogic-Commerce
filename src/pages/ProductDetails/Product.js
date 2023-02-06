@@ -184,7 +184,8 @@ function Product() {
       navigator
         .share({
           title: product.title,
-          text: product.desc,
+          text: `${product.title}:
+          ${product.desc}`,
           url: window.location.href,
         })
         .then(() => console.log("Successful share"))

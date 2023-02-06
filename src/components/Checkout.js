@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -7,6 +7,7 @@ import {
   Text,
   Image,
   Divider,
+  Textarea,
 } from "@chakra-ui/react";
 import Form3svg from "../assets/shop.svg";
 import altogic from "../api/altogic";
@@ -28,6 +29,7 @@ export default function Checkout({
 }) {
   const toast = useToast();
   const { setItems, setNotification } = useBasket();
+  const [note, setNote] = useState("");
   const { setTrigger } = useProduct();
   console.log(products[0].stock);
 
@@ -69,6 +71,7 @@ export default function Checkout({
         city: userInfos.address.city,
         country: userInfos.address.country,
         userId: userInfos._id,
+        note: note,
         products: products.map((product) => {
           return {
             ...product,
@@ -145,6 +148,18 @@ export default function Checkout({
               loading={"lazy"}
               boxSize={"50%"}
             />
+          </Flex>
+          <Flex flexDirection={"column"} alignItems={"center"} mb={4}>
+            <Text
+              as="h2"
+              fontSize={"2xl"}
+              color={"gray.400"}
+              alignItems={"center"}
+              mb={4}
+            >
+              Leave a note to the seller :
+            </Text>
+            <Textarea value={note} onChange={(e) => setNote(e.target.value)} />
           </Flex>
 
           <Flex flexDirection={"column"} alignItems={"center"}>
