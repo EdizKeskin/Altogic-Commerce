@@ -17,6 +17,7 @@ import { formatPrice } from "../api/storage";
 import { Link } from "react-router-dom";
 import CustomSpinner from "./Spinner";
 import { useProduct } from "../context/productContext";
+import { FormattedMessage, useIntl } from "react-intl";
 
 export default function Checkout({
   onClose,
@@ -25,18 +26,17 @@ export default function Checkout({
   loading,
   setLoading,
   stock,
-  setStock,
 }) {
   const toast = useToast();
   const { setItems, setNotification } = useBasket();
   const [note, setNote] = useState("");
   const { setTrigger } = useProduct();
-  console.log(products[0].stock);
+  const intl = useIntl();
 
   const createOrder = async () => {
     if (products.map((product) => stock < product.quantity).includes(true)) {
       toast({
-        title: "Some of the products are out of stock.",
+        title: intl.formatMessage({ id: "checkou_stock_error" }),
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -51,8 +51,8 @@ export default function Checkout({
       products.map((product) => stock < product.quantity).includes(true)
     ) {
       toast({
-        title: "Error!",
-        description: "Some of the products are out of stock.",
+        title: intl.formatMessage({ id: "error" }),
+        description: intl.formatMessage({ id: "checkou_stock_error" }),
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -83,8 +83,8 @@ export default function Checkout({
 
     if (!result.errors) {
       toast({
-        title: "Success!",
-        description: "Your order has been placed.",
+        title: intl.formatMessage({ id: "succsess" }),
+        description: intl.formatMessage({ id: "checkout_succsess" }),
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -99,8 +99,8 @@ export default function Checkout({
       });
     } else {
       toast({
-        title: "Error!",
-        description: "Something went wrong.",
+        title: intl.formatMessage({ id: "error" }),
+        description: intl.formatMessage({ id: "something_went_wrong" }),
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -126,14 +126,14 @@ export default function Checkout({
           height={"200px"}
         >
           <Text fontSize="xl" fontWeight="bold" textAlign={"center"}>
-            Your order is being processing...
+            <FormattedMessage id="checkout_processing" />
           </Text>
           <CustomSpinner />
         </Box>
       ) : (
         <Box rounded="lg" maxWidth={800} p={6} m="10px auto" as="form">
           <Heading w="100%" textAlign={"center"} fontWeight="normal">
-            Checkout (out of service in this page)
+            <FormattedMessage id="checkout_tile" />
           </Heading>
 
           <Flex
@@ -157,7 +157,7 @@ export default function Checkout({
               alignItems={"center"}
               mb={4}
             >
-              Leave a note to the seller :
+              <FormattedMessage id="checkout_leave_note" />
             </Text>
             <Textarea value={note} onChange={(e) => setNote(e.target.value)} />
           </Flex>
@@ -198,6 +198,7 @@ export default function Checkout({
                   fontSize={"3xl"}
                   fontWeight={"bold"}
                   textAlign={"right"}
+                  ml={"5"}
                 >
                   {formatPrice(price)}
                 </Text>
@@ -208,13 +209,13 @@ export default function Checkout({
                 {altogic.auth.getUser().address === undefined ? (
                   <Link to={"/address"}>
                     <Text color={"red.300"} fontWeight={"hairline"} as={"u"}>
-                      Please add your address from your profile before complete
-                      your order.
+                      <FormattedMessage id="checkout_add_address" />
                     </Text>
                   </Link>
                 ) : (
                   <Text color={"green.300"} fontWeight={"hairline"}>
-                    Your address is {altogic.auth.getUser().address.address}
+                    <FormattedMessage id="checkout_your_address" />{" "}
+                    {altogic.auth.getUser().address.address}
                   </Text>
                 )}
                 <Link to={"/address"}></Link>
@@ -235,7 +236,7 @@ export default function Checkout({
                     setNotification(0);
                   }}
                 >
-                  Order
+                  <FormattedMessage id="checkout_confirm" />
                 </Button>
               </Flex>
             </Flex>

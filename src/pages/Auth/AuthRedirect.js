@@ -24,10 +24,10 @@ const AuthRedirect = () => {
       }
     };
     console.log(query);
-    if (query === "oauth-signin") {
-      signIn();
-    } else if (query === "reset-pwd") {
+    if (query === "reset-pwd") {
       navigate(`/reset-password/${accsessToken}`);
+    } else {
+      signIn();
     }
     //eslint-disable-next-line
   }, []);

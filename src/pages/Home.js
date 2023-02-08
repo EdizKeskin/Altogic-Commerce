@@ -27,9 +27,10 @@ import { usePreferences } from "../context/preferencesContext";
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { useProduct } from "../context/productContext";
+import { useIntl } from "react-intl";
 
 function Home() {
-  const { lang } = usePreferences();
+  const intl = useIntl();
   const [searchText, setSearchText] = useState("");
   const [sort, setSort] = useState("createdAt");
   const [sortType, setSortType] = useState("desc");
@@ -38,11 +39,9 @@ function Home() {
 
   if (products === null || loading === true) return <CustomSpinner />;
 
-  const decreasingByPrice =
-    lang === "tr-TR" ? "Fiyata göre azalan" : "Decreasing by price";
-  const increasingByPrice =
-    lang === "tr-TR" ? "Fiyata göre artan" : "Increasing by price";
-  const newestProducts = lang === "tr-TR" ? "Yeni Ürünler" : "Newest Products";
+  const decreasingByPrice = intl.formatMessage({ id: "decreasing_by_price" });
+  const increasingByPrice = intl.formatMessage({ id: "increasing_by_price" });
+  const newestProducts = intl.formatMessage({ id: "newest_products" });
 
   const handleChange = (e) => {
     setSearchText(e.target.value);
@@ -94,7 +93,7 @@ function Home() {
               </InputLeftElement>
               <AutoCompleteInput
                 variant="filled"
-                placeholder="Search..."
+                placeholder={intl.formatMessage({ id: "search" })}
                 value={searchText}
                 onChange={handleChange}
                 bg={"gray.700"}

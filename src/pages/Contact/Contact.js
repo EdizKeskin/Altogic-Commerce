@@ -10,24 +10,38 @@ import {
   AlertIcon,
   useColorModeValue,
   Textarea,
-  useColorMode,
+  useToast,
 } from "@chakra-ui/react";
 import React from "react";
 import { useFormik } from "formik";
-import validationSchema from "./validations";
 import { Link } from "react-router-dom";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { usePreferences } from "../../context/preferencesContext";
 import emailjs from "emailjs-com";
-import Swal from "sweetalert2";
 import { motion } from "framer-motion";
+import * as yup from "yup";
 
 function Contact() {
   const bg = useColorModeValue("gray.100", "gray.700");
   const textColor = useColorModeValue("black", "white");
-  const { lang } = usePreferences();
-  const { colorMode } = useColorMode();
   const { animations } = usePreferences();
+  const intl = useIntl();
+  const toast = useToast();
+
+  const validationSchema = yup.object().shape({
+    email: yup
+      .string()
+      .email(intl.formatMessage({ id: "email_invalid_test" }))
+      .required(intl.formatMessage({ id: "required_field" })),
+    name: yup
+      .string()
+      .min(3, intl.formatMessage({ id: "name_min_length" }))
+      .required(intl.formatMessage({ id: "required_field" })),
+    message: yup
+      .string()
+      .min(10, intl.formatMessage({ id: "message_min_length" }))
+      .required(intl.formatMessage({ id: "required_field" })),
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -45,27 +59,18 @@ function Contact() {
           process.env.REACT_APP_EMAIL_ID
         );
         resetForm();
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: lang === "tr-TR" ? "Mesajınız gönderildi." : "Message sent.",
-          showConfirmButton: false,
-          background: colorMode === "dark" ? "#2D3748" : "",
-          color: colorMode === "dark" ? "#fff" : "",
-          timer: 2000,
+        toast({
+          title: intl.formatMessage({ id: "message_sent" }),
+          status: "success",
+          duration: 3000,
+          isClosable: true,
         });
       } catch (error) {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title:
-            lang === "tr-TR"
-              ? "Mesajınız iletilemedi."
-              : "Message could not be delivered.",
-          showConfirmButton: false,
-          background: colorMode === "dark" ? "#2D3748" : "",
-          color: colorMode === "dark" ? "#fff" : "",
-          timer: 2000,
+        toast({
+          title: intl.formatMessage({ id: "message_not_sent" }),
+          status: "error",
+          duration: 3000,
+          isClosable: true,
         });
       }
     },
@@ -122,11 +127,7 @@ function Contact() {
                 onBlur={formik.handleBlur}
                 value={formik.values.name}
                 isInvalid={formik.touched.name && formik.errors.name}
-                placeholder={
-                  lang === "tr-TR"
-                    ? "İsiminizi girin"
-                    : "Please enter your name"
-                }
+                placeholder={"John Doe"}
               />
             </FormControl>
 
@@ -139,17 +140,13 @@ function Contact() {
                 onBlur={formik.handleBlur}
                 value={formik.values.email}
                 isInvalid={formik.touched.email && formik.errors.email}
-                placeholder={
-                  lang === "tr-TR"
-                    ? "Mailinizi girin"
-                    : "Please enter your email"
-                }
+                placeholder={"johndoe@gmail.com"}
               />
             </FormControl>
 
             <FormControl mt={4} isRequired>
               <FormLabel color={textColor}>
-                <FormattedMessage id="formMessage" />
+                <FormattedMessage id="form_message" />
               </FormLabel>
               <Textarea
                 name="message"
@@ -161,6 +158,7 @@ function Contact() {
                 isInvalid={formik.touched.message && formik.errors.message}
                 maxHeight="100px"
                 resize={"none"}
+                placeholder={intl.formatMessage({ id: "form_message" })}
               />
             </FormControl>
             <motion.div whileTap={{ scale: 0.8 }}>

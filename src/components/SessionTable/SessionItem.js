@@ -6,7 +6,9 @@ import {
   useColorModeValue,
   Button,
 } from "@chakra-ui/react";
+import { format } from "date-fns";
 import React, { useState } from "react";
+import { FormattedMessage } from "react-intl";
 import altogic from "../../api/altogic";
 import { useAuth } from "../../context/authContext";
 
@@ -15,17 +17,7 @@ function SessionItem(props) {
   const bg2 = useColorModeValue("white", "gray.800");
   const { signOutSelectedSession } = useAuth();
   const [loading, setLoading] = useState(false);
-  const humanReadableDate = (datetime) => {
-    return new Date(datetime).toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "numeric",
-      hour12: "false",
-      minute: "2-digit",
-    });
-  };
+
   const killSession = async (event) => {
     setLoading(true);
     event.preventDefault();
@@ -76,16 +68,16 @@ function SessionItem(props) {
               alignItems={{ base: "flex-end", md: "flex-start" }}
             >
               <Text fontWeight="bold" fontSize={"xl"} mr={4}>
-                CREATION DATE
+                <FormattedMessage id="created_at" />
               </Text>
-              {humanReadableDate(props.session.creationDtm)}
+              {format(new Date(props.session.creationDtm), "dd/MM/yyyy HH:mm")}
             </Flex>
             <Flex
               direction={{ base: "row", md: "column" }}
               alignItems={{ base: "flex-end", md: "flex-start" }}
             >
               <Text fontWeight="bold" fontSize={"xl"} mr={4}>
-                BROWSER
+                <FormattedMessage id="browser" />
               </Text>
               <Text as={"span"} fontSize={"xl"} fontWeight={"hairline"}>
                 {props.session.userAgent.family}
@@ -96,7 +88,7 @@ function SessionItem(props) {
               alignItems={{ base: "flex-end", md: "flex-start" }}
             >
               <Text fontWeight="bold" fontSize={"xl"} mr={4}>
-                OPERATING SYSTEM
+                <FormattedMessage id="os" />
               </Text>
               <Text as="span" fontSize={"xl"} fontWeight={"hairline"}>
                 {props.session.userAgent.os.family}
@@ -114,9 +106,15 @@ function SessionItem(props) {
                   colorScheme="teal"
                   variant={isCurrentSession ? "solid" : "outline"}
                 >
-                  Sign Out
+                  <FormattedMessage id="sign_out" />
                 </Button>
-                {isCurrentSession ? <p>(Current Session)</p> : <></>}
+                {isCurrentSession ? (
+                  <p>
+                    <FormattedMessage id="current_session" />
+                  </p>
+                ) : (
+                  <></>
+                )}
               </Flex>
             </Flex>
           </SimpleGrid>

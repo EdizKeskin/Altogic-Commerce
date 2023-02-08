@@ -14,6 +14,7 @@ import {
 import { useState } from "react";
 import { MdOutlineCancel } from "react-icons/md";
 import { TiTickOutline } from "react-icons/ti";
+import { useIntl } from "react-intl";
 import { formatPrice } from "../api/storage";
 import Form3svg from "../assets/shop.svg";
 import Checkout from "./Checkout";
@@ -21,6 +22,7 @@ import Checkout from "./Checkout";
 function BasketSidebar({ items, totalPrice }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState(false);
+  const intl = useIntl();
 
   const disabled = items
     .map((product) => product.stock < product.quantity)
@@ -69,7 +71,9 @@ function BasketSidebar({ items, totalPrice }) {
           disabled={disabled}
           onClick={onOpen}
         >
-          {disabled === true ? "Out of stock" : "Complete order"}
+          {disabled === true
+            ? intl.formatMessage({ id: "out_of_stock" })
+            : intl.formatMessage({ id: "complete_order" })}
         </Button>
       </Flex>
       <Modal size={"2xl"} isOpen={isOpen} onClose={onClose}>

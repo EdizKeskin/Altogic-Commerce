@@ -3,6 +3,7 @@ import SessionTable from "../../components/SessionTable/SessionTable";
 import { useAuth } from "../../context/authContext";
 import { Box, Button, Container, Flex, Stack, Text } from "@chakra-ui/react";
 import ProfileNav from "../../components/ProfileNav";
+import { FormattedMessage } from "react-intl";
 const Sessions = () => {
   const { signOutAllSessions, sessions } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -32,7 +33,7 @@ const Sessions = () => {
             textTransform={"uppercase"}
             pl={10}
           >
-            Sessions
+            <FormattedMessage id="sessions" />
           </Text>
           <Box display={"grid"}>
             <Box
@@ -62,7 +63,7 @@ const Sessions = () => {
                     variant={"solid"}
                     my={4}
                   >
-                    Sign Out From All Sessions
+                    <FormattedMessage id="signout_all" />
                   </Button>
                 </Box>
               </Box>

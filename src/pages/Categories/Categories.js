@@ -7,6 +7,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { AiOutlineRight } from "react-icons/ai";
+import { FormattedMessage } from "react-intl";
 import { Link, useParams } from "react-router-dom";
 import ProductCard from "../../components/ProductCard";
 import CustomSpinner from "../../components/Spinner";
@@ -43,7 +44,9 @@ function Categories() {
           >
             <BreadcrumbItem>
               <Link to="/">
-                <Button variant={"link"}>Home</Button>
+                <Button variant={"link"}>
+                  <FormattedMessage id="home_btn" />
+                </Button>
               </Link>
             </BreadcrumbItem>
             <BreadcrumbItem>

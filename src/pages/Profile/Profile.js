@@ -34,6 +34,7 @@ import { usePreferences } from "../../context/preferencesContext";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { FormattedMessage, useIntl } from "react-intl";
 
 function Profile() {
   const toast = useToast();
@@ -43,17 +44,23 @@ function Profile() {
   const [removeLoading, setRemoveLoading] = useState(false);
   const { animations, setAnimations } = usePreferences();
   const [error, setError] = useState();
-
   const [show, setShow] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
+  const intl = useIntl();
+
   const validationSchema = Yup.object().shape({
     oldPassword: Yup.string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Required"),
+      .min(
+        6,
+        intl.formatMessage({
+          id: "password_min_length",
+        })
+      )
+      .required(intl.formatMessage({ id: "required_field" })),
     newPassword: Yup.string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Required field."),
+      .min(6, intl.formatMessage({ id: "password_min_length" }))
+      .required(intl.formatMessage({ id: "required_field" })),
   });
 
   const handleFileSelect = async (event) => {
@@ -71,14 +78,14 @@ function Profile() {
       if (updateResponse.errors === null) {
         await updateUser();
         toast({
-          title: "Profile picture updated",
+          title: intl.formatMessage({ id: "profile_picture_updated" }),
           status: "success",
           duration: 3000,
           isClosable: true,
         });
       } else {
         toast({
-          title: "Error updating profile picture",
+          title: intl.formatMessage({ id: "error_updating_profile_picture" }),
           status: "error",
           duration: 3000,
           isClosable: true,
@@ -86,7 +93,7 @@ function Profile() {
       }
     } else {
       toast({
-        title: "Error uploading profile picture",
+        title: intl.formatMessage({ id: "error_updating_profile_picture" }),
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -103,14 +110,14 @@ function Profile() {
       await updateUser();
       setProfilePicture(require("../../assets/pp_blank.png"));
       toast({
-        title: "Profile picture removed",
+        title: intl.formatMessage({ id: "profile_picture_removed" }),
         status: "success",
         duration: 3000,
         isClosable: true,
       });
     } else {
       toast({
-        title: "Error removing profile picture",
+        title: intl.formatMessage({ id: "error_removing_profile_picture" }),
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -128,7 +135,7 @@ function Profile() {
 
     if (errors === null) {
       toast({
-        title: "Password changed",
+        title: intl.formatMessage({ id: "password_changed" }),
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -136,7 +143,7 @@ function Profile() {
       setError("");
     } else {
       toast({
-        title: "Error changing password",
+        title: intl.formatMessage({ id: "error_changing_password" }),
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -154,14 +161,14 @@ function Profile() {
     if (resp.errors === null) {
       await updateUser();
       toast({
-        title: "Profile updated",
+        title: intl.formatMessage({ id: "profile_updated" }),
         status: "success",
         duration: 3000,
         isClosable: true,
       });
     } else {
       toast({
-        title: "Error updating profile",
+        title: intl.formatMessage({ id: "error_updating_profile" }),
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -195,7 +202,7 @@ function Profile() {
             textTransform={"uppercase"}
             pl={10}
           >
-            Profile & Settings
+            <FormattedMessage id="profile_and_settings" />
           </Text>
           <Box w={"full"}>
             <Box p={6} textAlign={"center"}>
@@ -271,7 +278,7 @@ function Profile() {
                         isLoading={loading}
                         cursor="pointer"
                       >
-                        Upload Profile picture
+                        <FormattedMessage id="upload_profile_picture" />
                         {
                           <input
                             type="file"
@@ -293,7 +300,7 @@ function Profile() {
                             isLoading={loading}
                             cursor="pointer"
                           >
-                            Change Profile Picture
+                            <FormattedMessage id="change_profile_picture" />
                             {
                               <input
                                 type="file"
@@ -311,7 +318,7 @@ function Profile() {
                             isLoading={removeLoading}
                             onClick={removePhoto}
                           >
-                            Remove Profile Picture
+                            <FormattedMessage id="remove_profile_picture" />
                           </Button>
                         </>
                       </>
@@ -334,7 +341,9 @@ function Profile() {
                     />
                   </FormControl>
                   <FormControl mt={4}>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>
+                      <FormattedMessage id="name" />
+                    </FormLabel>
                     <Input
                       type="email"
                       value={name}
@@ -349,7 +358,7 @@ function Profile() {
                     onClick={handleSave}
                     isLoading={loading}
                   >
-                    Save
+                    <FormattedMessage id="save" />
                   </Button>
                 </Box>
                 <Formik
@@ -382,7 +391,9 @@ function Profile() {
                           id="oldPassword"
                           isRequired
                         >
-                          <FormLabel>Old Password</FormLabel>
+                          <FormLabel>
+                            <FormattedMessage id="old_password" />
+                          </FormLabel>
                           <InputGroup>
                             <Input
                               type={show ? "text" : "password"}
@@ -394,7 +405,9 @@ function Profile() {
                               isInvalid={
                                 touched.oldPassword && errors.oldPassword
                               }
-                              placeholder="Old password"
+                              placeholder={intl.formatMessage({
+                                id: "old_password",
+                              })}
                             />
                             <InputRightElement width="4.5rem">
                               <IconButton
@@ -421,7 +434,9 @@ function Profile() {
                           isInvalid={touched.newPassword && errors.newPassword}
                           isRequired
                         >
-                          <FormLabel>New Password</FormLabel>
+                          <FormLabel>
+                            <FormattedMessage id="new_password" />
+                          </FormLabel>
                           <InputGroup>
                             <Input
                               type={showConfirm ? "text" : "password"}
@@ -433,7 +448,9 @@ function Profile() {
                               isInvalid={
                                 touched.newPassword && errors.newPassword
                               }
-                              placeholder="New password"
+                              placeholder={intl.formatMessage({
+                                id: "new_password",
+                              })}
                             />
                             <InputRightElement width="4.5rem">
                               <IconButton
@@ -462,7 +479,7 @@ function Profile() {
                           type="submit"
                           disabled={isSubmitting || !isValid}
                         >
-                          Change Password
+                          <FormattedMessage id="change_password" />
                         </Button>
                         {error && (
                           <Text color={"red.400"} mt={2}>
@@ -484,11 +501,17 @@ function Profile() {
                     flexDirection={"column"}
                     alignItems={"center"}
                   >
-                    <FormLabel>Dark Mode</FormLabel>
+                    <FormLabel>
+                      <FormattedMessage id="dark_mode" />
+                    </FormLabel>
                     <Box display={"flex"} alignItems={"center"}>
-                      <Text mr={2}>Off</Text>
+                      <Text mr={2}>
+                        <FormattedMessage id="off" />
+                      </Text>
                       <Switch isChecked={true} isDisabled />
-                      <Text ml={2}>On</Text>
+                      <Text ml={2}>
+                        <FormattedMessage id="on" />
+                      </Text>
                     </Box>
                   </FormControl>
 
@@ -498,14 +521,20 @@ function Profile() {
                     alignItems={"center"}
                     mt={5}
                   >
-                    <FormLabel>Animations</FormLabel>
+                    <FormLabel>
+                      <FormattedMessage id="animations" />
+                    </FormLabel>
                     <Box display={"flex"} alignItems={"center"}>
-                      <Text mr={2}>Off</Text>
+                      <Text mr={2}>
+                        <FormattedMessage id="off" />
+                      </Text>
                       <Switch
                         isChecked={animations}
                         onChange={animationsHandler}
                       />
-                      <Text ml={2}>On</Text>
+                      <Text ml={2}>
+                        <FormattedMessage id="on" />
+                      </Text>
                     </Box>
                   </FormControl>
                 </Box>

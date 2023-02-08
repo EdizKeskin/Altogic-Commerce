@@ -40,7 +40,7 @@ import { MdLocalShipping } from "react-icons/md";
 import { AiOutlineRight } from "react-icons/ai";
 import { BsFillBasketFill } from "react-icons/bs";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import CustomSpinner from "../../components/Spinner";
 import { motion } from "framer-motion";
@@ -59,7 +59,8 @@ import { BiShareAlt } from "react-icons/bi";
 
 function Product() {
   const { products } = useProduct();
-  const { animations, lang } = usePreferences();
+  const { animations } = usePreferences();
+  const intl = useIntl();
   const { isAuth } = useAuth();
   const {
     addToBasket,
@@ -102,10 +103,10 @@ function Product() {
   const titleColor = useColorModeValue("yellow.500", "yellow.300");
   const btnBg = useColorModeValue("gray.900", "gray.50");
   const btnColor = useColorModeValue("white", "gray.900");
-  const adddedToBasketMessage =
-    lang === "tr-TR" ? "Sepete Eklendi" : "Added to Basket";
-  const removedFromBasketMessage =
-    lang === "tr-TR" ? "Sepetten Çıkarıldı" : "Removed from Basket";
+  const adddedToBasketMessage = intl.formatMessage({ id: "added_to_basket" });
+  const removedFromBasketMessage = intl.formatMessage({
+    id: "removed_from_basket",
+  });
 
   if (product === null) return <CustomSpinner />;
 
@@ -131,7 +132,7 @@ function Product() {
         .update({ rate: newRating });
       if (!update.errors) {
         toast({
-          title: "Rating Updated",
+          title: intl.formatMessage({ id: "rating_updated" }),
           status: "success",
           duration: 2000,
           isClosable: true,
@@ -139,7 +140,7 @@ function Product() {
         });
       } else {
         toast({
-          title: "Rating Update Failed",
+          title: intl.formatMessage({ id: "rating_update_failed" }),
           status: "error",
           duration: 2000,
           isClosable: true,
@@ -156,7 +157,7 @@ function Product() {
       );
       if (!append.errors) {
         toast({
-          title: "Rating Added",
+          title: intl.formatMessage({ id: "rating_added" }),
           status: "success",
           duration: 2000,
           isClosable: true,
@@ -164,7 +165,7 @@ function Product() {
         });
       } else {
         toast({
-          title: "Rating Add Failed",
+          title: intl.formatMessage({ id: "rating_add_failed" }),
           status: "error",
           duration: 2000,
           isClosable: true,
@@ -192,7 +193,7 @@ function Product() {
         .catch((error) => console.log("Error sharing", error));
     } else {
       toast({
-        title: "Copied to clipboard",
+        title: intl.formatMessage({ id: "coppied_clipboard" }),
         status: "success",
         duration: 2000,
         isClosable: true,
@@ -307,7 +308,7 @@ function Product() {
                 />
                 <Text fontSize={"lg"} color={"gray.400"} fontWeight={"300"}>
                   {product.rating === undefined ? "0" : product.rating.length}{" "}
-                  reviews
+                  <FormattedMessage id="ratings" />
                 </Text>
               </Box>
             )}
@@ -414,7 +415,7 @@ function Product() {
             display={product.stock < 1 ? "none" : "flex"}
           >
             <Text fontSize={"lg"} mr={4}>
-              Quantity:
+              <FormattedMessage id="quantity" />:
             </Text>
             <NumberInput
               defaultValue={1}
@@ -433,7 +434,7 @@ function Product() {
           </Box>
           <Box display={"flex"} alignItems={"center"}>
             <Text fontSize={"lg"} mr={2}>
-              Stock:
+              <FormattedMessage id="stock" />:
             </Text>
             <Text fontSize={"lg"} color={"gray.400"} fontWeight={"300"}>
               {product.stock < 1 ? "Out of product.stock" : product.stock}
@@ -442,7 +443,7 @@ function Product() {
           {product.stock > 0 && isAuth === true && (
             <Box display={"flex"} alignItems={"center"} gap={3} id="rate">
               <Text fontSize={"lg"} mt={1}>
-                Rate this product:
+                <FormattedMessage id="rate" />
               </Text>
               <ReactStars
                 filledIcon={<FaStar />}

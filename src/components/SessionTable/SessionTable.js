@@ -1,4 +1,5 @@
 import React from "react";
+import { FormattedMessage } from "react-intl";
 import SessionItem from "./SessionItem";
 
 function SessionsTable(props) {
@@ -9,7 +10,9 @@ function SessionsTable(props) {
           return <SessionItem session={session} key={session.token} />;
         })
       ) : (
-        <p>There is no active session right now!</p>
+        <p>
+          <FormattedMessage id="no_sessions" />
+        </p>
       )}
     </>
   );

@@ -17,6 +17,7 @@ import { AiOutlineHistory } from "react-icons/ai";
 import { BsBagCheck } from "react-icons/bs";
 import { MdOutlineCancel } from "react-icons/md";
 import { TbTruckLoading } from "react-icons/tb";
+import { FormattedMessage, useIntl } from "react-intl";
 import { Link, useParams } from "react-router-dom";
 import { formatPrice, getOrderById } from "../../api/storage";
 import CustomSpinner from "../../components/Spinner";
@@ -45,6 +46,7 @@ function OrderDetail() {
   const { order_id } = useParams();
   const [order, setOrder] = useState(null);
   const bg2 = useColorModeValue("white", "gray.800");
+  const intl = useIntl();
 
   useEffect(() => {
     const getProduct = async () => {
@@ -55,7 +57,7 @@ function OrderDetail() {
   }, [order_id]);
 
   return (
-    <Container maxW={"7xl"} mt={5}>
+    <Container maxW={"7xl"} mt={10}>
       <Stack
         bg={"gray.800"}
         spacing={{ base: 8, md: 10 }}
@@ -66,7 +68,7 @@ function OrderDetail() {
         <Flex flexDirection={"column"}>
           <Link to="/orders">
             <Button variant="link" color={"gray.300"} mb={4} pl={5}>
-              Back to Orders
+              <FormattedMessage id="back_to_orders" />
             </Button>
           </Link>
 
@@ -77,7 +79,7 @@ function OrderDetail() {
             pl={10}
             mb={3}
           >
-            Order Detail
+            <FormattedMessage id="order_details" />
           </Text>
           <Divider mb={3} w={"full"} />
           {order === null ? (
@@ -88,7 +90,7 @@ function OrderDetail() {
                 <Box mr={5}>
                   <Box display={"flex"} alignItems={"center"}>
                     <Text fontSize={"lg"} fontWeight={"bold"} mb={2} mr={2}>
-                      Order ID:
+                      <FormattedMessage id="order_number" />:{" "}
                     </Text>
                     <Text fontSize={"md"} color={"gray.300"} mb={2}>
                       #{order.orderNumber?.toString().padStart(6, 0)}
@@ -97,7 +99,7 @@ function OrderDetail() {
 
                   <Box display={"flex"} alignItems={"center"}>
                     <Text fontSize={"lg"} fontWeight={"bold"} mb={2} mr={2}>
-                      Order Date:{" "}
+                      <FormattedMessage id="order_date" />:{" "}
                     </Text>
                     <Text fontSize={"md"} color={"gray.300"} mb={2}>
                       {format(new Date(order.createdAt), "dd/MM/yyyy HH:mm")}
@@ -107,7 +109,7 @@ function OrderDetail() {
                 <Box>
                   <Box display={"flex"} alignItems={"flex-start"}>
                     <Text fontSize={"lg"} fontWeight={"bold"} mb={2} mr={2}>
-                      Order Status:
+                      <FormattedMessage id="order_status" />:{" "}
                     </Text>
                     <Badge
                       bg={
@@ -122,7 +124,18 @@ function OrderDetail() {
                       borderRadius="8px"
                     >
                       <Flex alignItems={"center"} gap={1}>
-                        {order.status}
+                        {(order.status === "pending" && (
+                          <FormattedMessage id="pending" />
+                        )) ||
+                          (order.status === "shipped" && (
+                            <FormattedMessage id="shipped" />
+                          )) ||
+                          (order.status === "completed" && (
+                            <FormattedMessage id="completed" />
+                          )) ||
+                          (order.status === "canceled" && (
+                            <FormattedMessage id="canceled" />
+                          ))}
                         {(order.status === "pending" && (
                           <AiOutlineHistory
                             size={20}
@@ -143,7 +156,7 @@ function OrderDetail() {
                   </Box>
                   <Box display={"flex"} alignItems={"center"}>
                     <Text fontSize={"lg"} fontWeight={"bold"} mb={2} mr={2}>
-                      Order Total:
+                      <FormattedMessage id="total_price" />:{" "}
                     </Text>
                     <Text fontSize={"md"} color={"gray.300"} mb={2}>
                       {formatPrice(
@@ -157,7 +170,7 @@ function OrderDetail() {
               </Box>
               <Divider mb={3} />
               <Text fontSize={"lg"} fontWeight={"bold"} mb={2} mr={2}>
-                Products:
+                <FormattedMessage id="products" />:{" "}
               </Text>
               <Box>
                 {order.products.map((item, i, row) => {
@@ -196,12 +209,18 @@ function OrderDetail() {
                             />
                           </Link>
 
-                          <Column title={"title"} data={item.title} />
-
-                          <Column title={"quantity"} data={item.quantity} />
+                          <Column
+                            title={intl.formatMessage({ id: "product_title" })}
+                            data={item.title}
+                          />
 
                           <Column
-                            title={"price"}
+                            title={intl.formatMessage({ id: "quantity" })}
+                            data={item.quantity}
+                          />
+
+                          <Column
+                            title={intl.formatMessage({ id: "price" })}
                             data={formatPrice(item.price)}
                           />
                         </SimpleGrid>

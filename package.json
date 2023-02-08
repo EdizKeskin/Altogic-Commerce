@@ -8,8 +8,6 @@
         "@emotion/react": "^11.10.5",
         "@emotion/styled": "^11.10.5",
         "@mui/material": "^5.11.4",
-        "@testing-library/jest-dom": "^5.16.5",
-        "@testing-library/react": "^13.4.0",
         "altogic": "^2.3.9",
         "aos": "^2.3.4",
         "date-fns": "^2.29.3",
@@ -28,7 +26,6 @@
         "sweetalert2": "^11.7.0",
         "tsparticles": "^2.7.1",
         "typewriter-effect": "^2.19.0",
-        "web-vitals": "^3.1.1",
         "yup": "^0.32.11"
     },
     "scripts": {
@@ -57,8 +54,6 @@
         ]
     },
     "devDependencies": {
-        "@types/react-slick": "^0.23.10",
-        "gh-pages": "^5.0.0",
         "prettier": "^2.8.0"
     }
 }

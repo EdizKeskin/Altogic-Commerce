@@ -13,6 +13,7 @@ import BasketTable from "../../components/BasketTable";
 import CustomSpinner from "../../components/Spinner";
 import { usePreferences } from "../../context/preferencesContext";
 import { useProduct } from "../../context/productContext";
+import { FormattedMessage } from "react-intl";
 
 function Basket() {
   const { items } = useBasket();
@@ -56,7 +57,7 @@ function Basket() {
               w={"fit-content"}
             >
               <AlertIcon color="red.900" />
-              You have not any items in your basket.
+              <FormattedMessage id="basket_empty" />
             </Alert>
           </Box>
         </>
@@ -73,7 +74,7 @@ function Basket() {
               mt={10}
               data-aos={animations === true ? "zoom-in-up" : "none"}
             >
-              Basket
+              <FormattedMessage id="basket_title" />
             </Text>
           </Flex>
           <Grid

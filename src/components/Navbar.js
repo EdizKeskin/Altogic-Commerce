@@ -271,7 +271,7 @@ function Navbar() {
           alignItems="center"
         >
           <ButtonGroup
-            display={{ base: "none", lg: "inline-flex" }}
+            display={{ base: "none", sm: "inline-flex" }}
             size="sm"
             zIndex={"overlay"}
             data-aos={animations === true ? "fade-down" : "none"}

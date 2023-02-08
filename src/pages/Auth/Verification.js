@@ -1,5 +1,6 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { BsFillCheckCircleFill } from "react-icons/bs";
+import { FormattedMessage } from "react-intl";
 
 function Verification() {
   return (
@@ -14,11 +15,10 @@ function Verification() {
     >
       <BsFillCheckCircleFill color="#38A169" size={"50px"} />
       <Heading as="h2" size="xl" mt={6} mb={2}>
-      Verification Email Sent
+        <FormattedMessage id="verification_email_sent" />
       </Heading>
       <Text color={"gray.50"}>
-        We've sent a verification email to your email address. Please check your
-        inbox and click on the link to verify your email address.
+        <FormattedMessage id="verification_email_sent_desc" />
       </Text>
     </Box>
   );

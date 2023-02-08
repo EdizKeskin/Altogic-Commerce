@@ -25,6 +25,7 @@ import { AiOutlineHistory } from "react-icons/ai";
 import { TbTruckLoading } from "react-icons/tb";
 import { BsBagCheck } from "react-icons/bs";
 import { MdOutlineCancel } from "react-icons/md";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const Column = ({ title, data, badge }) => {
   const textColor = useColorModeValue("gray.800", "white");
@@ -59,7 +60,10 @@ const Column = ({ title, data, badge }) => {
           borderRadius="8px"
         >
           <Flex alignItems={"center"} gap={1}>
-            {data}
+            {(data === "pending" && <FormattedMessage id="pending" />) ||
+              (data === "shipped" && <FormattedMessage id="shipped" />) ||
+              (data === "completed" && <FormattedMessage id="completed" />) ||
+              (data === "canceled" && <FormattedMessage id="canceled" />)}
             {(data === "pending" && (
               <AiOutlineHistory size={20} style={{ strokeWidth: "25px" }} />
             )) ||
@@ -78,6 +82,8 @@ const Column = ({ title, data, badge }) => {
 export const Orders = () => {
   const [orders, setOrders] = useState(null);
   const userId = altogic.auth.getUser()._id;
+  const intl = useIntl();
+
   useEffect(() => {
     const userOrders = async () => {
       const result = await altogic.db
@@ -108,12 +114,14 @@ export const Orders = () => {
               textTransform={"uppercase"}
               pl={10}
             >
-              Orders
+              <FormattedMessage id="orders" />
             </Text>
             {orders?.length === 0 && (
               <Alert status="error" borderRadius={"md"}>
                 <AlertIcon />
-                <AlertDescription>You have no orders yet.</AlertDescription>
+                <AlertDescription>
+                  <FormattedMessage id="no_orders" />
+                </AlertDescription>
               </Alert>
             )}
             {orders === null ? (
@@ -133,21 +141,25 @@ export const Orders = () => {
                         mr={10}
                       >
                         <Column
-                          title="Order Id"
+                          title={intl.formatMessage({ id: "order_number" })}
                           data={`#${order.orderNumber
                             ?.toString()
                             .padStart(6, "0")}`}
                         />
                         <Column
-                          title="Order Date"
+                          title={intl.formatMessage({ id: "order_date" })}
                           data={format(
                             new Date(order.createdAt),
                             "dd/MM/yyyy HH:mm"
                           )}
                         />
-                        <Column title="Status" data={order.status} badge />
                         <Column
-                          title="Total"
+                          title={intl.formatMessage({ id: "order_status" })}
+                          data={order.status}
+                          badge
+                        />
+                        <Column
+                          title={intl.formatMessage({ id: "total_price" })}
                           data={formatPrice(
                             order.products.reduce((acc, product) => {
                               return (
@@ -163,7 +175,9 @@ export const Orders = () => {
                         alignItems={"center"}
                       >
                         <Link to={`/orders/${order._id}`}>
-                          <Button>View Order</Button>
+                          <Button>
+                            <FormattedMessage id="view_order" />
+                          </Button>
                         </Link>
                       </Flex>
                     </Flex>
