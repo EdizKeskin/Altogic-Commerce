@@ -23,6 +23,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { usePreferences } from "../../context/preferencesContext";
+import { FormattedMessage, useIntl } from "react-intl";
 
 function ResetPassword() {
   const bg = useColorModeValue("gray.100", "gray.700");
@@ -31,6 +32,7 @@ function ResetPassword() {
   const [error, setError] = useState(null);
   const { animations } = usePreferences();
   const [loading, setLoading] = useState(false);
+  const intl = useIntl();
 
   const { accessToken } = useParams();
 
@@ -38,11 +40,14 @@ function ResetPassword() {
 
   const validationSchema = Yup.object().shape({
     password: Yup.string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
+      .min(6, intl.formatMessage({ id: "password_min_length" }))
+      .required(intl.formatMessage({ id: "required_field_password" })),
     passwordConfirmation: Yup.string()
-      .oneOf([Yup.ref("password")], "Passwords do not match")
-      .required("Required field."),
+      .oneOf(
+        [Yup.ref("password")],
+        intl.formatMessage({ id: "password_match" })
+      )
+      .required(intl.formatMessage({ id: "required_field" })),
   });
 
   async function handleSubmit(values) {
@@ -82,16 +87,16 @@ function ResetPassword() {
             >
               <Stack align={"center"}>
                 <Heading fontSize={"4xl"} textAlign={"center"} mb={6}>
-                  Reset Password
+                  <FormattedMessage id="reset_password" />
                 </Heading>
               </Stack>
               <Alert status="success">
                 <AlertIcon />
                 <Box>
-                  Password reset successfully! You can now{" "}
+                  <FormattedMessage id="password_reset_success" />{" "}
                   <Link to="/signin">
                     <Text textDecoration={"underline"} fontWeight={"bold"}>
-                      login
+                      <FormattedMessage id="signin" />
                     </Text>
                   </Link>
                 </Box>
@@ -101,7 +106,7 @@ function ResetPassword() {
             <>
               <Stack align={"center"}>
                 <Heading fontSize={"4xl"} textAlign={"center"}>
-                  Reset Password
+                  <FormattedMessage id="reset_password" />
                 </Heading>
               </Stack>
 
@@ -155,7 +160,9 @@ function ResetPassword() {
                           isRequired
                           isInvalid={touched.password && errors.password}
                         >
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel>
+                            <FormattedMessage id="password" />
+                          </FormLabel>
                           <InputGroup>
                             <Input
                               type={show ? "text" : "password"}
@@ -164,7 +171,7 @@ function ResetPassword() {
                               onChange={handleChange}
                               disabled={isSubmitting || loading}
                               isInvalid={touched.password && errors.password}
-                              placeholder="Enter your new password"
+                              placeholder="********"
                             />
                             <InputRightElement width="4.5rem">
                               <IconButton
@@ -192,7 +199,9 @@ function ResetPassword() {
                             errors.passwordConfirmation
                           }
                         >
-                          <FormLabel>Password Confirm</FormLabel>
+                          <FormLabel>
+                            <FormattedMessage id="confirm_password" />
+                          </FormLabel>
                           <InputGroup>
                             <Input
                               type={show ? "text" : "password"}
@@ -204,7 +213,7 @@ function ResetPassword() {
                                 touched.passwordConfirmation &&
                                 errors.passwordConfirmation
                               }
-                              placeholder="Enter your password again"
+                              placeholder="********"
                             />
                             <InputRightElement width="4.5rem">
                               <IconButton
@@ -236,7 +245,7 @@ function ResetPassword() {
                           type="submit"
                           disabled={isSubmitting || !isValid || loading}
                         >
-                          Reset Password
+                          <FormattedMessage id="reset_password" />
                         </Button>
                       </form>
                     </Stack>

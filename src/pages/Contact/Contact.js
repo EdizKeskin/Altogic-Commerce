@@ -31,7 +31,7 @@ function Contact() {
   const validationSchema = yup.object().shape({
     email: yup
       .string()
-      .email(intl.formatMessage({ id: "email_invalid_test" }))
+      .email(intl.formatMessage({ id: "email_invalid" }))
       .required(intl.formatMessage({ id: "required_field" })),
     name: yup
       .string()
@@ -158,7 +158,9 @@ function Contact() {
                 isInvalid={formik.touched.message && formik.errors.message}
                 maxHeight="100px"
                 resize={"none"}
-                placeholder={intl.formatMessage({ id: "form_message" })}
+                placeholder={intl.formatMessage({
+                  id: "form_message_placeholder",
+                })}
               />
             </FormControl>
             <motion.div whileTap={{ scale: 0.8 }}>

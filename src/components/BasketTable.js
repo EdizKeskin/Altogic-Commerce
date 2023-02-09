@@ -15,9 +15,11 @@ import { BsBoxArrowUpRight, BsFillTrashFill } from "react-icons/bs";
 import { useBasket } from "../context/basketContext";
 import { Link } from "react-router-dom";
 import { formatPrice } from "../api/storage";
+import { useIntl } from "react-intl";
 
 function BasketTable({ products }) {
   const { removeFromBasket, setNotification, notification } = useBasket();
+  const intl = useIntl();
 
   const toast = useToast();
   const bg = useColorModeValue("white", "gray.800");
@@ -120,7 +122,9 @@ function BasketTable({ products }) {
                       aria-label="Delete"
                       onClick={() => {
                         toast({
-                          title: "Ürün sepetten silindi.",
+                          title: intl.formatMessage({
+                            id: "deleted_from_basket",
+                          }),
                           status: "error",
                           duration: 2000,
                           isClosable: true,

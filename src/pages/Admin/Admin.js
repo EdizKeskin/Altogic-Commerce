@@ -6,6 +6,7 @@ import { FiDatabase } from "react-icons/fi";
 import { GiMoneyStack } from "react-icons/gi";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { MdOutlineCancel } from "react-icons/md";
+import { FormattedMessage, useIntl } from "react-intl";
 import { Link } from "react-router-dom";
 import altogic from "../../api/altogic";
 import { formatPrice } from "../../api/storage";
@@ -19,6 +20,7 @@ export default function BasicStatistics() {
   const [canceledOrdersLength, setCanceledOrdersLength] = useState(0);
   const [totalEarnings, setTotalEarnings] = useState(0);
   const { products } = useProduct();
+  const intl = useIntl();
 
   useEffect(() => {
     const getStats = async () => {
@@ -33,13 +35,13 @@ export default function BasicStatistics() {
         });
         setcompletedOrdersLength(
           orders.data.filter((order) => order.status === "completed").length
-        )
+        );
         setPendingOrdersLength(
           orders.data.filter((order) => order.status === "pending").length
-        )
+        );
         setCanceledOrdersLength(
           orders.data.filter((order) => order.status === "canceled").length
-        )
+        );
         setTotalEarnings(total);
       }
     };
@@ -55,17 +57,17 @@ export default function BasicStatistics() {
         alignItems={"center"}
       >
         <Text textAlign={"center"} fontSize={"4xl"} fontWeight={"bold"} mb={4}>
-          Basic Statistics
+          <FormattedMessage id="statistics" />
         </Text>
         <ButtonGroup>
           <Link to={"/admin/orders"}>
             <Button variant="outline" color="primary" shadow={"xl"}>
-              Orders
+              <FormattedMessage id="orders" />
             </Button>
           </Link>
           <Link to={"/admin/products"}>
             <Button variant="outline" color="primary" shadow={"xl"}>
-              Products
+              <FormattedMessage id="products" />
             </Button>
           </Link>
         </ButtonGroup>
@@ -73,42 +75,42 @@ export default function BasicStatistics() {
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 5, lg: 8 }}>
         <Link to={"/admin/orders"}>
           <StatsCard
-            title={"Total earnings"}
+            title={intl.formatMessage({ id: "total_earnings" })}
             stat={formatPrice(totalEarnings)}
             icon={<GiMoneyStack size={"3em"} />}
           />
         </Link>
         <Link to={"/admin/orders"}>
           <StatsCard
-            title={"Total Orders"}
+            title={intl.formatMessage({ id: "total_orders" })}
             stat={ordersLength}
             icon={<BsBoxSeam size={"3em"} />}
           />
         </Link>
         <Link to={"/admin/products"}>
           <StatsCard
-            title={"Total Products"}
+            title={intl.formatMessage({ id: "total_products" })}
             stat={products.length}
             icon={<FiDatabase size={"3em"} />}
           />
         </Link>
         <Link to={"/admin/orders"}>
           <StatsCard
-            title={"Pending Orders"}
+            title={intl.formatMessage({ id: "pending_orders" })}
             stat={pendingOrdersLength}
-            icon={<AiOutlineHistory  size={"3em"} />}
+            icon={<AiOutlineHistory size={"3em"} />}
           />
         </Link>
         <Link to={"/admin/orders"}>
           <StatsCard
-            title={"Completed Orders"}
+            title={intl.formatMessage({ id: "completed_orders" })}
             stat={completedOrdersLength}
             icon={<IoMdCheckmarkCircleOutline size={"3em"} />}
           />
         </Link>
         <Link to={"/admin/orders"}>
           <StatsCard
-            title={"Canceled Orders"}
+            title={intl.formatMessage({ id: "canceled_orders" })}
             stat={canceledOrdersLength}
             icon={<MdOutlineCancel size={"3em"} />}
           />

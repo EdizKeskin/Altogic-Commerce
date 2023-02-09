@@ -19,10 +19,12 @@ import Select from "@mui/material/Select";
 import { formatPrice } from "../../../api/storage";
 import { AiOutlineRight } from "react-icons/ai";
 import { format } from "date-fns";
+import { FormattedMessage, useIntl } from "react-intl";
 
 function Orders() {
   const [orders, setOrders] = useState(null);
   const toast = useToast();
+  const intl = useIntl();
 
   useEffect(() => {
     const getProducts = async () => {
@@ -95,7 +97,7 @@ function Orders() {
 
     if (!result.errors) {
       toast({
-        title: "Order status updated",
+        title: intl.formatMessage({ id: "order_status_updated" }),
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -113,7 +115,7 @@ function Orders() {
       }
     } else {
       toast({
-        title: "Error updating order status",
+        title: intl.formatMessage({ id: "order_status_update_failed" }),
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -125,19 +127,19 @@ function Orders() {
     () => [
       {
         accessorKey: "email", //access nested data with dot notation
-        header: "Title",
+        header: "E-Mail",
       },
       {
         accessorKey: "name",
-        header: "Name",
+        header: intl.formatMessage({ id: "name" }),
       },
       {
         accessorKey: "status",
-        header: "Status",
+        header: intl.formatMessage({ id: "status" }),
       },
       {
         accessorKey: "createdAt",
-        header: "Created At",
+        header: intl.formatMessage({ id: "created_at" }),
         Cell: ({ row }) => (
           <p>{format(new Date(row.original.createdAt), "dd/MM/yyyy HH:mm")}</p>
         ),
@@ -164,7 +166,7 @@ function Orders() {
                 }
                 disabled={row.original.status === "pending"}
               >
-                Pending
+                <FormattedMessage id="pending" />
               </MenuItem>
               <MenuItem
                 value={"shipped"}
@@ -188,7 +190,7 @@ function Orders() {
                 }
                 disabled={row.original.status === "completed"}
               >
-                Completed
+                <FormattedMessage id="completed" />
               </MenuItem>
               <MenuItem
                 value={"canceled"}
@@ -200,7 +202,7 @@ function Orders() {
                 }
                 disabled={row.original.status === "canceled"}
               >
-                Canceled
+                <FormattedMessage id="canceled" />
               </MenuItem>
             </Select>
           </FormControl>
@@ -245,7 +247,7 @@ function Orders() {
             <BreadcrumbItem>
               <Link to={`/admin/orders`}>
                 <Button variant={"link"} textTransform={"capitalize"}>
-                  Orders
+                  <FormattedMessage id="orders" />
                 </Button>
               </Link>
             </BreadcrumbItem>
@@ -253,7 +255,7 @@ function Orders() {
         </Box>
         <Box display={"flex"} alignItems="center">
           <Text fontSize="lg" color={"white"}>
-            Total orders: {orders.length}
+            <FormattedMessage id="total_orders" />: {orders.length}
           </Text>
         </Box>
       </Box>
@@ -266,26 +268,45 @@ function Orders() {
               return (
                 <Box>
                   <Text fontSize={"18px"}>
-                    <b>Order Details:</b>
+                    <b>
+                      <FormattedMessage id="order_details" />
+                    </b>
                   </Text>
                   <br />
                   <Text>
-                    <b>Order ID:</b> {row.original._id}
+                    <b>
+                      <FormattedMessage id="order_id" />:
+                    </b>{" "}
+                    {row.original._id}
                   </Text>
                   <Text>
-                    <b>Order Number:</b> {row.original.orderNumber}
+                    <b>
+                      <FormattedMessage id="order_number" />:
+                    </b>{" "}
+                    {row.original.orderNumber}
                   </Text>
                   <Text>
-                    <b>Address:</b> {row.original.address}
+                    <b>
+                      <FormattedMessage id="address" />:
+                    </b>{" "}
+                    {row.original.address}
                   </Text>
                   <Text>
-                    <b>Country:</b> {row.original.country}
+                    <b>
+                      <FormattedMessage id="country" />:
+                    </b>{" "}
+                    {row.original.country}
                   </Text>
                   <Text>
-                    <b>City:</b> {row.original.city}
+                    <b>
+                      <FormattedMessage id="city" />:
+                    </b>{" "}
+                    {row.original.city}
                   </Text>
                   <Text>
-                    <b>Order Date:</b>{" "}
+                    <b>
+                      <FormattedMessage id="order_date" />:
+                    </b>{" "}
                     {format(
                       new Date(row.original.createdAt),
                       "dd/MM/yyyy HH:mm"
@@ -293,19 +314,30 @@ function Orders() {
                   </Text>
                   <br />
                   <Text fontSize={"18px"}>
-                    <b>Products:</b>
+                    <b>
+                      <FormattedMessage id="products" />:
+                    </b>
                   </Text>
                   {row.original.products.map((product) => {
                     return (
                       <Box key={product._id}>
                         <Text mt={"10px"}>
-                          <b>Product Name:</b> {product.title}
+                          <b>
+                            <FormattedMessage id="product_title" />:
+                          </b>{" "}
+                          {product.title}
                         </Text>
                         <Text>
-                          <b>Quantity</b> {product.quantity}
+                          <b>
+                            <FormattedMessage id="quantity" />:
+                          </b>{" "}
+                          {product.quantity}
                         </Text>
                         <Text mb={"10px"}>
-                          <b>Product Price:</b> {formatPrice(product.price)}{" "}
+                          <b>
+                            <FormattedMessage id="price" />:
+                          </b>{" "}
+                          {formatPrice(product.price)}{" "}
                           {product.quantity > 1
                             ? `x${product.quantity} = ${formatPrice(
                                 product.discountedPrice * product.quantity
@@ -317,7 +349,9 @@ function Orders() {
                     );
                   })}
                   <Text fontSize={"18px"}>
-                    <b>Total Price:</b>{" "}
+                    <b>
+                      <FormattedMessage id="total_price" />:
+                    </b>{" "}
                     {formatPrice(
                       row.original.products.reduce(
                         (acc, product) =>

@@ -9,10 +9,9 @@ const AuthRedirect = () => {
   const { setIsAuth } = useAuth();
   let [searchParams] = useSearchParams();
 
-  const query = searchParams.get("action");
-  const accsessToken = searchParams.get("access_token");
-
   useEffect(() => {
+    const query = searchParams.get("action");
+    const accsessToken = searchParams.get("access_token");
     const signIn = async () => {
       const resp = await altogic.auth.getAuthGrant();
       if (resp.errors) {

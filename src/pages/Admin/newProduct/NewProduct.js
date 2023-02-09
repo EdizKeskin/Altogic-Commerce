@@ -26,6 +26,7 @@ import {
 } from "@chakra-ui/react";
 import altogic from "../../../api/altogic";
 import { BsFillTrashFill } from "react-icons/bs";
+import { FormattedMessage, useIntl } from "react-intl";
 
 function NewCheckbox(props) {
   return (
@@ -60,18 +61,21 @@ function NewCheckbox(props) {
 
 function NewProduct() {
   const toast = useToast();
+  const intl = useIntl();
 
   const validationSchema = Yup.object({
-    title: Yup.string().required("Required"),
-    desc: Yup.string().required("Required"),
-    price: Yup.number().required("Required"),
-    images: Yup.array().required("Required"),
-    details: Yup.array().required("Required"),
-    discount: Yup.number().max(100, "Discount must be less than 100%").min(0),
-    stock: Yup.number().required("Required"),
+    title: Yup.string().required(intl.formatMessage({ id: "required_field" })),
+    desc: Yup.string().required(intl.formatMessage({ id: "required_field" })),
+    price: Yup.number().required(intl.formatMessage({ id: "required_field" })),
+    images: Yup.array().required(intl.formatMessage({ id: "required_field" })),
+    details: Yup.array().required(intl.formatMessage({ id: "required_field" })),
+    discount: Yup.number()
+      .max(100, intl.formatMessage({ id: "discount_max" }))
+      .min(0),
+    stock: Yup.number().required(intl.formatMessage({ id: "required_field" })),
     categories: Yup.array()
-      .required("Select at least one")
-      .min(1, "Select at least one"),
+      .required(intl.formatMessage({ id: "categories_required" }))
+      .min(1, intl.formatMessage({ id: "categories_required" })),
   });
 
   const handleSubmit = async (values, bag) => {
@@ -87,16 +91,16 @@ function NewProduct() {
 
     if (!result.errors) {
       toast({
-        title: "Product created.",
-        desc: "We've created your product for you.",
+        title: intl.formatMessage({ id: "product_created" }),
+        desc: intl.formatMessage({ id: "product_created_desc" }),
         status: "success",
         duration: 9000,
         isClosable: true,
       });
     } else {
       toast({
-        title: "An error occurred.",
-        desc: "We were unable to create your product.",
+        title: intl.formatMessage({ id: "something_went_wrong" }),
+        desc: intl.formatMessage({ id: "something_went_wrong_desc" }),
         status: "error",
         duration: 9000,
         isClosable: true,
@@ -108,7 +112,7 @@ function NewProduct() {
   return (
     <Box m={5}>
       <Text fontSize="2xl" color={"white"}>
-        New Product
+        <FormattedMessage id="create_product" />
       </Text>
 
       <Formik
@@ -145,7 +149,9 @@ function NewProduct() {
               >
                 <form onSubmit={handleSubmit}>
                   <FormControl mb="4" isInvalid={touched.title && errors.title}>
-                    <FormLabel color="white">Title</FormLabel>
+                    <FormLabel color="white">
+                      <FormattedMessage id="product_title" />
+                    </FormLabel>
                     <Input
                       name="title"
                       color={"white"}
@@ -154,13 +160,15 @@ function NewProduct() {
                       onChange={handleChange}
                       disabled={isSubmitting}
                       isInvalid={touched.title && errors.title}
-                      placeholder="Enter title"
+                      placeholder="Iphone 14 pro max plus"
                     />
                     <FormErrorMessage>{errors.title}</FormErrorMessage>
                   </FormControl>
 
                   <FormControl mb="4" isInvalid={touched.desc && errors.desc}>
-                    <FormLabel color="white">Description</FormLabel>
+                    <FormLabel color="white">
+                      <FormattedMessage id="product_desc" />
+                    </FormLabel>
                     <Textarea
                       name="desc"
                       color={"white"}
@@ -170,7 +178,7 @@ function NewProduct() {
                       onChange={handleChange}
                       disabled={isSubmitting}
                       isInvalid={touched.desc && errors.desc}
-                      placeholder="Enter description"
+                      placeholder={intl.formatMessage({ id: "product_desc" })}
                     />
                     <FormErrorMessage>{errors.desc}</FormErrorMessage>
                   </FormControl>
@@ -184,7 +192,9 @@ function NewProduct() {
                         mb="4"
                         isInvalid={touched.price && errors.price}
                       >
-                        <FormLabel color="white">Price</FormLabel>
+                        <FormLabel color="white">
+                          <FormattedMessage id="price" />
+                        </FormLabel>
                         <Input
                           name="price"
                           color={"white"}
@@ -200,15 +210,18 @@ function NewProduct() {
                       </FormControl>
                     </Flex>
                     <Flex direction={"column"} mr={"4"}>
-                      <FormControl mb="4" isInvalid={touched.discount && errors.discount}>
+                      <FormControl
+                        mb="4"
+                        isInvalid={touched.discount && errors.discount}
+                      >
                         <FormLabel color="white">
-                          Discount{" "}
+                          <FormattedMessage id="discount" />{" "}
                           <Text
                             as={"span"}
                             fontSize={"sm"}
                             fontWeight="hairline"
                           >
-                            (in percent)
+                            (<FormattedMessage id="in_percent" />)
                           </Text>
                         </FormLabel>
                         <Input
@@ -227,8 +240,13 @@ function NewProduct() {
                     </Flex>
 
                     <Flex direction={"column"}>
-                      <FormControl mb="4" isInvalid={touched.stock && errors.stock}>
-                        <FormLabel color="white">Stock</FormLabel>
+                      <FormControl
+                        mb="4"
+                        isInvalid={touched.stock && errors.stock}
+                      >
+                        <FormLabel color="white">
+                          <FormattedMessage id="stock" />
+                        </FormLabel>
                         <Input
                           name="stock"
                           color={"white"}
@@ -245,11 +263,16 @@ function NewProduct() {
                     </Flex>
                   </Box>
 
-                  <FormControl mb="4" isInvalid={touched.categories && errors.categories}>
+                  <FormControl
+                    mb="4"
+                    isInvalid={touched.categories && errors.categories}
+                  >
                     <FormLabel color="white">
-                      Categories{" "}
+                      <FormattedMessage id="categories" />{" "}
                       <Text as={"span"} fontSize={"sm"} fontWeight="hairline">
-                        (Select primary category first)
+                        (
+                        <FormattedMessage id="select_primary_categorie_first" />
+                        )
                       </Text>
                     </FormLabel>
                     <SimpleGrid spacing={4} columns={{ base: 2, sm: 3, md: 5 }}>
@@ -262,7 +285,9 @@ function NewProduct() {
                     <FormErrorMessage>{errors.categories}</FormErrorMessage>
                   </FormControl>
                   <FormControl mb="4">
-                    <FormLabel color="white">Details</FormLabel>
+                    <FormLabel color="white">
+                      <FormattedMessage id="product_details" />
+                    </FormLabel>
                     <FieldArray
                       name="details"
                       color={"white"}
@@ -301,8 +326,7 @@ function NewProduct() {
                                       <PopoverCloseButton />
                                       <PopoverHeader>Confirm</PopoverHeader>
                                       <PopoverBody>
-                                        Are you sure you want to delete this
-                                        detail?
+                                        <FormattedMessage id="delete_detail_desc" />
                                       </PopoverBody>
                                       <PopoverFooter
                                         display="flex"
@@ -314,7 +338,7 @@ function NewProduct() {
                                             arrayHelpers.remove(index)
                                           }
                                         >
-                                          Delete
+                                          <FormattedMessage id="delete" />
                                         </Button>
                                         <Button
                                           variant="outline"
@@ -322,7 +346,7 @@ function NewProduct() {
                                             arrayHelpers.remove(index)
                                           }
                                         >
-                                          Cancel
+                                          <FormattedMessage id="cancel" />
                                         </Button>
                                       </PopoverFooter>
                                     </PopoverContent>
@@ -334,7 +358,7 @@ function NewProduct() {
                             variant="outline"
                             onClick={() => arrayHelpers.push("")}
                           >
-                            Add detail
+                            <FormattedMessage id="add_detail" />
                           </Button>
                         </div>
                       )}
@@ -342,7 +366,9 @@ function NewProduct() {
                   </FormControl>
 
                   <FormControl mb="4">
-                    <FormLabel color="white">Images</FormLabel>
+                    <FormLabel color="white">
+                      <FormattedMessage id="images" />
+                    </FormLabel>
                     <FieldArray
                       name="images"
                       color={"white"}
@@ -381,8 +407,7 @@ function NewProduct() {
                                       <PopoverCloseButton />
                                       <PopoverHeader>Confirm</PopoverHeader>
                                       <PopoverBody>
-                                        Are you sure you want to delete this
-                                        images?
+                                        <FormattedMessage id="delete_image_desc" />
                                       </PopoverBody>
                                       <PopoverFooter
                                         display="flex"
@@ -394,7 +419,7 @@ function NewProduct() {
                                             arrayHelpers.remove(index)
                                           }
                                         >
-                                          Delete
+                                          <FormattedMessage id="delete" />
                                         </Button>
                                         <Button
                                           variant="outline"
@@ -402,7 +427,7 @@ function NewProduct() {
                                             arrayHelpers.remove(index)
                                           }
                                         >
-                                          Cancel
+                                          <FormattedMessage id="cancel" />
                                         </Button>
                                       </PopoverFooter>
                                     </PopoverContent>
@@ -414,7 +439,7 @@ function NewProduct() {
                             variant="outline"
                             onClick={() => arrayHelpers.push("")}
                           >
-                            Add image
+                            <FormattedMessage id="add_image" />
                           </Button>
                         </div>
                       )}
@@ -427,7 +452,7 @@ function NewProduct() {
                     isLoading={isSubmitting}
                     width="full"
                   >
-                    Save
+                    <FormattedMessage id="save" />
                   </Button>
                 </form>
               </Box>

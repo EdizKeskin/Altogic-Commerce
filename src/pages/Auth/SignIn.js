@@ -28,6 +28,7 @@ import { Formik } from "formik";
 import { useAuth } from "../../context/authContext";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { usePreferences } from "../../context/preferencesContext";
+import { FormattedMessage, useIntl } from "react-intl";
 
 function SignIn() {
   const bg = useColorModeValue("gray.100", "gray.700");
@@ -38,14 +39,17 @@ function SignIn() {
   const { setUser } = useAuth();
   const { setSessions } = useAuth();
   const { animations } = usePreferences();
+  const intl = useIntl();
 
   const handleShow = () => setShow(!show);
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Email is invalid").required("Email is required"),
+    email: Yup.string()
+      .email(intl.formatMessage({ id: "email_invalid" }))
+      .required(intl.formatMessage({ id: "required_field_email" })),
     password: Yup.string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
+      .min(6, intl.formatMessage({ id: "password_min_length" }))
+      .required(intl.formatMessage({ id: "required_field_password" })),
   });
 
   const signin = (provider) => {
@@ -78,7 +82,7 @@ function SignIn() {
         <Stack spacing={8} mx={"auto"} maxW={"lg"} alignItems={"center"} px={6}>
           <Stack align={"center"}>
             <Heading fontSize={"4xl"} textAlign={"center"}>
-              Sign In
+              <FormattedMessage id="signin" />
             </Heading>
           </Stack>
           {state && state.errors && (
@@ -90,7 +94,7 @@ function SignIn() {
               borderRadius="lg"
             >
               <AlertIcon color="red.900" />
-              This email is already in use.
+              {state.errors}
             </Alert>
           )}
           {error && (
@@ -143,7 +147,7 @@ function SignIn() {
                       id="email"
                       mt={3}
                     >
-                      <FormLabel>Email address</FormLabel>
+                      <FormLabel>E-Mail</FormLabel>
                       <Input
                         type="email"
                         value={values.email}
@@ -151,7 +155,7 @@ function SignIn() {
                         onChange={handleChange}
                         disabled={isSubmitting}
                         isInvalid={touched.email && errors.email}
-                        placeholder="Enter your email"
+                        placeholder="johndoe@gmail.com"
                       />
                       <FormErrorMessage>{errors.email}</FormErrorMessage>
                     </FormControl>
@@ -161,7 +165,9 @@ function SignIn() {
                       isRequired
                       isInvalid={touched.password && errors.password}
                     >
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel>
+                        <FormattedMessage id="password" />
+                      </FormLabel>
                       <InputGroup>
                         <Input
                           type={show ? "text" : "password"}
@@ -170,7 +176,7 @@ function SignIn() {
                           onChange={handleChange}
                           disabled={isSubmitting}
                           isInvalid={touched.password && errors.password}
-                          placeholder="Enter your password"
+                          placeholder="********"
                         />
                         <InputRightElement width="4.5rem">
                           <IconButton
@@ -200,7 +206,7 @@ function SignIn() {
                                 colorScheme="teal"
                                 textAlign={"end"}
                               >
-                                Forgot password?
+                                <FormattedMessage id="forgot_password" />
                               </Button>
                             </Link>
                           </Flex>
@@ -213,7 +219,7 @@ function SignIn() {
                             type="submit"
                             disabled={isSubmitting || !isValid}
                           >
-                            Sign in
+                            <FormattedMessage id="signin" />
                           </Button>
                         </Flex>
                         <Link to="/signup">
@@ -225,13 +231,13 @@ function SignIn() {
                             color="gray.500"
                             fontSize="sm"
                           >
-                            Don't have an account?
+                            <FormattedMessage id="dont_have_account" />
                           </Button>
                         </Link>
                         <HStack>
                           <Divider />
                           <Text fontSize="sm" whiteSpace="nowrap" color="muted">
-                            or continue with
+                            <FormattedMessage id="or_continue_with" />
                           </Text>
                           <Divider />
                         </HStack>

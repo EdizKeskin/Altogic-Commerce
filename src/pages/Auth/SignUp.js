@@ -19,6 +19,8 @@ import {
   InputGroup,
   FormErrorMessage,
   AlertDescription,
+  Divider,
+  HStack,
 } from "@chakra-ui/react";
 import altogic from "../../api/altogic";
 import { FaDiscord, FaGithub, FaGoogle } from "react-icons/fa";
@@ -26,6 +28,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { usePreferences } from "../../context/preferencesContext";
+import { FormattedMessage, useIntl } from "react-intl";
 
 function SignUp() {
   const bg = useColorModeValue("gray.100", "gray.700");
@@ -35,18 +38,26 @@ function SignUp() {
   const [show, setShow] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const { animations } = usePreferences();
+  const intl = useIntl();
 
   const handleShow = () => setShow(!show);
   const handleShowConfirm = () => setShowConfirm(!showConfirm);
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
-    email: Yup.string().email("Email is invalid").required("Email is required"),
+    name: Yup.string().required(
+      intl.formatMessage({ id: "required_field_name" })
+    ),
+    email: Yup.string()
+      .email(intl.formatMessage({ id: "email_invalid" }))
+      .required(intl.formatMessage({ id: "required_field_email" })),
     password: Yup.string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
+      .min(6, intl.formatMessage({ id: "password_min_length" }))
+      .required(intl.formatMessage({ id: "required_field_password" })),
     passwordConfirm: Yup.string()
-      .oneOf([Yup.ref("password")], "Passwords do not match")
+      .oneOf(
+        [Yup.ref("password")],
+        intl.formatMessage({ id: "password_match" })
+      )
       .required("Required field."),
   });
 
@@ -89,13 +100,15 @@ function SignUp() {
         <Stack spacing={8} mx={"auto"} maxW={"lg"} alignItems={"center"} px={6}>
           <Stack align={"center"}>
             <Heading fontSize={"4xl"} textAlign={"center"}>
-              Sign Up
+              <FormattedMessage id="signup" />
             </Heading>
           </Stack>
           {state && state.errors && (
             <Alert status="error" borderRadius={"md"}>
               <AlertIcon />
-              <AlertDescription>This email is already in use.</AlertDescription>
+              <AlertDescription>
+                <FormattedMessage id="sign_up_email_error" />
+              </AlertDescription>
             </Alert>
           )}
 
@@ -145,7 +158,9 @@ function SignUp() {
                       isRequired
                       isInvalid={touched.name && errors.name}
                     >
-                      <FormLabel>Username</FormLabel>
+                      <FormLabel>
+                        <FormattedMessage id="username" />
+                      </FormLabel>
                       <Input
                         type="text"
                         value={values.name}
@@ -153,7 +168,7 @@ function SignUp() {
                         onChange={handleChange}
                         disabled={isSubmitting}
                         isInvalid={touched.name && errors.name}
-                        placeholder="Enter your username"
+                        placeholder="John Doe"
                       />
 
                       <FormErrorMessage>{errors.name}</FormErrorMessage>
@@ -165,7 +180,7 @@ function SignUp() {
                       isRequired
                       isInvalid={touched.email && errors.email}
                     >
-                      <FormLabel>Email address</FormLabel>
+                      <FormLabel>E-Mail</FormLabel>
                       <Input
                         type="email"
                         value={values.email}
@@ -173,7 +188,7 @@ function SignUp() {
                         onChange={handleChange}
                         disabled={isSubmitting}
                         isInvalid={touched.email && errors.email}
-                        placeholder="Enter your email"
+                        placeholder="johndoe@gmail.com"
                       />
                       <FormErrorMessage>{errors.email}</FormErrorMessage>
                     </FormControl>
@@ -183,7 +198,9 @@ function SignUp() {
                       isRequired
                       isInvalid={touched.password && errors.password}
                     >
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel>
+                        <FormattedMessage id="password" />
+                      </FormLabel>
                       <InputGroup>
                         <Input
                           type={show ? "text" : "password"}
@@ -192,7 +209,7 @@ function SignUp() {
                           onChange={handleChange}
                           disabled={isSubmitting}
                           isInvalid={touched.password && errors.password}
-                          placeholder="Enter your password"
+                          placeholder="********"
                         />
                         <InputRightElement width="4.5rem">
                           <IconButton
@@ -219,7 +236,9 @@ function SignUp() {
                         touched.passwordConfirm && errors.passwordConfirm
                       }
                     >
-                      <FormLabel>Password Confirm</FormLabel>
+                      <FormLabel>
+                        <FormattedMessage id="confirm_password" />
+                      </FormLabel>
                       <InputGroup>
                         <Input
                           type={showConfirm ? "text" : "password"}
@@ -230,7 +249,7 @@ function SignUp() {
                           isInvalid={
                             touched.passwordConfirm && errors.passwordConfirm
                           }
-                          placeholder="Confirm your password"
+                          placeholder="********"
                         />
                         <InputRightElement width="4.5rem">
                           <IconButton
@@ -261,7 +280,7 @@ function SignUp() {
                           type="submit"
                           disabled={isSubmitting || !isValid}
                         >
-                          Sign up
+                          <FormattedMessage id="signup" />
                         </Button>
 
                         <Link to="/signin">
@@ -273,12 +292,17 @@ function SignUp() {
                             color="gray.500"
                             fontSize="sm"
                           >
-                            Already have an account?
+                            <FormattedMessage id="already_have_an_account" />
                           </Button>
                         </Link>
-                        <Text fontSize="sm" textAlign="center">
-                          Or sign in with
-                        </Text>
+                        <Text fontSize="sm" textAlign="center"></Text>
+                        <HStack>
+                          <Divider />
+                          <Text fontSize="sm" whiteSpace="nowrap" color="muted">
+                            <FormattedMessage id="or_continue_with" />
+                          </Text>
+                          <Divider />
+                        </HStack>
                         <ButtonGroup
                           justifyContent={"center"}
                           textAlign={"center"}

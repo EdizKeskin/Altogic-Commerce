@@ -60,7 +60,7 @@ function Coursel(props) {
           bgColor: "gray.700",
         }}
       >
-        <BiLeftArrowAlt size="40px" color={"white"} />
+        <BiLeftArrowAlt size="40px" color={"gray"} />
       </IconButton>
       <IconButton
         aria-label="right-arrow"
@@ -75,7 +75,7 @@ function Coursel(props) {
           bgColor: "gray.700",
         }}
       >
-        <BiRightArrowAlt size="40px" color={"white"} />
+        <BiRightArrowAlt size="40px" color={"gray"} />
       </IconButton>
       <Slider {...settings} ref={(slider) => setSlider(slider)}>
         {props.images.map((image, index) => (

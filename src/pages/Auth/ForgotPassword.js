@@ -15,6 +15,7 @@ import {
   AlertDescription,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useIntl, FormattedMessage } from "react-intl";
 import altogic from "../../api/altogic";
 
 import { usePreferences } from "../../context/preferencesContext";
@@ -26,7 +27,7 @@ function ForgotPassword() {
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-
+  const intl = useIntl();
   const { animations } = usePreferences();
 
   useEffect(() => {
@@ -49,7 +50,7 @@ function ForgotPassword() {
         console.log(errors);
       } else setSuccess(true);
     } else {
-      setError("This email is not registered");
+      setError(intl.formatMessage({ id: "email_not_found" }));
     }
     setLoading(false);
   };
@@ -64,7 +65,7 @@ function ForgotPassword() {
         <Stack spacing={8} mx={"auto"} maxW={"lg"} alignItems={"center"} px={6}>
           <Stack align={"center"}>
             <Heading fontSize={"4xl"} textAlign={"center"}>
-              Reset Password
+              <FormattedMessage id="forgot_password" />
             </Heading>
           </Stack>
 
@@ -85,6 +86,7 @@ function ForgotPassword() {
                 <AlertIcon />
                 <AlertDescription>
                   Please check your email for a link to reset your password.
+                  <FormattedMessage id="reset_password_email_sent" />
                 </AlertDescription>
               </Alert>
             ) : (
@@ -96,15 +98,17 @@ function ForgotPassword() {
                     isInvalid={email === "" ? true : false}
                     mt={3}
                   >
-                    <FormLabel>Email address</FormLabel>
+                    <FormLabel>E-Mail</FormLabel>
                     <Input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Enter your email"
+                      placeholder="johdoe@gmail.com"
                       disabled={loading}
                     />
-                    <FormErrorMessage>Required</FormErrorMessage>
+                    <FormErrorMessage>
+                      <FormattedMessage id="required_field" />
+                    </FormErrorMessage>
                   </FormControl>
                   <Flex flexDirection={"column"} textAlign={"center"} gap={3}>
                     {error && <Text color={"red.400"}>{error}</Text>}
@@ -117,7 +121,7 @@ function ForgotPassword() {
                       type="submit"
                       disabled={loading}
                     >
-                      Reset Password
+                      <FormattedMessage id="reset_password" />
                     </Button>
                   </Flex>
                 </Stack>

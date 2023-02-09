@@ -31,55 +31,68 @@ import { motion } from "framer-motion";
 import { useAuth } from "../context/authContext";
 import { AiOutlineDown } from "react-icons/ai";
 import { FormattedMessage } from "react-intl";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import { BsBoxSeam } from "react-icons/bs";
+import { FiUser } from "react-icons/fi";
+import { HiOutlineLogout } from "react-icons/hi";
+
+const NavLinks = [
+  {
+    name: "products",
+    link: "/",
+  },
+  {
+    name: "contact",
+    link: "/contact",
+  },
+];
+
+const Categories = [
+  {
+    name: "car",
+    link: "/categories/Car",
+  },
+  {
+    name: "home",
+    link: "/categories/Home",
+  },
+  {
+    name: "technology",
+    link: "/categories/Technology",
+  },
+  {
+    name: "book",
+    link: "/categories/Book",
+  },
+  {
+    name: "test",
+    link: "/categories/Test",
+  },
+];
 
 const DesktopNav = () => {
   return (
     <Stack direction={"row"} spacing={4}>
-      <Link to="/">
-        <FormattedMessage id="products" />
-      </Link>
-      <Link to="/contact">
-        <FormattedMessage id="contact" />
-      </Link>
+      {NavLinks.map((link, i) => (
+        <Link to={link.link} key={i}>
+          <FormattedMessage id={link.name} />
+        </Link>
+      ))}
       <Menu>
         <MenuButton variant={"link"} as={Button} rightIcon={<AiOutlineDown />}>
           <FormattedMessage id="categories" />
         </MenuButton>
         <Portal>
           <MenuList>
-            <Link to="/categories/Car">
-              <MenuItem as={"span"} justifyContent={"center"}>
-                <Button variant={"link"}>
-                  <FormattedMessage id="car" />
-                </Button>
-              </MenuItem>
-            </Link>
-            <Link to="/categories/Home">
-              <MenuItem as={"span"} justifyContent={"center"}>
-                <Button variant={"link"}>
-                  <FormattedMessage id="home" />
-                </Button>
-              </MenuItem>
-            </Link>
-            <Link to="/categories/Technology">
-              <MenuItem as={"span"} justifyContent={"center"}>
-                <Button variant={"link"}>
-                  <FormattedMessage id="technology" />
-                </Button>
-              </MenuItem>
-            </Link>
-            <Link to="/categories/Book">
-              <MenuItem as={"span"} justifyContent={"center"}>
-                <Button variant={"link"}>
-                  <FormattedMessage id="book" />
-                </Button>
-              </MenuItem>
-            </Link>
-            <Link to="/categories/Test">
-              <MenuItem as={"span"} justifyContent={"center"}>
-                <Button variant={"link"}>Test</Button>
-              </MenuItem>
-            </Link>
+            {Categories.map((category, i) => (
+              <Link to={category.link} key={i}>
+                <MenuItem as={"span"} justifyContent={"center"}>
+                  <Button variant={"link"}>
+                    <FormattedMessage id={category.name} />
+                  </Button>
+                </MenuItem>
+              </Link>
+            ))}
           </MenuList>
         </Portal>
       </Menu>
@@ -110,16 +123,14 @@ const MobileNav = () => {
         }}
         mb={4}
       >
-        <Link to="/">
-          <Text fontSize={"xl"} mb={"3"}>
-            Products
-          </Text>
-        </Link>
-        <Link to="/contact">
-          <Text fontSize={"xl"} mb={"3"}>
-            Contact
-          </Text>
-        </Link>
+        {NavLinks.map((link, i) => (
+          <Link to={link.link} key={i}>
+            <Text fontSize={"xl"} mb={2}>
+              <FormattedMessage id={link.name} />
+            </Text>
+          </Link>
+        ))}
+
         <Menu>
           <MenuButton
             variant={"link"}
@@ -131,39 +142,15 @@ const MobileNav = () => {
           </MenuButton>
           <Portal>
             <MenuList>
-              <Link to="/categories/Car">
-                <MenuItem as={"span"} justifyContent={"center"}>
-                  <Button variant={"link"}>
-                    <FormattedMessage id="car" />
-                  </Button>
-                </MenuItem>
-              </Link>
-              <Link to="/categories/Home">
-                <MenuItem as={"span"} justifyContent={"center"}>
-                  <Button variant={"link"}>
-                    <FormattedMessage id="home" />
-                  </Button>
-                </MenuItem>
-              </Link>
-              <Link to="/categories/Technology">
-                <MenuItem as={"span"} justifyContent={"center"}>
-                  <Button variant={"link"}>
-                    <FormattedMessage id="technology" />
-                  </Button>
-                </MenuItem>
-              </Link>
-              <Link to="/categories/Book">
-                <MenuItem as={"span"} justifyContent={"center"}>
-                  <Button variant={"link"}>
-                    <FormattedMessage id="book" />
-                  </Button>
-                </MenuItem>
-              </Link>
-              <Link to="/categories/Test">
-                <MenuItem as={"span"} justifyContent={"center"}>
-                  <Button variant={"link"}>Test</Button>
-                </MenuItem>
-              </Link>
+              {Categories.map((category, i) => (
+                <Link to={category.link} key={i}>
+                  <MenuItem as={"span"} justifyContent={"center"}>
+                    <Button variant={"link"}>
+                      <FormattedMessage id={category.name} />
+                    </Button>
+                  </MenuItem>
+                </Link>
+              ))}
             </MenuList>
           </Portal>
         </Menu>
@@ -325,11 +312,17 @@ function Navbar() {
                 <Avatar src={profilePicture} />
               </MenuButton>
               <Portal>
-                <MenuList zIndex={"dropdown"}>
+                <MenuList zIndex={"dropdown"} gap={3}>
                   {admin === true && (
                     <Link to="/admin">
                       <MenuItem as={"span"}>
-                        <Button variant={"link"} colorScheme={"green"}>
+                        <Button
+                          variant={"link"}
+                          fontSize={{ base: "2xl", md: "lg" }}
+                          size={"lg"}
+                          colorScheme={"green"}
+                          leftIcon={<MdOutlineAdminPanelSettings size={25} />}
+                        >
                           Admin
                         </Button>
                       </MenuItem>
@@ -337,23 +330,25 @@ function Navbar() {
                   )}
                   <Link to="/profile">
                     <MenuItem as={"span"}>
-                      <Button variant={"link"}>
+                      <Button
+                        variant={"link"}
+                        fontSize={{ base: "2xl", md: "lg" }}
+                        size={"lg"}
+                        leftIcon={<FiUser size={25} />}
+                      >
                         <FormattedMessage id="profile" />
                       </Button>
                     </MenuItem>
                   </Link>
                   <Link to="/orders">
                     <MenuItem as={"span"}>
-                      <Button variant={"link"}>
+                      <Button
+                        variant={"link"}
+                        fontSize={{ base: "2xl", md: "lg" }}
+                        size={"lg"}
+                        leftIcon={<BsBoxSeam size={25} />}
+                      >
                         <FormattedMessage id="orders" />
-                      </Button>
-                    </MenuItem>
-                  </Link>
-
-                  <Link to="/sessions">
-                    <MenuItem as={"span"}>
-                      <Button variant={"link"}>
-                        <FormattedMessage id="sessions" />
                       </Button>
                     </MenuItem>
                   </Link>
@@ -365,7 +360,13 @@ function Navbar() {
                       signOutCurrentSession();
                     }}
                   >
-                    <Button variant={"link"} colorScheme="red">
+                    <Button
+                      variant={"link"}
+                      colorScheme="red"
+                      fontSize={{ base: "2xl", md: "lg" }}
+                      size={"lg"}
+                      leftIcon={<HiOutlineLogout size={25} />}
+                    >
                       <FormattedMessage id="signout" />
                     </Button>
                   </MenuItem>

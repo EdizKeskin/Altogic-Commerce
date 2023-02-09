@@ -24,6 +24,7 @@ const ProductProvider = ({ children }) => {
 
   const values = {
     products,
+    setProducts,
     setTrigger,
     trigger,
     loading,

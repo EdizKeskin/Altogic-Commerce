@@ -13,6 +13,7 @@ import { useMemo } from "react";
 import { AiOutlineRight } from "react-icons/ai";
 import { BsFillTrashFill } from "react-icons/bs";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import { FormattedMessage, useIntl } from "react-intl";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import altogic from "../../../api/altogic";
@@ -22,11 +23,11 @@ import { useProduct } from "../../../context/productContext";
 
 function AdminProducts() {
   const { products, setProducts } = useProduct();
+  const intl = useIntl();
 
   const deleteProduct = async (id) => {
-    const result = await altogic.db.model("products").object(id).delete();
+    await altogic.db.model("products").object(id).delete();
     setProducts(products.filter((product) => product._id !== id));
-    console.log(result);
   };
 
   const globalTheme = useTheme();
@@ -84,20 +85,20 @@ function AdminProducts() {
     () => [
       {
         accessorKey: "title", //access nested data with dot notation
-        header: "Title",
+        header: intl.formatMessage({ id: "product_title" }),
       },
       {
         accessorKey: "price",
-        header: "Price",
+        header: intl.formatMessage({ id: "price" }),
         render: (price) => <p>{formatPrice(price)}</p>,
       },
       {
         accessorKey: "stock",
-        header: "Stock",
+        header: intl.formatMessage({ id: "stock" }),
       },
       {
         accessorKey: "createdAt",
-        header: "Created At",
+        header: intl.formatMessage({ id: "created_at" }),
         Cell: ({ row }) => (
           <p>{format(new Date(row.original.createdAt), "dd/MM/yyyy HH:mm")}</p>
         ),
@@ -132,8 +133,8 @@ function AdminProducts() {
               variant="link"
               onClick={() => {
                 Swal.fire({
-                  title: "Are you sure?",
-                  text: "You won't be able to revert this!",
+                  title: intl.formatMessage({ id: "are_you_sure" }),
+                  text: intl.formatMessage({ id: "delete_product_text" }),
                   icon: "warning",
                   showCancelButton: true,
                   confirmButtonColor: "#3085d6",
@@ -143,8 +144,8 @@ function AdminProducts() {
                   if (result.isConfirmed) {
                     deleteProduct(row.original._id);
                     Swal.fire(
-                      "Deleted!",
-                      "Your file has been deleted.",
+                      intl.formatMessage({ id: "deleted" }),
+                      intl.formatMessage({ id: "product_deleted" }),
                       "success"
                     );
                   }
@@ -200,7 +201,7 @@ function AdminProducts() {
             <BreadcrumbItem>
               <Link to={`/admin/products`}>
                 <Button variant={"link"} textTransform={"capitalize"}>
-                  Products
+                  <FormattedMessage id="products" />
                 </Button>
               </Link>
             </BreadcrumbItem>
@@ -213,11 +214,11 @@ function AdminProducts() {
           gap={3}
         >
           <Text fontSize="lg" color={"white"}>
-            Total products: {products.length}
+            <FormattedMessage id="total_products" />: {products.length}
           </Text>
           <Link to="/admin/products/newproduct">
             <Button colorScheme={"teal"} variant={"outline"}>
-              Add Product
+              <FormattedMessage id="add_product" />
             </Button>
           </Link>
         </Box>
