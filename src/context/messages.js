@@ -176,6 +176,7 @@ const Messages = {
     product_updated: "Ürün güncellendi.",
     product_updated_desc: "Ürününüz başarıyla güncellendi.",
     edit_product: "Ürünü Düzenle",
+    all: "Hepsi",
   },
   "en-US": {
     features: "Features",
@@ -351,6 +352,7 @@ const Messages = {
     product_updated: "Product has been updated.",
     product_updated_desc: "Product has been updated successfully.",
     edit_product: "Edit Product",
+    all: "All",
   },
 };
 

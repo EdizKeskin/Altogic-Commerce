@@ -15,16 +15,20 @@ import {
   Alert,
   AlertIcon,
   AlertDescription,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
 } from "@chakra-ui/react";
 
 import ProfileNav from "../../components/ProfileNav";
 import { formatPrice } from "../../api/storage";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
-import { AiOutlineHistory } from "react-icons/ai";
+import { AiOutlineCaretDown, AiOutlineHistory } from "react-icons/ai";
 import { TbTruckLoading } from "react-icons/tb";
 import { BsBagCheck } from "react-icons/bs";
-import { MdOutlineCancel } from "react-icons/md";
+import { MdOutlineCancel, MdOutlineDoneAll } from "react-icons/md";
 import { FormattedMessage, useIntl } from "react-intl";
 
 const Column = ({ title, data, badge }) => {
@@ -81,6 +85,7 @@ const Column = ({ title, data, badge }) => {
 
 export const Orders = () => {
   const [orders, setOrders] = useState(null);
+  const [filterStatus, setFilterStatus] = useState("all");
   const userId = altogic.auth.getUser()._id;
   const intl = useIntl();
 
@@ -94,6 +99,15 @@ export const Orders = () => {
     };
     userOrders();
   }, [userId]);
+
+  const filteredOrders = orders?.filter((order) => {
+    if (filterStatus === "all") {
+      return order;
+    } else {
+      return order.status === filterStatus;
+    }
+  });
+  console.log(filteredOrders);
 
   return (
     <>
@@ -116,6 +130,137 @@ export const Orders = () => {
             >
               <FormattedMessage id="orders" />
             </Text>
+            <Flex justifyContent={"flex-end"} mr={4}>
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  textTransform={"capitalize"}
+                  rightIcon={<AiOutlineCaretDown />}
+                >
+                  <Badge
+                    bg={
+                      (filterStatus === "all" && "blue.400") ||
+                      (filterStatus === "pending" && "yellow.400") ||
+                      (filterStatus === "shipped" && "teal.400") ||
+                      (filterStatus === "completed" && "green.400") ||
+                      (filterStatus === "canceled" && "red.400")
+                    }
+                    color={"gray.800"}
+                    fontSize="sm"
+                    p="3px 10px"
+                    borderRadius="8px"
+                  >
+                    <Flex alignItems={"center"} gap={1}>
+                      {(filterStatus === "pending" && (
+                        <FormattedMessage id="pending" />
+                      )) ||
+                        (filterStatus === "all" && (
+                          <FormattedMessage id="all" />
+                        )) ||
+                        (filterStatus === "shipped" && (
+                          <FormattedMessage id="shipped" />
+                        )) ||
+                        (filterStatus === "completed" && (
+                          <FormattedMessage id="completed" />
+                        )) ||
+                        (filterStatus === "canceled" && (
+                          <FormattedMessage id="canceled" />
+                        ))}
+                      {(filterStatus === "pending" && (
+                        <AiOutlineHistory
+                          size={20}
+                          style={{ strokeWidth: "25px" }}
+                        />
+                      )) ||
+                        (filterStatus === "shipped" && (
+                          <TbTruckLoading size={20} />
+                        )) ||
+                        (filterStatus === "completed" && (
+                          <BsBagCheck size={20} />
+                        )) ||
+                        (filterStatus === "canceled" && (
+                          <MdOutlineCancel size={20} />
+                        ))}
+                    </Flex>
+                  </Badge>
+                </MenuButton>
+                <MenuList>
+                  <MenuItem onClick={() => setFilterStatus("all")}>
+                    <Badge
+                      bg={"blue.400"}
+                      color={"gray.800"}
+                      fontSize="sm"
+                      p="3px 10px"
+                      borderRadius="8px"
+                    >
+                      <Flex alignItems={"center"} gap={1}>
+                        <FormattedMessage id="all" />
+                        <MdOutlineDoneAll size={20} />
+                      </Flex>
+                    </Badge>
+                  </MenuItem>
+                  <MenuItem onClick={() => setFilterStatus("pending")}>
+                    <Badge
+                      bg={"yellow.400"}
+                      color={"gray.800"}
+                      fontSize="sm"
+                      p="3px 10px"
+                      borderRadius="8px"
+                    >
+                      <Flex alignItems={"center"} gap={1}>
+                        <FormattedMessage id="pending" />
+                        <AiOutlineHistory
+                          size={20}
+                          style={{ strokeWidth: "25px" }}
+                        />
+                      </Flex>
+                    </Badge>
+                  </MenuItem>
+                  <MenuItem onClick={() => setFilterStatus("shipped")}>
+                    <Badge
+                      bg={"teal.400"}
+                      color={"gray.800"}
+                      fontSize="sm"
+                      p="3px 10px"
+                      borderRadius="8px"
+                    >
+                      <Flex alignItems={"center"} gap={1}>
+                        <FormattedMessage id="shipped" />
+                        <TbTruckLoading size={20} />
+                      </Flex>
+                    </Badge>
+                  </MenuItem>
+                  <MenuItem onClick={() => setFilterStatus("completed")}>
+                    <Badge
+                      bg={"green.400"}
+                      color={"gray.800"}
+                      fontSize="sm"
+                      p="3px 10px"
+                      borderRadius="8px"
+                    >
+                      <Flex alignItems={"center"} gap={1}>
+                        <FormattedMessage id="completed" />
+                        <BsBagCheck size={20} />
+                      </Flex>
+                    </Badge>
+                  </MenuItem>
+                  <MenuItem onClick={() => setFilterStatus("canceled")}>
+                    <Badge
+                      bg={"red.400"}
+                      color={"gray.800"}
+                      fontSize="sm"
+                      p="3px 10px"
+                      borderRadius="8px"
+                    >
+                      <Flex alignItems={"center"} gap={1}>
+                        <FormattedMessage id="canceled" />
+                        <MdOutlineCancel size={20} />
+                      </Flex>
+                    </Badge>
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </Flex>
             {orders?.length === 0 && (
               <Alert status="error" borderRadius={"md"}>
                 <AlertIcon />
@@ -124,10 +269,10 @@ export const Orders = () => {
                 </AlertDescription>
               </Alert>
             )}
-            {orders === null ? (
+            {orders === null || filteredOrders === undefined ? (
               <CustomSpinner />
             ) : (
-              orders.map((order) => {
+              filteredOrders.map((order) => {
                 return (
                   <Box key={order._id} w={"full"} p={10}>
                     <Flex alignItems={"center"}>

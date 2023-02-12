@@ -107,9 +107,19 @@ function OrderDetail() {
                   </Box>
                 </Box>
                 <Box>
-                  <Box display={"flex"} alignItems={"flex-start"}>
-                    <Text fontSize={"lg"} fontWeight={"bold"} mb={2} mr={2}>
-                      <FormattedMessage id="order_status" />:{" "}
+                  <Box
+                    display={"flex"}
+                    alignItems={{ base: "center", md: "flex-start" }}
+                    flexDirection={{ base: "column", md: "row" }}
+                    mb={{ base: 2, md: 0 }}
+                  >
+                    <Text
+                      fontSize={"lg"}
+                      fontWeight={"bold"}
+                      mb={{ base: 1, md: 2 }}
+                      mr={{ base: 0, md: 2 }}
+                    >
+                      <FormattedMessage id="order_status" />:
                     </Text>
                     <Badge
                       bg={
