@@ -18,7 +18,7 @@ import { BsBagCheck } from "react-icons/bs";
 import { MdOutlineCancel } from "react-icons/md";
 import { TbTruckLoading } from "react-icons/tb";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { formatPrice, getOrderById } from "../../api/storage";
 import CustomSpinner from "../../components/Spinner";
 
@@ -47,6 +47,7 @@ function OrderDetail() {
   const [order, setOrder] = useState(null);
   const bg2 = useColorModeValue("white", "gray.800");
   const intl = useIntl();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getProduct = async () => {
@@ -65,13 +66,18 @@ function OrderDetail() {
         direction={{ base: "column", md: "row" }}
         borderRadius={"md"}
       >
-        <Flex flexDirection={"column"}>
-          <Link to="/orders">
-            <Button variant="link" color={"gray.300"} mb={4} pl={5}>
+        <Flex flexDirection={"column"} gap={3}>
+          <Link>
+            <Button
+              variant="link"
+              color={"gray.300"}
+              mb={4}
+              pl={5}
+              onClick={() => navigate(-1)}
+            >
               <FormattedMessage id="back_to_orders" />
             </Button>
           </Link>
-
           <Text
             fontSize={"2xl"}
             fontWeight={700}

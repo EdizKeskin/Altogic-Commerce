@@ -107,7 +107,6 @@ export const Orders = () => {
       return order.status === filterStatus;
     }
   });
-  console.log(filteredOrders);
 
   return (
     <>

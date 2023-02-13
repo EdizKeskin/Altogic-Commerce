@@ -177,6 +177,7 @@ const Messages = {
     product_updated_desc: "Ürününüz başarıyla güncellendi.",
     edit_product: "Ürünü Düzenle",
     all: "Hepsi",
+    search_order: "İsim, e-posta veya ID",
   },
   "en-US": {
     features: "Features",
@@ -353,6 +354,7 @@ const Messages = {
     product_updated_desc: "Product has been updated successfully.",
     edit_product: "Edit Product",
     all: "All",
+    search_order: "Name, Email, ID, Status",
   },
 };
 
