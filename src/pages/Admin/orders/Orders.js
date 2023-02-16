@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import {
   Text,
   Box,
@@ -22,6 +22,15 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Grid,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Td,
+  Image,
+  TableCaption,
 } from "@chakra-ui/react";
 import CustomSpinner from "../../../components/Spinner";
 import altogic from "../../../api/altogic";
@@ -34,6 +43,7 @@ import { BsBagCheck } from "react-icons/bs";
 import { TbTruckLoading } from "react-icons/tb";
 import { AiOutlineCaretDown, AiOutlineHistory } from "react-icons/ai";
 import { FaSearch } from "react-icons/fa";
+import Pagination from "@choc-ui/paginator";
 
 const Column = ({ title, data, badge, setOrderStatus, id }) => {
   const textColor = useColorModeValue("gray.800", "white");
@@ -188,23 +198,33 @@ function Orders() {
   const [orders, setOrders] = useState(null);
   const [filterStatus, setFilterStatus] = useState("all");
   const [searchText, setSearchText] = useState("");
+  const [page, setPage] = useState(1);
+  const [current, setCurrent] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [loading, setLoading] = useState(false);
   const { isOpen, onToggle } = useDisclosure();
   const toast = useToast();
   const intl = useIntl();
 
   useEffect(() => {
+    setLoading(true);
     const getProducts = async () => {
-      const result = await altogic.db
-        .model("order")
-        .sort("createdAt", "desc")
-        .get();
+      const { data, errors } = await altogic.endpoint.get(
+        `/order?size=${pageSize}&page=${page}&sort=createdAt:desc`
+      );
 
-      if (!result.errors) {
-        setOrders(result.data);
+      console.log("🚀 ~ file: Orders.js:246 ~ getProducts ~ data", data);
+
+      if (!errors) {
+        setOrders(data.result);
+        setCurrent(data.countInfo.currentPage);
+        setTotalOrders(data.countInfo.count);
+        setLoading(false);
       }
     };
     getProducts();
-  }, []);
+  }, [page, pageSize]);
 
   const setOrderStatus = async (id) => {
     const result = await altogic.endpoint.put(`/order/${id.id}`, {
@@ -263,268 +283,467 @@ function Orders() {
       );
     }
   });
-  console.log(filteredOrdersBySearch);
+
+  const Prev = forwardRef((props, ref) => (
+    <Button ref={ref} {...props}>
+      Prev
+    </Button>
+  ));
+  const Next = forwardRef((props, ref) => (
+    <Button ref={ref} {...props}>
+      Next
+    </Button>
+  ));
+
+  const itemRender = (_, type) => {
+    if (type === "prev") {
+      return Prev;
+    }
+    if (type === "next") {
+      return Next;
+    }
+  };
 
   return (
     <>
-      <Container maxW={"7xl"} mt={10}>
+      <Container maxW={"7xl"} mt={10} mb={5}>
         <Stack
           bg={"gray.800"}
           spacing={{ base: 8, md: 10 }}
           py={{ base: 10, md: 12 }}
           borderRadius={"md"}
         >
-          <Flex flexDirection={"column"}>
-            <Text
-              fontSize={"2xl"}
-              fontWeight={700}
-              mb={2}
-              textTransform={"uppercase"}
-              pl={10}
-            >
-              <FormattedMessage id="orders" />
-            </Text>
-            <Flex justifyContent={"flex-end"} mr={4}>
-              <InputGroup w={"fit-content"}>
-                <InputLeftElement>
-                  <FaSearch />
-                </InputLeftElement>
-                <Input
-                  variant="filled"
-                  placeholder={intl.formatMessage({ id: "search_order" })}
-                  value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
-                  bg={"gray.700"}
-                  _hover={{ bg: "gray.700" }}
-                  _focus={{ bg: "gray.700" }}
-                  mr={4}
-                />
-              </InputGroup>
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  textTransform={"capitalize"}
-                  rightIcon={<AiOutlineCaretDown />}
-                  bgColor={"gray.700"}
+          {loading ? (
+            <CustomSpinner />
+          ) : (
+            <>
+              <Flex flexDirection={"column"}>
+                <Text
+                  fontSize={"2xl"}
+                  fontWeight={700}
+                  mb={2}
+                  textTransform={"uppercase"}
+                  pl={10}
                 >
-                  <Badge
-                    bg={
-                      (filterStatus === "all" && "blue.400") ||
-                      (filterStatus === "pending" && "yellow.400") ||
-                      (filterStatus === "shipped" && "teal.400") ||
-                      (filterStatus === "completed" && "green.400") ||
-                      (filterStatus === "canceled" && "red.400")
-                    }
-                    color={"gray.800"}
-                    fontSize="sm"
-                    p="3px 10px"
-                    borderRadius="8px"
-                  >
-                    <Flex alignItems={"center"} gap={1}>
-                      {(filterStatus === "pending" && (
-                        <FormattedMessage id="pending" />
-                      )) ||
-                        (filterStatus === "all" && (
-                          <FormattedMessage id="all" />
-                        )) ||
-                        (filterStatus === "shipped" && (
-                          <FormattedMessage id="shipped" />
-                        )) ||
-                        (filterStatus === "completed" && (
-                          <FormattedMessage id="completed" />
-                        )) ||
-                        (filterStatus === "canceled" && (
-                          <FormattedMessage id="canceled" />
-                        ))}
-                      {(filterStatus === "pending" && (
-                        <AiOutlineHistory
-                          size={20}
-                          style={{ strokeWidth: "25px" }}
-                        />
-                      )) ||
-                        (filterStatus === "shipped" && (
-                          <TbTruckLoading size={20} />
-                        )) ||
-                        (filterStatus === "completed" && (
-                          <BsBagCheck size={20} />
-                        )) ||
-                        (filterStatus === "canceled" && (
-                          <MdOutlineCancel size={20} />
-                        ))}
-                    </Flex>
-                  </Badge>
-                </MenuButton>
-                <MenuList>
-                  <MenuItem onClick={() => setFilterStatus("all")}>
-                    <Badge
-                      bg={"blue.400"}
-                      color={"gray.800"}
-                      fontSize="sm"
-                      p="3px 10px"
-                      borderRadius="8px"
+                  <FormattedMessage id="orders" />
+                </Text>
+                <Flex justifyContent={"flex-end"} mr={4}>
+                  <InputGroup w={"fit-content"}>
+                    <InputLeftElement>
+                      <FaSearch />
+                    </InputLeftElement>
+                    <Input
+                      variant="filled"
+                      placeholder={intl.formatMessage({ id: "search_order" })}
+                      value={searchText}
+                      onChange={(e) => setSearchText(e.target.value)}
+                      bg={"gray.700"}
+                      _hover={{ bg: "gray.700" }}
+                      _focus={{ bg: "gray.700" }}
+                      mr={4}
+                    />
+                  </InputGroup>
+                  <Menu>
+                    <MenuButton
+                      as={Button}
+                      textTransform={"capitalize"}
+                      rightIcon={<AiOutlineCaretDown />}
+                      bgColor={"gray.700"}
                     >
-                      <Flex alignItems={"center"} gap={1}>
-                        <FormattedMessage id="all" />
-                        <MdOutlineDoneAll size={20} />
-                      </Flex>
-                    </Badge>
-                  </MenuItem>
-                  <MenuItem onClick={() => setFilterStatus("pending")}>
-                    <Badge
-                      bg={"yellow.400"}
-                      color={"gray.800"}
-                      fontSize="sm"
-                      p="3px 10px"
-                      borderRadius="8px"
-                    >
-                      <Flex alignItems={"center"} gap={1}>
-                        <FormattedMessage id="pending" />
-                        <AiOutlineHistory
-                          size={20}
-                          style={{ strokeWidth: "25px" }}
-                        />
-                      </Flex>
-                    </Badge>
-                  </MenuItem>
-                  <MenuItem onClick={() => setFilterStatus("shipped")}>
-                    <Badge
-                      bg={"teal.400"}
-                      color={"gray.800"}
-                      fontSize="sm"
-                      p="3px 10px"
-                      borderRadius="8px"
-                    >
-                      <Flex alignItems={"center"} gap={1}>
-                        <FormattedMessage id="shipped" />
-                        <TbTruckLoading size={20} />
-                      </Flex>
-                    </Badge>
-                  </MenuItem>
-                  <MenuItem onClick={() => setFilterStatus("completed")}>
-                    <Badge
-                      bg={"green.400"}
-                      color={"gray.800"}
-                      fontSize="sm"
-                      p="3px 10px"
-                      borderRadius="8px"
-                    >
-                      <Flex alignItems={"center"} gap={1}>
-                        <FormattedMessage id="completed" />
-                        <BsBagCheck size={20} />
-                      </Flex>
-                    </Badge>
-                  </MenuItem>
-                  <MenuItem onClick={() => setFilterStatus("canceled")}>
-                    <Badge
-                      bg={"red.400"}
-                      color={"gray.800"}
-                      fontSize="sm"
-                      p="3px 10px"
-                      borderRadius="8px"
-                    >
-                      <Flex alignItems={"center"} gap={1}>
-                        <FormattedMessage id="canceled" />
-                        <MdOutlineCancel size={20} />
-                      </Flex>
-                    </Badge>
-                  </MenuItem>
-                </MenuList>
-              </Menu>
-            </Flex>
-            {orders?.length === 0 && (
-              <Alert status="error" borderRadius={"md"}>
-                <AlertIcon />
-                <AlertDescription>
-                  <FormattedMessage id="no_orders" />
-                </AlertDescription>
-              </Alert>
-            )}
-            {orders === null || filteredOrders === undefined ? (
-              <CustomSpinner />
-            ) : (
-              filteredOrdersBySearch.map((order) => {
-                return (
-                  <Box key={order._id} w={"full"} p={10}>
-                    <Flex
-                      alignItems={"flex-start"}
-                      flexWrap={"wrap"}
-                      gap={2}
-                      justifyContent={{
-                        base: "flex-start",
-                        md: "space-around",
-                      }}
-                    >
-                      <Column
-                        title={intl.formatMessage({ id: "order_number" })}
-                        data={`#${order.orderNumber
-                          ?.toString()
-                          .padStart(6, "0")}`}
-                      />
-                      <Column
-                        title={intl.formatMessage({ id: "order_date" })}
-                        data={format(
-                          new Date(order.createdAt),
-                          "dd/MM/yyyy HH:mm"
-                        )}
-                      />
-                      <Column
-                        title={intl.formatMessage({ id: "order_status" })}
-                        data={order.status}
-                        id={order._id}
-                        setOrderStatus={setOrderStatus}
-                        badge
-                      />
-                      <Column
-                        title={intl.formatMessage({ id: "total_price" })}
-                        data={formatPrice(
-                          order.products.reduce((acc, product) => {
-                            return (
-                              acc + product.discountedPrice * product.quantity
-                            );
-                          }, 0)
-                        )}
-                      />
-                      <Flex
-                        gap={1}
-                        justifyContent={"center"}
-                        alignItems={"center"}
-                        flexDirection={"column"}
+                      <Badge
+                        bg={
+                          (filterStatus === "all" && "blue.400") ||
+                          (filterStatus === "pending" && "yellow.400") ||
+                          (filterStatus === "shipped" && "teal.400") ||
+                          (filterStatus === "completed" && "green.400") ||
+                          (filterStatus === "canceled" && "red.400")
+                        }
+                        color={"gray.800"}
+                        fontSize="sm"
+                        p="3px 10px"
+                        borderRadius="8px"
                       >
-                        <Link to={`/orders/${order._id}`}>
-                          <Button>
-                            <FormattedMessage id="view_order" />
-                          </Button>
-                        </Link>
-                        <Button onClick={onToggle}>
-                          <FormattedMessage id="address" />
-                        </Button>
-                      </Flex>
-                    </Flex>
-                    <Collapse in={isOpen} animateOpacity>
-                      <Box
-                        p="40px"
-                        color="white"
-                        bg="gray.700"
-                        mt="4"
-                        rounded="md"
-                        shadow="md"
-                      >
-                        <Text>
-                          <FormattedMessage id="country" />: {order.country}
-                        </Text>
-                        <Text>
-                          <FormattedMessage id="city" />: {order.city}
-                        </Text>
-                        <Text>
-                          <FormattedMessage id="address" />: {order.address}
-                        </Text>
+                        <Flex alignItems={"center"} gap={1}>
+                          {(filterStatus === "pending" && (
+                            <FormattedMessage id="pending" />
+                          )) ||
+                            (filterStatus === "all" && (
+                              <FormattedMessage id="all" />
+                            )) ||
+                            (filterStatus === "shipped" && (
+                              <FormattedMessage id="shipped" />
+                            )) ||
+                            (filterStatus === "completed" && (
+                              <FormattedMessage id="completed" />
+                            )) ||
+                            (filterStatus === "canceled" && (
+                              <FormattedMessage id="canceled" />
+                            ))}
+                          {(filterStatus === "pending" && (
+                            <AiOutlineHistory
+                              size={20}
+                              style={{ strokeWidth: "25px" }}
+                            />
+                          )) ||
+                            (filterStatus === "shipped" && (
+                              <TbTruckLoading size={20} />
+                            )) ||
+                            (filterStatus === "completed" && (
+                              <BsBagCheck size={20} />
+                            )) ||
+                            (filterStatus === "canceled" && (
+                              <MdOutlineCancel size={20} />
+                            ))}
+                        </Flex>
+                      </Badge>
+                    </MenuButton>
+                    <MenuList>
+                      <MenuItem onClick={() => setFilterStatus("all")}>
+                        <Badge
+                          bg={"blue.400"}
+                          color={"gray.800"}
+                          fontSize="sm"
+                          p="3px 10px"
+                          borderRadius="8px"
+                        >
+                          <Flex alignItems={"center"} gap={1}>
+                            <FormattedMessage id="all" />
+                            <MdOutlineDoneAll size={20} />
+                          </Flex>
+                        </Badge>
+                      </MenuItem>
+                      <MenuItem onClick={() => setFilterStatus("pending")}>
+                        <Badge
+                          bg={"yellow.400"}
+                          color={"gray.800"}
+                          fontSize="sm"
+                          p="3px 10px"
+                          borderRadius="8px"
+                        >
+                          <Flex alignItems={"center"} gap={1}>
+                            <FormattedMessage id="pending" />
+                            <AiOutlineHistory
+                              size={20}
+                              style={{ strokeWidth: "25px" }}
+                            />
+                          </Flex>
+                        </Badge>
+                      </MenuItem>
+                      <MenuItem onClick={() => setFilterStatus("shipped")}>
+                        <Badge
+                          bg={"teal.400"}
+                          color={"gray.800"}
+                          fontSize="sm"
+                          p="3px 10px"
+                          borderRadius="8px"
+                        >
+                          <Flex alignItems={"center"} gap={1}>
+                            <FormattedMessage id="shipped" />
+                            <TbTruckLoading size={20} />
+                          </Flex>
+                        </Badge>
+                      </MenuItem>
+                      <MenuItem onClick={() => setFilterStatus("completed")}>
+                        <Badge
+                          bg={"green.400"}
+                          color={"gray.800"}
+                          fontSize="sm"
+                          p="3px 10px"
+                          borderRadius="8px"
+                        >
+                          <Flex alignItems={"center"} gap={1}>
+                            <FormattedMessage id="completed" />
+                            <BsBagCheck size={20} />
+                          </Flex>
+                        </Badge>
+                      </MenuItem>
+                      <MenuItem onClick={() => setFilterStatus("canceled")}>
+                        <Badge
+                          bg={"red.400"}
+                          color={"gray.800"}
+                          fontSize="sm"
+                          p="3px 10px"
+                          borderRadius="8px"
+                        >
+                          <Flex alignItems={"center"} gap={1}>
+                            <FormattedMessage id="canceled" />
+                            <MdOutlineCancel size={20} />
+                          </Flex>
+                        </Badge>
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
+                </Flex>
+                <Flex m={6} zIndex={"modal"}>
+                  <Pagination
+                    current={current}
+                    onChange={(page) => {
+                      setPage(page);
+                    }}
+                    pageSize={pageSize}
+                    total={totalOrders}
+                    itemRender={itemRender}
+                    paginationProps={{
+                      display: "flex",
+                      pos: "absolute",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                    }}
+                    colorScheme="teal"
+                    showSizeChanger
+                    onShowSizeChange={(currentPage, pagesize) => {
+                      setPageSize(pagesize);
+                    }}
+                  />
+                </Flex>
+                {orders?.length === 0 && (
+                  <Alert status="error" borderRadius={"md"}>
+                    <AlertIcon />
+                    <AlertDescription>
+                      <FormattedMessage id="no_orders" />
+                    </AlertDescription>
+                  </Alert>
+                )}
+                {orders === null || filteredOrders === undefined ? (
+                  <CustomSpinner />
+                ) : (
+                  filteredOrdersBySearch.map((order) => {
+                    return (
+                      <Box key={order._id} w={"full"} p={10}>
+                        <Flex
+                          alignItems={"flex-start"}
+                          gap={2}
+                          justifyContent={{
+                            base: "center",
+                            md: "space-around",
+                          }}
+                        >
+                          <Grid
+                            flex={1}
+                            templateColumns={{
+                              sm: "repeat(1, 1fr)",
+                              md: "repeat(5, 1fr)",
+                            }}
+                            gap="2"
+                          >
+                            <Column
+                              title={intl.formatMessage({ id: "order_number" })}
+                              data={`#${order.orderNumber
+                                ?.toString()
+                                .padStart(6, "0")}`}
+                            />
+                            <Column
+                              title={intl.formatMessage({ id: "order_date" })}
+                              data={format(
+                                new Date(order.createdAt),
+                                "dd/MM/yyyy HH:mm"
+                              )}
+                            />
+                            <Column
+                              title={intl.formatMessage({ id: "order_status" })}
+                              data={order.status}
+                              id={order._id}
+                              setOrderStatus={setOrderStatus}
+                              badge
+                            />
+                            <Column
+                              title={intl.formatMessage({ id: "total_price" })}
+                              data={formatPrice(
+                                order.products.reduce((acc, product) => {
+                                  return (
+                                    acc +
+                                    product.discountedPrice * product.quantity
+                                  );
+                                }, 0)
+                              )}
+                            />
+                            <Flex
+                              gap={1}
+                              justifyContent={"center"}
+                              alignItems={"center"}
+                              flexDirection={"column"}
+                            >
+                              <Button onClick={onToggle}>
+                                <FormattedMessage id="expand" />
+                              </Button>
+                            </Flex>
+                          </Grid>
+                        </Flex>
+
+                        <Collapse in={isOpen} animateOpacity>
+                          <Box
+                            p="40px"
+                            color="white"
+                            bg="gray.700"
+                            mt="4"
+                            rounded="md"
+                            shadow="md"
+                          >
+                            <Box mb={4}>
+                              <Text>
+                                <b>
+                                  <FormattedMessage id="order_id" />:
+                                </b>{" "}
+                                {order._id}
+                              </Text>
+                              <Text>
+                                <b>
+                                  <FormattedMessage id="order_number" />:
+                                </b>{" "}
+                                {order.orderNumber}
+                              </Text>
+                              <Text>
+                                <b>
+                                  <FormattedMessage id="order_date" />:
+                                </b>{" "}
+                                {format(
+                                  new Date(order.createdAt),
+                                  "dd/MM/yyyy HH:mm"
+                                )}
+                              </Text>
+                            </Box>
+                            <Divider />
+                            <Box my={4}>
+                              <Text>
+                                <b>
+                                  {" "}
+                                  <FormattedMessage id="country" />:
+                                </b>{" "}
+                                {order.country}
+                              </Text>
+                              <Text>
+                                <b>
+                                  <FormattedMessage id="city" />:
+                                </b>{" "}
+                                {order.city}
+                              </Text>
+                              <Text>
+                                <b>
+                                  <FormattedMessage id="address" />:
+                                </b>{" "}
+                                {order.address}
+                              </Text>
+                            </Box>
+                            <Divider />
+                            <Box my={4}>
+                              <Text>
+                                <b>E-Mail:</b> {order.email}
+                              </Text>
+                              <Text>
+                                <b>
+                                  <FormattedMessage id="name" />:
+                                </b>{" "}
+                                {order.name}
+                              </Text>
+                              <Text>
+                                <b>
+                                  {" "}
+                                  <FormattedMessage id="customer_note" />:
+                                </b>{" "}
+                                {order.note ? (
+                                  order.note
+                                ) : (
+                                  <FormattedMessage id="no_note" />
+                                )}
+                              </Text>
+                            </Box>
+                            <Divider />
+                            <Box my={4}>
+                              <Text>
+                                <b>
+                                  <FormattedMessage id="products" />:
+                                </b>
+                              </Text>
+                              <Table variant="simple">
+                                <TableCaption fontSize={"lg"}>
+                                  <FormattedMessage id="total_price" /> :{" "}
+                                  {formatPrice(
+                                    order.products.reduce((acc, product) => {
+                                      return (
+                                        acc +
+                                        product.discountedPrice *
+                                          product.quantity
+                                      );
+                                    }, 0)
+                                  )}
+                                </TableCaption>
+                                <Thead>
+                                  <Tr>
+                                    <Th>
+                                      <FormattedMessage id="product" />
+                                    </Th>
+                                    <Th>
+                                      <FormattedMessage id="product_title" />
+                                    </Th>
+                                    <Th>
+                                      <FormattedMessage id="quantity" />
+                                    </Th>
+                                    <Th>
+                                      <FormattedMessage id="price" />
+                                    </Th>
+                                  </Tr>
+                                </Thead>
+                                <Tbody>
+                                  {order.products.map((product) => {
+                                    return (
+                                      <Tr key={product._id}>
+                                        <Td>
+                                          <Link to={`/products/${product._id}`}>
+                                            <Image
+                                              src={product.images[0]}
+                                              objectFit="cover"
+                                              boxSize="90px"
+                                              loading={"lazy"}
+                                            />
+                                          </Link>
+                                        </Td>
+                                        <Td>
+                                          <Link to={`/products/${product._id}`}>
+                                            {product.title}
+                                          </Link>
+                                        </Td>
+                                        <Td>{product.quantity}</Td>
+                                        <Td>
+                                          {formatPrice(product.discountedPrice)}
+                                        </Td>
+                                      </Tr>
+                                    );
+                                  })}
+                                </Tbody>
+                              </Table>
+                            </Box>
+                          </Box>
+                        </Collapse>
                       </Box>
-                    </Collapse>
-                  </Box>
-                );
-              })
-            )}
-          </Flex>
+                    );
+                  })
+                )}
+              </Flex>
+              <Flex pb={5}>
+                <Pagination
+                  current={current}
+                  onChange={(page) => {
+                    setPage(page);
+                  }}
+                  pageSize={pageSize}
+                  total={totalOrders}
+                  itemRender={itemRender}
+                  paginationProps={{
+                    display: "flex",
+                    pos: "absolute",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                  }}
+                  colorScheme="teal"
+                  showSizeChanger
+                  pageSizeOptions={[10, 20, 30, 50]}
+                  onShowSizeChange={(currentPage, pagesize) => {
+                    setPageSize(pagesize);
+                  }}
+                />
+              </Flex>
+            </>
+          )}
         </Stack>
       </Container>
     </>

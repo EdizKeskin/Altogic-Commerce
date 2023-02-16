@@ -47,7 +47,11 @@ function Home() {
     setSearchText(e.target.value);
   };
 
-  const filteredProducts = products.filter((data) => {
+  const displayableProducts = products.filter(
+    (product) => product.isDisabled === false
+  );
+
+  const filteredProducts = displayableProducts.filter((data) => {
     return (
       data.title.toLowerCase().includes(searchText.toLowerCase()) ||
       data.categories.some((category) =>

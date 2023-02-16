@@ -274,15 +274,21 @@ export const Orders = () => {
               filteredOrders.map((order) => {
                 return (
                   <Box key={order._id} w={"full"} p={10}>
-                    <Flex alignItems={"center"}>
+                    <Flex
+                      alignItems={"flex-start"}
+                      gap={2}
+                      justifyContent={{
+                        base: "center",
+                        md: "space-around",
+                      }}
+                    >
                       <Grid
                         flex={1}
                         templateColumns={{
-                          sm: "repeat(2, 1fr)",
-                          md: "repeat(4, 1fr)",
+                          sm: "repeat(1, 1fr)",
+                          md: "repeat(5, 1fr)",
                         }}
-                        gap="2"
-                        mr={10}
+                        gap={{ base: 4, md: 2 }}
                       >
                         <Column
                           title={intl.formatMessage({ id: "order_number" })}
@@ -312,18 +318,19 @@ export const Orders = () => {
                             }, 0)
                           )}
                         />
+                        <Flex
+                          gap={1}
+                          justifyContent={"center"}
+                          alignItems={"center"}
+                          mt={{ base: 4, md: 0 }}
+                        >
+                          <Link to={`/orders/${order._id}`}>
+                            <Button>
+                              <FormattedMessage id="view_order" />
+                            </Button>
+                          </Link>
+                        </Flex>
                       </Grid>
-                      <Flex
-                        gap={1}
-                        justifyContent={"center"}
-                        alignItems={"center"}
-                      >
-                        <Link to={`/orders/${order._id}`}>
-                          <Button>
-                            <FormattedMessage id="view_order" />
-                          </Button>
-                        </Link>
-                      </Flex>
                     </Flex>
                   </Box>
                 );

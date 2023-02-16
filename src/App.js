@@ -200,7 +200,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/admin/products/newproduct"
+                  path="/admin/products/new"
                   element={
                     <RequiresAuth>
                       <RequiresAdmin>

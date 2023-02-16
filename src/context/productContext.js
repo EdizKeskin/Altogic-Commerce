@@ -11,7 +11,10 @@ const ProductProvider = ({ children }) => {
   useEffect(() => {
     setLoading(true);
     const getProducts = async () => {
-      const result = await altogic.db.model("products").get();
+      const result = await altogic.db
+        .model("products")
+        .sort("createdAt", "desc")
+        .get();
 
       if (!result.errors) {
         setProducts(result.data);

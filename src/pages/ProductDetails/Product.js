@@ -109,6 +109,9 @@ function Product() {
   });
 
   if (product === null) return <CustomSpinner />;
+  if (product.isDisabled === true) {
+    navigate("/404");
+  }
 
   const right = product.details.slice(0, 3);
   const left = product.details.slice(3, 6);

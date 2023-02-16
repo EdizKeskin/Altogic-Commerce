@@ -125,6 +125,7 @@ function NewProduct() {
           categories: [],
           discount: 0,
           stock: 0,
+          isDisabled: false,
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
@@ -443,6 +444,22 @@ function NewProduct() {
                           </Button>
                         </div>
                       )}
+                    />
+                  </FormControl>
+
+                  <FormControl
+                    mb="4"
+                    display={"flex"}
+                    justifyContent={"flex-start"}
+                    alignItems={"center"}
+                    gap={3}
+                  >
+                    <FormattedMessage id="is_disabled" />:
+                    <Checkbox
+                      colorScheme="green"
+                      checked={values.isDisabled === true}
+                      onChange={handleChange}
+                      name="isDisabled"
                     />
                   </FormControl>
 
