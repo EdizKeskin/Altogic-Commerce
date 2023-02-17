@@ -92,8 +92,22 @@ function EditProduct() {
   }, [product_id]);
 
   const handleSubmit = async (values) => {
-    const { title, desc, price, images, details, categories, discount, stock } =
-      values;
+    const {
+      title,
+      desc,
+      price,
+      images,
+      details,
+      categories,
+      discount,
+      stock,
+      isDisabled,
+    } = values;
+    console.log(
+      "🚀 ~ file: EditProduct.js:106 ~ handleSubmit ~ values",
+      values
+    );
+
     try {
       const resp = await altogic.db
         .model("products")
@@ -107,6 +121,7 @@ function EditProduct() {
           categories,
           discount,
           stock,
+          isDisabled,
         });
       if (resp.errors === null) {
         toast({
@@ -142,6 +157,7 @@ function EditProduct() {
           categories: product.categories,
           discount: product.discount,
           stock: product.stock,
+          isDisabled: product.isDisabled,
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
@@ -460,6 +476,22 @@ function EditProduct() {
                           </Button>
                         </div>
                       )}
+                    />
+                  </FormControl>
+
+                  <FormControl
+                    mb="4"
+                    display={"flex"}
+                    justifyContent={"flex-start"}
+                    alignItems={"center"}
+                    gap={3}
+                  >
+                    <FormattedMessage id="is_disabled" />:
+                    <Checkbox
+                      name="isDisabled"
+                      onChange={handleChange}
+                      colorScheme="green"
+                      defaultChecked={values.isDisabled === true}
                     />
                   </FormControl>
 

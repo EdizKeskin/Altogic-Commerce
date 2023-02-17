@@ -194,6 +194,229 @@ const Column = ({ title, data, badge, setOrderStatus, id }) => {
   );
 };
 
+const OrderRow = ({ order, setOrderStatus }) => {
+  const { isOpen, onToggle } = useDisclosure();
+  const intl = useIntl();
+  return (
+    <Box key={order._id} w={"full"} p={10}>
+      <Flex
+        alignItems={"flex-start"}
+        gap={2}
+        justifyContent={{
+          base: "center",
+          md: "space-around",
+        }}
+      >
+        <Grid
+          flex={1}
+          templateColumns={{
+            sm: "repeat(1, 1fr)",
+            md: "repeat(5, 1fr)",
+          }}
+          gap="2"
+        >
+          <Column
+            title={intl.formatMessage({ id: "order_number" })}
+            data={`#${order.orderNumber?.toString().padStart(6, "0")}`}
+          />
+          <Column
+            title={intl.formatMessage({ id: "order_date" })}
+            data={format(new Date(order.createdAt), "dd/MM/yyyy HH:mm")}
+          />
+          <Column
+            title={intl.formatMessage({ id: "order_status" })}
+            data={order.status}
+            id={order._id}
+            setOrderStatus={setOrderStatus}
+            badge
+          />
+          <Column
+            title={intl.formatMessage({ id: "total_price" })}
+            data={formatPrice(
+              order.products.reduce((acc, product) => {
+                return acc + product.discountedPrice * product.quantity;
+              }, 0)
+            )}
+          />
+          <Flex
+            gap={1}
+            justifyContent={"center"}
+            alignItems={"center"}
+            flexDirection={"column"}
+          >
+            <Button onClick={onToggle}>
+              <FormattedMessage id="expand" />
+            </Button>
+          </Flex>
+        </Grid>
+      </Flex>
+
+      <Collapse in={isOpen} animateOpacity>
+        <Box
+          p="40px"
+          color="white"
+          bg="gray.700"
+          mt="4"
+          rounded="md"
+          shadow="md"
+        >
+          <Box mb={4}>
+            <Text>
+              <b>
+                <FormattedMessage id="order_id" />:
+              </b>{" "}
+              {order._id}
+            </Text>
+            <Text>
+              <b>
+                <FormattedMessage id="order_number" />:
+              </b>{" "}
+              {order.orderNumber}
+            </Text>
+            <Text>
+              <b>
+                <FormattedMessage id="order_date" />:
+              </b>{" "}
+              {format(new Date(order.createdAt), "dd/MM/yyyy HH:mm")}
+            </Text>
+          </Box>
+          <Divider />
+          <Box my={4}>
+            <Text>
+              <b>
+                {" "}
+                <FormattedMessage id="country" />:
+              </b>{" "}
+              {order.country}
+            </Text>
+            <Text>
+              <b>
+                <FormattedMessage id="city" />:
+              </b>{" "}
+              {order.city}
+            </Text>
+            <Text>
+              <b>
+                <FormattedMessage id="address" />:
+              </b>{" "}
+              {order.address}
+            </Text>
+          </Box>
+          <Divider />
+          <Box my={4}>
+            <Text>
+              <b>E-Mail:</b> {order.email}
+            </Text>
+            <Text>
+              <b>
+                <FormattedMessage id="name" />:
+              </b>{" "}
+              {order.name}
+            </Text>
+            <Text>
+              <b>
+                {" "}
+                <FormattedMessage id="customer_note" />:
+              </b>{" "}
+              {order.note ? order.note : <FormattedMessage id="no_note" />}
+            </Text>
+          </Box>
+          <Divider />
+          <Box my={4} display={{ base: "none", md: "block" }}>
+            <Text>
+              <b>
+                <FormattedMessage id="products" />:
+              </b>
+            </Text>
+            <Table variant="simple">
+              <TableCaption fontSize={"lg"}>
+                <FormattedMessage id="total_price" /> :{" "}
+                {formatPrice(
+                  order.products.reduce((acc, product) => {
+                    return acc + product.discountedPrice * product.quantity;
+                  }, 0)
+                )}
+              </TableCaption>
+              <Thead>
+                <Tr>
+                  <Th>
+                    <FormattedMessage id="product" />
+                  </Th>
+                  <Th>
+                    <FormattedMessage id="product_title" />
+                  </Th>
+                  <Th>
+                    <FormattedMessage id="quantity" />
+                  </Th>
+                  <Th>
+                    <FormattedMessage id="price" />
+                  </Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {order.products.map((product) => {
+                  return (
+                    <Tr key={product._id}>
+                      <Td>
+                        <Link to={`/products/${product._id}`}>
+                          <Image
+                            src={product.images[0]}
+                            objectFit="cover"
+                            boxSize="90px"
+                            loading={"lazy"}
+                          />
+                        </Link>
+                      </Td>
+                      <Td>
+                        <Link to={`/products/${product._id}`}>
+                          {product.title}
+                        </Link>
+                      </Td>
+                      <Td>{product.quantity}</Td>
+                      <Td>{formatPrice(product.discountedPrice)}</Td>
+                    </Tr>
+                  );
+                })}
+              </Tbody>
+            </Table>
+          </Box>
+          <Box my={4} display={{ base: "block", md: "none" }}>
+            <Text>
+              <b>
+                <FormattedMessage id="products" />:
+              </b>
+            </Text>
+            <Flex gap={8} flexWrap={"wrap"}>
+              {order.products.map((product) => {
+                return (
+                  <Box key={product._id} my={2}>
+                    <Link to={`/products/${product._id}`}>
+                      <Image
+                        src={product.images[0]}
+                        objectFit="cover"
+                        boxSize="90px"
+                        loading={"lazy"}
+                      />
+                    </Link>
+                    <Link to={`/products/${product._id}`}>{product.title}</Link>
+                    <Text>
+                      <FormattedMessage id="quantity" />: {product.quantity}
+                    </Text>
+                    <Text>
+                      <FormattedMessage id="price" />:{" "}
+                      {formatPrice(product.discountedPrice)}
+                    </Text>
+                  </Box>
+                );
+              })}
+            </Flex>
+          </Box>
+        </Box>
+      </Collapse>
+    </Box>
+  );
+};
+
 function Orders() {
   const [orders, setOrders] = useState(null);
   const [filterStatus, setFilterStatus] = useState("all");
@@ -203,7 +426,6 @@ function Orders() {
   const [pageSize, setPageSize] = useState(10);
   const [totalOrders, setTotalOrders] = useState(0);
   const [loading, setLoading] = useState(false);
-  const { isOpen, onToggle } = useDisclosure();
   const toast = useToast();
   const intl = useIntl();
 
@@ -213,8 +435,6 @@ function Orders() {
       const { data, errors } = await altogic.endpoint.get(
         `/order?size=${pageSize}&page=${page}&sort=createdAt:desc`
       );
-
-      console.log("🚀 ~ file: Orders.js:246 ~ getProducts ~ data", data);
 
       if (!errors) {
         setOrders(data.result);
@@ -327,7 +547,7 @@ function Orders() {
                 >
                   <FormattedMessage id="orders" />
                 </Text>
-                <Flex justifyContent={"flex-end"} mr={4}>
+                <Flex justifyContent={"flex-end"} mx={4}>
                   <InputGroup w={"fit-content"}>
                     <InputLeftElement>
                       <FaSearch />
@@ -397,7 +617,7 @@ function Orders() {
                         </Flex>
                       </Badge>
                     </MenuButton>
-                    <MenuList>
+                    <MenuList zIndex={"popover"}>
                       <MenuItem onClick={() => setFilterStatus("all")}>
                         <Badge
                           bg={"blue.400"}
@@ -474,7 +694,7 @@ function Orders() {
                     </MenuList>
                   </Menu>
                 </Flex>
-                <Flex m={6} zIndex={"modal"}>
+                <Flex m={6} zIndex={"docked"}>
                   <Pagination
                     current={current}
                     onChange={(page) => {
@@ -509,217 +729,16 @@ function Orders() {
                 ) : (
                   filteredOrdersBySearch.map((order) => {
                     return (
-                      <Box key={order._id} w={"full"} p={10}>
-                        <Flex
-                          alignItems={"flex-start"}
-                          gap={2}
-                          justifyContent={{
-                            base: "center",
-                            md: "space-around",
-                          }}
-                        >
-                          <Grid
-                            flex={1}
-                            templateColumns={{
-                              sm: "repeat(1, 1fr)",
-                              md: "repeat(5, 1fr)",
-                            }}
-                            gap="2"
-                          >
-                            <Column
-                              title={intl.formatMessage({ id: "order_number" })}
-                              data={`#${order.orderNumber
-                                ?.toString()
-                                .padStart(6, "0")}`}
-                            />
-                            <Column
-                              title={intl.formatMessage({ id: "order_date" })}
-                              data={format(
-                                new Date(order.createdAt),
-                                "dd/MM/yyyy HH:mm"
-                              )}
-                            />
-                            <Column
-                              title={intl.formatMessage({ id: "order_status" })}
-                              data={order.status}
-                              id={order._id}
-                              setOrderStatus={setOrderStatus}
-                              badge
-                            />
-                            <Column
-                              title={intl.formatMessage({ id: "total_price" })}
-                              data={formatPrice(
-                                order.products.reduce((acc, product) => {
-                                  return (
-                                    acc +
-                                    product.discountedPrice * product.quantity
-                                  );
-                                }, 0)
-                              )}
-                            />
-                            <Flex
-                              gap={1}
-                              justifyContent={"center"}
-                              alignItems={"center"}
-                              flexDirection={"column"}
-                            >
-                              <Button onClick={onToggle}>
-                                <FormattedMessage id="expand" />
-                              </Button>
-                            </Flex>
-                          </Grid>
-                        </Flex>
-
-                        <Collapse in={isOpen} animateOpacity>
-                          <Box
-                            p="40px"
-                            color="white"
-                            bg="gray.700"
-                            mt="4"
-                            rounded="md"
-                            shadow="md"
-                          >
-                            <Box mb={4}>
-                              <Text>
-                                <b>
-                                  <FormattedMessage id="order_id" />:
-                                </b>{" "}
-                                {order._id}
-                              </Text>
-                              <Text>
-                                <b>
-                                  <FormattedMessage id="order_number" />:
-                                </b>{" "}
-                                {order.orderNumber}
-                              </Text>
-                              <Text>
-                                <b>
-                                  <FormattedMessage id="order_date" />:
-                                </b>{" "}
-                                {format(
-                                  new Date(order.createdAt),
-                                  "dd/MM/yyyy HH:mm"
-                                )}
-                              </Text>
-                            </Box>
-                            <Divider />
-                            <Box my={4}>
-                              <Text>
-                                <b>
-                                  {" "}
-                                  <FormattedMessage id="country" />:
-                                </b>{" "}
-                                {order.country}
-                              </Text>
-                              <Text>
-                                <b>
-                                  <FormattedMessage id="city" />:
-                                </b>{" "}
-                                {order.city}
-                              </Text>
-                              <Text>
-                                <b>
-                                  <FormattedMessage id="address" />:
-                                </b>{" "}
-                                {order.address}
-                              </Text>
-                            </Box>
-                            <Divider />
-                            <Box my={4}>
-                              <Text>
-                                <b>E-Mail:</b> {order.email}
-                              </Text>
-                              <Text>
-                                <b>
-                                  <FormattedMessage id="name" />:
-                                </b>{" "}
-                                {order.name}
-                              </Text>
-                              <Text>
-                                <b>
-                                  {" "}
-                                  <FormattedMessage id="customer_note" />:
-                                </b>{" "}
-                                {order.note ? (
-                                  order.note
-                                ) : (
-                                  <FormattedMessage id="no_note" />
-                                )}
-                              </Text>
-                            </Box>
-                            <Divider />
-                            <Box my={4}>
-                              <Text>
-                                <b>
-                                  <FormattedMessage id="products" />:
-                                </b>
-                              </Text>
-                              <Table variant="simple">
-                                <TableCaption fontSize={"lg"}>
-                                  <FormattedMessage id="total_price" /> :{" "}
-                                  {formatPrice(
-                                    order.products.reduce((acc, product) => {
-                                      return (
-                                        acc +
-                                        product.discountedPrice *
-                                          product.quantity
-                                      );
-                                    }, 0)
-                                  )}
-                                </TableCaption>
-                                <Thead>
-                                  <Tr>
-                                    <Th>
-                                      <FormattedMessage id="product" />
-                                    </Th>
-                                    <Th>
-                                      <FormattedMessage id="product_title" />
-                                    </Th>
-                                    <Th>
-                                      <FormattedMessage id="quantity" />
-                                    </Th>
-                                    <Th>
-                                      <FormattedMessage id="price" />
-                                    </Th>
-                                  </Tr>
-                                </Thead>
-                                <Tbody>
-                                  {order.products.map((product) => {
-                                    return (
-                                      <Tr key={product._id}>
-                                        <Td>
-                                          <Link to={`/products/${product._id}`}>
-                                            <Image
-                                              src={product.images[0]}
-                                              objectFit="cover"
-                                              boxSize="90px"
-                                              loading={"lazy"}
-                                            />
-                                          </Link>
-                                        </Td>
-                                        <Td>
-                                          <Link to={`/products/${product._id}`}>
-                                            {product.title}
-                                          </Link>
-                                        </Td>
-                                        <Td>{product.quantity}</Td>
-                                        <Td>
-                                          {formatPrice(product.discountedPrice)}
-                                        </Td>
-                                      </Tr>
-                                    );
-                                  })}
-                                </Tbody>
-                              </Table>
-                            </Box>
-                          </Box>
-                        </Collapse>
-                      </Box>
+                      <OrderRow
+                        order={order}
+                        key={order._id}
+                        setOrderStatus={setOrderStatus}
+                      />
                     );
                   })
                 )}
               </Flex>
-              <Flex pb={5}>
+              <Flex pb={5} zIndex={"docked"}>
                 <Pagination
                   current={current}
                   onChange={(page) => {

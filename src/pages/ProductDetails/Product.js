@@ -56,6 +56,7 @@ import { useAuth } from "../../context/authContext";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { useProduct } from "../../context/productContext";
 import { BiShareAlt } from "react-icons/bi";
+import Err404 from "../Err/Err404";
 
 function Product() {
   const { products } = useProduct();
@@ -110,7 +111,7 @@ function Product() {
 
   if (product === null) return <CustomSpinner />;
   if (product.isDisabled === true) {
-    navigate("/404");
+    return <Err404 />;
   }
 
   const right = product.details.slice(0, 3);

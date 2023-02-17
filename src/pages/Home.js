@@ -78,6 +78,14 @@ function Home() {
     }
   });
 
+  const outStockProducts = sortedProducts.filter(
+    (product) => product.stock === 0
+  );
+  const inStockProducts = sortedProducts.filter(
+    (product) => product.stock !== 0
+  );
+  const allProducts = inStockProducts.concat(outStockProducts);
+
   return (
     <Box minh="100vh">
       <div data-aos={animations === true ? "fade-up" : "none"}>
@@ -106,7 +114,7 @@ function Home() {
               />
             </InputGroup>
             <AutoCompleteList>
-              {products.map((product, oid) => (
+              {displayableProducts.map((product, oid) => (
                 <Link key={`option-${oid}`} to={`/product/${product._id}`}>
                   <AutoCompleteItem
                     value={product.title}
@@ -175,7 +183,7 @@ function Home() {
         gap={6}
         mt={"4"}
       >
-        {sortedProducts.map((data, i) => (
+        {allProducts.map((data, i) => (
           <div key={i} data-aos={animations === true ? "zoom-in-up" : "none"}>
             <ProductCard item={data} />
           </div>

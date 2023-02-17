@@ -7,7 +7,6 @@ import {
   Button,
   Stack,
   Collapse,
-  useBreakpointValue,
   useDisclosure,
   ButtonGroup,
   useColorModeValue,
@@ -180,7 +179,6 @@ function Navbar() {
   const { items, notification } = useBasket();
   const { isOpen, onToggle } = useDisclosure();
   const { isAuth, signOutCurrentSession, admin } = useAuth();
-  const size = useBreakpointValue({ base: "sm", sm: "md" });
   const { lang, setLang } = usePreferences();
   const btnColor = useColorModeValue("white.50", "gray.600");
   const { profilePicture } = useAuth();
@@ -382,7 +380,7 @@ function Navbar() {
               <Button
                 variant="outline"
                 colorScheme={"green"}
-                size={size}
+                size={"md"}
                 ml={4}
               >
                 <Box pos="relative" display="inline-block">

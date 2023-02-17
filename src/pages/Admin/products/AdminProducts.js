@@ -114,7 +114,7 @@ function AdminProducts() {
           >
             <FormattedMessage id="products" />
           </Text>
-          <Flex justifyContent={"flex-end"} mr={4}>
+          <Flex justifyContent={"flex-end"} mx={4}>
             <InputGroup w={"fit-content"}>
               <InputLeftElement>
                 <FaSearch />
