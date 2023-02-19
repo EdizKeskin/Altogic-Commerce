@@ -25,7 +25,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
 import { ImEarth } from "react-icons/im";
 import { usePreferences } from "../context/preferencesContext";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/authContext";
 import { AiOutlineDown } from "react-icons/ai";
@@ -70,15 +70,58 @@ const Categories = [
 ];
 
 const DesktopNav = () => {
+  const location = useLocation().pathname;
+  const activeButton = NavLinks.find((link) => link.link === location);
+  const activeCategory = Categories.find(
+    (category) => category.link === location
+  );
+  console.log(
+    "🚀 ~ file: Navbar.js:76 ~ DesktopNav ~ activeCategory",
+    activeCategory
+  );
+
   return (
     <Stack direction={"row"} spacing={4}>
-      {NavLinks.map((link, i) => (
-        <Link to={link.link} key={i}>
-          <FormattedMessage id={link.name} />
-        </Link>
-      ))}
+      <Flex gap={5} alignItems={"center"}>
+        {NavLinks.map((link, i) => (
+          <Flex alignItems={"center"}>
+            <Link to={link.link} key={i}>
+              <Button
+                variant={
+                  activeButton !== undefined
+                    ? activeButton.link === link.link
+                      ? "solid"
+                      : "ghost"
+                    : "ghost"
+                }
+                colorScheme={
+                  activeButton !== undefined
+                    ? activeButton.link === link.link
+                      ? "teal"
+                      : "gray"
+                    : "gray"
+                }
+                size={
+                  activeButton !== undefined
+                    ? activeButton.link === link.link
+                      ? "md"
+                      : "md"
+                    : "md"
+                }
+              >
+                <FormattedMessage id={link.name} />
+              </Button>
+            </Link>
+          </Flex>
+        ))}
+      </Flex>
       <Menu>
-        <MenuButton variant={"link"} as={Button} rightIcon={<AiOutlineDown />}>
+        <MenuButton
+          variant={activeCategory !== undefined ? "solid" : "ghost"}
+          colorScheme={activeCategory !== undefined ? "teal" : "gray"}
+          as={Button}
+          rightIcon={<AiOutlineDown />}
+        >
           <FormattedMessage id="categories" />
         </MenuButton>
         <Portal>
@@ -86,7 +129,16 @@ const DesktopNav = () => {
             {Categories.map((category, i) => (
               <Link to={category.link} key={i}>
                 <MenuItem as={"span"} justifyContent={"center"}>
-                  <Button variant={"link"}>
+                  <Button
+                    variant={"link"}
+                    colorScheme={
+                      activeCategory !== undefined
+                        ? activeCategory.link === category.link
+                          ? "teal"
+                          : "gray"
+                        : "gray"
+                    }
+                  >
                     <FormattedMessage id={category.name} />
                   </Button>
                 </MenuItem>
