@@ -22,7 +22,6 @@ const AuthRedirect = () => {
         setIsAuth(true);
       }
     };
-    console.log(query);
     if (query === "reset-pwd") {
       navigate(`/reset-password/${accsessToken}`);
     } else {

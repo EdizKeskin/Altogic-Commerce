@@ -94,21 +94,21 @@ export default function BasicStatistics() {
             icon={<FiDatabase size={"3em"} />}
           />
         </Link>
-        <Link to={"/admin/orders"}>
+        <Link to={"/admin/orders"} state={"pending"}>
           <StatsCard
             title={intl.formatMessage({ id: "pending_orders" })}
             stat={pendingOrdersLength}
             icon={<AiOutlineHistory size={"3em"} />}
           />
         </Link>
-        <Link to={"/admin/orders"}>
+        <Link to={"/admin/orders"} state={"completed"}>
           <StatsCard
             title={intl.formatMessage({ id: "completed_orders" })}
             stat={completedOrdersLength}
             icon={<IoMdCheckmarkCircleOutline size={"3em"} />}
           />
         </Link>
-        <Link to={"/admin/orders"}>
+        <Link to={"/admin/orders"} state={"canceled"}>
           <StatsCard
             title={intl.formatMessage({ id: "canceled_orders" })}
             stat={canceledOrdersLength}

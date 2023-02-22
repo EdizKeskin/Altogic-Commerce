@@ -24,13 +24,18 @@ import {
   Flex,
   SimpleGrid,
   FormErrorMessage,
+  ButtonGroup,
+  Tooltip,
+  Breadcrumb,
+  BreadcrumbItem,
 } from "@chakra-ui/react";
 import altogic from "../../../api/altogic";
-import { BsFillTrashFill } from "react-icons/bs";
-import { useParams } from "react-router-dom";
+import { BsFillTrashFill, BsTrash } from "react-icons/bs";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getProductById } from "../../../api/storage";
 import CustomSpinner from "../../../components/Spinner";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useProduct } from "../../../context/productContext";
 
 function NewCheckbox(props) {
   return (
@@ -65,8 +70,10 @@ function NewCheckbox(props) {
 
 function EditProduct() {
   const toast = useToast();
+  const { setTrigger } = useProduct();
   const { product_id } = useParams();
   const intl = useIntl();
+  const navigate = useNavigate();
 
   const validationSchema = Yup.object({
     title: Yup.string().required(intl.formatMessage({ id: "required_field" })),
@@ -103,10 +110,6 @@ function EditProduct() {
       stock,
       isDisabled,
     } = values;
-    console.log(
-      "🚀 ~ file: EditProduct.js:106 ~ handleSubmit ~ values",
-      values
-    );
 
     try {
       const resp = await altogic.db
@@ -140,12 +143,55 @@ function EditProduct() {
   if (!product) {
     return <CustomSpinner />;
   }
+  const deleteProduct = async () => {
+    try {
+      const resp = await altogic.db
+        .model("products")
+        .object(product_id)
+        .delete();
+      if (resp.errors === null) {
+        toast({
+          title: intl.formatMessage({ id: "product_deleted" }),
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        setTrigger(true);
+        navigate(-1);
+      }
+    } catch (error) {
+      toast({
+        title: intl.formatMessage({ id: "product_deleted_error" }),
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <Box m={5}>
-      <Text fontSize="2xl" color={"white"}>
-        <FormattedMessage id="edit_product" />
-      </Text>
+      <Breadcrumb mt={{ base: 3, md: 0 }} spacing="6px" p="3">
+        <BreadcrumbItem>
+          <Link to="/admin">
+            <Button variant={"link"} textTransform={"capitalize"}>
+              Admin
+            </Button>
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+          <Link to={"/admin/products"}>
+            <Button variant={"link"} textTransform={"capitalize"}>
+              <FormattedMessage id="products" />
+            </Button>
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+          <Button variant={"link"} textTransform={"capitalize"}>
+            {product.title}
+          </Button>
+        </BreadcrumbItem>
+      </Breadcrumb>
 
       <Formik
         initialValues={{
@@ -180,6 +226,9 @@ function EditProduct() {
                 my="5"
                 textAlign="left"
               >
+                <Text fontSize="2xl" color={"white"} mb={10}>
+                  <FormattedMessage id="edit_product" />
+                </Text>
                 <form onSubmit={handleSubmit}>
                   <FormControl mb="4" isInvalid={touched.title && errors.title}>
                     <FormLabel color="white">
@@ -494,15 +543,28 @@ function EditProduct() {
                       defaultChecked={values.isDisabled === true}
                     />
                   </FormControl>
-
-                  <Button
-                    colorScheme="green"
-                    type="submit"
-                    isLoading={isSubmitting}
-                    width="full"
-                  >
-                    <FormattedMessage id="save" />
-                  </Button>
+                  <ButtonGroup w={"full"}>
+                    <Button
+                      colorScheme="green"
+                      type="submit"
+                      isLoading={isSubmitting}
+                      width="full"
+                    >
+                      <FormattedMessage id="save" />
+                    </Button>
+                    <Tooltip
+                      label={intl.formatMessage({ id: "delete_product" })}
+                      hasArrow
+                      bg="gray.300"
+                      color="black"
+                      borderRadius={"md"}
+                    >
+                      <IconButton
+                        icon={<BsTrash size={20} />}
+                        onClick={() => deleteProduct()}
+                      />
+                    </Tooltip>
+                  </ButtonGroup>
                 </form>
               </Box>
             </Box>

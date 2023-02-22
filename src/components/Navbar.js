@@ -75,16 +75,12 @@ const DesktopNav = () => {
   const activeCategory = Categories.find(
     (category) => category.link === location
   );
-  console.log(
-    "🚀 ~ file: Navbar.js:76 ~ DesktopNav ~ activeCategory",
-    activeCategory
-  );
 
   return (
     <Stack direction={"row"} spacing={4}>
       <Flex gap={5} alignItems={"center"}>
         {NavLinks.map((link, i) => (
-          <Flex alignItems={"center"}>
+          <Flex alignItems={"center"} key={i}>
             <Link to={link.link} key={i}>
               <Button
                 variant={

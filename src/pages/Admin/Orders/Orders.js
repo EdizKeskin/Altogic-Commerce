@@ -31,11 +31,13 @@ import {
   Td,
   Image,
   TableCaption,
+  Breadcrumb,
+  BreadcrumbItem,
 } from "@chakra-ui/react";
 import CustomSpinner from "../../../components/Spinner";
 import altogic from "../../../api/altogic";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { formatPrice } from "../../../api/storage";
 import { format } from "date-fns";
 import { MdOutlineCancel, MdOutlineDoneAll } from "react-icons/md";
@@ -419,7 +421,8 @@ const OrderRow = ({ order, setOrderStatus }) => {
 
 function Orders() {
   const [orders, setOrders] = useState(null);
-  const [filterStatus, setFilterStatus] = useState("all");
+  const { state } = useLocation();
+  const [filterStatus, setFilterStatus] = useState(state ? state : "all");
   const [searchText, setSearchText] = useState("");
   const [page, setPage] = useState(1);
   const [current, setCurrent] = useState(1);
@@ -527,6 +530,22 @@ function Orders() {
   return (
     <>
       <Container maxW={"7xl"} mt={10} mb={5}>
+        <Breadcrumb mt={{ base: 3, md: 0 }} spacing="6px" p="3">
+          <BreadcrumbItem>
+            <Link to="/admin">
+              <Button variant={"link"} textTransform={"capitalize"}>
+                Admin
+              </Button>
+            </Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <Link to={"/admin/products"}>
+              <Button variant={"link"} textTransform={"capitalize"}>
+                <FormattedMessage id="orders" />
+              </Button>
+            </Link>
+          </BreadcrumbItem>
+        </Breadcrumb>
         <Stack
           bg={"gray.800"}
           spacing={{ base: 8, md: 10 }}
@@ -726,6 +745,18 @@ function Orders() {
                 )}
                 {orders === null || filteredOrders === undefined ? (
                   <CustomSpinner />
+                ) : filteredOrdersBySearch?.length === 0 ? (
+                  <Alert
+                    status="error"
+                    borderRadius={"md"}
+                    my={10}
+                    justifyContent={"center"}
+                  >
+                    <AlertIcon />
+                    <AlertDescription>
+                      <FormattedMessage id="no_orders_by_search" />
+                    </AlertDescription>
+                  </Alert>
                 ) : (
                   filteredOrdersBySearch.map((order) => {
                     return (

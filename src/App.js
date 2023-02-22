@@ -33,12 +33,12 @@ const Address = lazy(() => import("./pages/Profile/Address"));
 const Verification = lazy(() => import("./pages/Auth/Verification"));
 const Err404 = lazy(() => import("./pages/Err/Err404"));
 const Contact = lazy(() => import("./pages/Contact/Contact"));
-const AdminOrders = lazy(() => import("./pages/Admin/orders/Orders"));
+const AdminOrders = lazy(() => import("./pages/Admin/Orders/Orders"));
 const AdminProducts = lazy(() =>
-  import("./pages/Admin/products/AdminProducts")
+  import("./pages/Admin/Products/AdminProducts")
 );
-const EditProduct = lazy(() => import("./pages/Admin/editProduct/EditProduct"));
-const NewProduct = lazy(() => import("./pages/Admin/newProduct/NewProduct"));
+const EditProduct = lazy(() => import("./pages/Admin/EditProduct/EditProduct"));
+const NewProduct = lazy(() => import("./pages/Admin/NewProduct/NewProduct"));
 const Admin = lazy(() => import("./pages/Admin/Admin"));
 
 function App() {

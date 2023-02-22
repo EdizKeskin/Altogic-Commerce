@@ -23,6 +23,9 @@ import {
   InputGroup,
   InputLeftElement,
   Input,
+  Tooltip,
+  Breadcrumb,
+  BreadcrumbItem,
 } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { useState } from "react";
@@ -95,7 +98,23 @@ function AdminProducts() {
   });
 
   return (
-    <Container maxW={"7xl"} mt={10}>
+    <Container maxW={"7xl"} mt={5}>
+      <Breadcrumb mt={{ base: 3, md: 0 }} spacing="6px" p="3">
+        <BreadcrumbItem>
+          <Link to="/admin">
+            <Button variant={"link"} textTransform={"capitalize"}>
+              Admin
+            </Button>
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+          <Link to={"/admin/products"}>
+            <Button variant={"link"} textTransform={"capitalize"}>
+              <FormattedMessage id="products" />
+            </Button>
+          </Link>
+        </BreadcrumbItem>
+      </Breadcrumb>
       <Stack
         bg={"gray.800"}
         spacing={{ base: 8, md: 10 }}
@@ -178,7 +197,7 @@ function AdminProducts() {
                       />
                       <Column
                         title={intl.formatMessage({ id: "stock" })}
-                        data={formatPrice(product.stock)}
+                        data={product.stock}
                       />
                       <Column
                         title={intl.formatMessage({ id: "created_at_short" })}
@@ -194,15 +213,36 @@ function AdminProducts() {
                         mt={{ base: 4, md: 0 }}
                       >
                         <Link to={`/admin/products/${product._id}`}>
-                          <IconButton icon={<AiOutlineEdit size={20} />} />
+                          <Tooltip
+                            label={intl.formatMessage({
+                              id: "edit_product",
+                            })}
+                            hasArrow
+                            bg="gray.300"
+                            color="black"
+                            borderRadius={"md"}
+                          >
+                            <IconButton icon={<AiOutlineEdit size={20} />} />
+                          </Tooltip>
                         </Link>
 
                         <Popover>
                           {({ onClose }) => (
                             <>
                               <PopoverTrigger>
-                                <IconButton icon={<BsTrash size={20} />} />
+                                <Tooltip
+                                  label={intl.formatMessage({
+                                    id: "delete_product",
+                                  })}
+                                  hasArrow
+                                  bg="gray.300"
+                                  color="black"
+                                  borderRadius={"md"}
+                                >
+                                  <IconButton icon={<BsTrash size={20} />} />
+                                </Tooltip>
                               </PopoverTrigger>
+
                               <Portal>
                                 <PopoverContent>
                                   <PopoverArrow />
