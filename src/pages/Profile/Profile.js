@@ -361,135 +361,143 @@ function Profile() {
                     <FormattedMessage id="save" />
                   </Button>
                 </Box>
-                <Formik
-                  initialValues={{
-                    oldPassword: "",
-                    newPassword: "",
-                  }}
-                  validationSchema={validationSchema}
-                  onSubmit={handleSubmit}
-                >
-                  {({
-                    handleBlur,
-                    handleChange,
-                    handleSubmit,
-                    errors,
-                    touched,
-                    values,
-                    isSubmitting,
-                    isValid,
-                  }) => (
-                    <Box
-                      display={"flex"}
-                      flexDirection={"column"}
-                      ml={{ base: 0, md: 10 }}
-                      mt={{ base: 10, md: 0 }}
+                {altogic.auth.getUser().provider === "altogic" &&
+                  altogic.auth.getUser().admin !== true && (
+                    <Formik
+                      initialValues={{
+                        oldPassword: "",
+                        newPassword: "",
+                      }}
+                      validationSchema={validationSchema}
+                      onSubmit={handleSubmit}
                     >
-                      <form onSubmit={handleSubmit}>
-                        <FormControl
-                          isInvalid={touched.oldPassword && errors.oldPassword}
-                          id="oldPassword"
-                          isRequired
+                      {({
+                        handleBlur,
+                        handleChange,
+                        handleSubmit,
+                        errors,
+                        touched,
+                        values,
+                        isSubmitting,
+                        isValid,
+                      }) => (
+                        <Box
+                          display={"flex"}
+                          flexDirection={"column"}
+                          ml={{ base: 0, md: 10 }}
+                          mt={{ base: 10, md: 0 }}
                         >
-                          <FormLabel>
-                            <FormattedMessage id="old_password" />
-                          </FormLabel>
-                          <InputGroup>
-                            <Input
-                              type={show ? "text" : "password"}
-                              value={values.oldPassword}
-                              w={"full"}
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                              disabled={isSubmitting}
+                          <form onSubmit={handleSubmit}>
+                            <FormControl
                               isInvalid={
                                 touched.oldPassword && errors.oldPassword
                               }
-                              placeholder={intl.formatMessage({
-                                id: "old_password",
-                              })}
-                            />
-                            <InputRightElement width="4.5rem">
-                              <IconButton
-                                bg="transparent !important"
-                                justifyContent="flex-end"
-                                onClick={handleShow}
-                                icon={
-                                  show ? (
-                                    <AiOutlineEyeInvisible size={"25px"} />
-                                  ) : (
-                                    <AiOutlineEye size={"25px"} />
-                                  )
-                                }
-                              />
-                            </InputRightElement>
-                          </InputGroup>
-                          <FormErrorMessage>
-                            {errors.oldPassword}
-                          </FormErrorMessage>
-                        </FormControl>
-                        <FormControl
-                          id="newPassword"
-                          mt={4}
-                          isInvalid={touched.newPassword && errors.newPassword}
-                          isRequired
-                        >
-                          <FormLabel>
-                            <FormattedMessage id="new_password" />
-                          </FormLabel>
-                          <InputGroup>
-                            <Input
-                              type={showConfirm ? "text" : "password"}
-                              value={values.newPassword}
-                              w={"full"}
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                              disabled={isSubmitting}
+                              id="oldPassword"
+                              isRequired
+                            >
+                              <FormLabel>
+                                <FormattedMessage id="old_password" />
+                              </FormLabel>
+                              <InputGroup>
+                                <Input
+                                  type={show ? "text" : "password"}
+                                  value={values.oldPassword}
+                                  w={"full"}
+                                  onBlur={handleBlur}
+                                  onChange={handleChange}
+                                  disabled={isSubmitting}
+                                  isInvalid={
+                                    touched.oldPassword && errors.oldPassword
+                                  }
+                                  placeholder={intl.formatMessage({
+                                    id: "old_password",
+                                  })}
+                                />
+                                <InputRightElement width="4.5rem">
+                                  <IconButton
+                                    bg="transparent !important"
+                                    justifyContent="flex-end"
+                                    onClick={handleShow}
+                                    icon={
+                                      show ? (
+                                        <AiOutlineEyeInvisible size={"25px"} />
+                                      ) : (
+                                        <AiOutlineEye size={"25px"} />
+                                      )
+                                    }
+                                  />
+                                </InputRightElement>
+                              </InputGroup>
+                              <FormErrorMessage>
+                                {errors.oldPassword}
+                              </FormErrorMessage>
+                            </FormControl>
+                            <FormControl
+                              id="newPassword"
+                              mt={4}
                               isInvalid={
                                 touched.newPassword && errors.newPassword
                               }
-                              placeholder={intl.formatMessage({
-                                id: "new_password",
-                              })}
-                            />
-                            <InputRightElement width="4.5rem">
-                              <IconButton
-                                bg="transparent !important"
-                                justifyContent="flex-end"
-                                onClick={handleShowConfirm}
-                                icon={
-                                  showConfirm ? (
-                                    <AiOutlineEyeInvisible size={"25px"} />
-                                  ) : (
-                                    <AiOutlineEye size={"25px"} />
-                                  )
-                                }
-                              />
-                            </InputRightElement>
-                          </InputGroup>
-                          <FormErrorMessage>
-                            {errors.newPassword}
-                          </FormErrorMessage>
-                        </FormControl>
-                        <Button
-                          mt={4}
-                          w={"full"}
-                          colorScheme={"green"}
-                          isLoading={loading}
-                          type="submit"
-                          disabled={isSubmitting || !isValid}
-                        >
-                          <FormattedMessage id="change_password" />
-                        </Button>
-                        {error && (
-                          <Text color={"red.400"} mt={2}>
-                            {error}
-                          </Text>
-                        )}
-                      </form>
-                    </Box>
+                              isRequired
+                            >
+                              <FormLabel>
+                                <FormattedMessage id="new_password" />
+                              </FormLabel>
+                              <InputGroup>
+                                <Input
+                                  type={showConfirm ? "text" : "password"}
+                                  value={values.newPassword}
+                                  w={"full"}
+                                  onBlur={handleBlur}
+                                  onChange={handleChange}
+                                  disabled={isSubmitting}
+                                  isInvalid={
+                                    touched.newPassword && errors.newPassword
+                                  }
+                                  placeholder={intl.formatMessage({
+                                    id: "new_password",
+                                  })}
+                                />
+                                <InputRightElement width="4.5rem">
+                                  <IconButton
+                                    bg="transparent !important"
+                                    justifyContent="flex-end"
+                                    onClick={handleShowConfirm}
+                                    icon={
+                                      showConfirm ? (
+                                        <AiOutlineEyeInvisible size={"25px"} />
+                                      ) : (
+                                        <AiOutlineEye size={"25px"} />
+                                      )
+                                    }
+                                  />
+                                </InputRightElement>
+                              </InputGroup>
+                              <FormErrorMessage>
+                                {errors.newPassword}
+                              </FormErrorMessage>
+                            </FormControl>
+                            <Button
+                              mt={4}
+                              w={"full"}
+                              colorScheme={"green"}
+                              isLoading={loading}
+                              type="submit"
+                              disabled={isSubmitting || !isValid}
+                            >
+                              <FormattedMessage id="change_password" />
+                            </Button>
+                            {error && (
+                              <Text color={"red.400"} mt={2}>
+                                {error}
+                              </Text>
+                            )}
+                          </form>
+                        </Box>
+                      )}
+                    </Formik>
                   )}
-                </Formik>
+
                 <Box
                   display={"flex"}
                   flexDirection={"column"}

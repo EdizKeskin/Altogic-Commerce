@@ -20,6 +20,8 @@ import {
   FormErrorMessage,
   HStack,
   Divider,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 import altogic from "../../api/altogic";
 import { FaDiscord, FaGithub, FaGoogle } from "react-icons/fa";
@@ -274,6 +276,23 @@ function SignIn() {
                           />
                         </ButtonGroup>
                       </Flex>
+                      <Alert
+                        status="info"
+                        variant="subtle"
+                        flexDirection="column"
+                        alignItems="center"
+                        justifyContent="center"
+                        textAlign="center"
+                      >
+                        <AlertTitle mb={1} fontSize="lg">
+                          Admin Account
+                        </AlertTitle>
+                        <AlertDescription maxWidth="sm">
+                          Email: admin@admin.com
+                          <br />
+                          Password: admin123
+                        </AlertDescription>
+                      </Alert>
                     </Stack>
                   </form>
                 </Stack>
