@@ -46,6 +46,7 @@ import { TbTruckLoading } from "react-icons/tb";
 import { AiOutlineCaretDown, AiOutlineHistory } from "react-icons/ai";
 import { FaSearch } from "react-icons/fa";
 import Pagination from "@choc-ui/paginator";
+import { useAuth } from "../../../context/authContext";
 
 const Column = ({ title, data, badge, setOrderStatus, id }) => {
   const textColor = useColorModeValue("gray.800", "white");
@@ -198,6 +199,7 @@ const Column = ({ title, data, badge, setOrderStatus, id }) => {
 
 const OrderRow = ({ order, setOrderStatus }) => {
   const { isOpen, onToggle } = useDisclosure();
+  const { owner } = useAuth()
   const intl = useIntl();
   return (
     <Box key={order._id} w={"full"} p={10}>
@@ -301,13 +303,13 @@ const OrderRow = ({ order, setOrderStatus }) => {
               <b>
                 <FormattedMessage id="address" />:
               </b>{" "}
-              {order.address}
+              {owner === true ? order.address : <FormattedMessage id="hidden_for_privacy" />}
             </Text>
           </Box>
           <Divider />
           <Box my={4}>
             <Text>
-              <b>E-Mail:</b> {order.email}
+              <b>E-Mail:</b> {owner === true ? order.email : <FormattedMessage id="hidden_for_privacy" />}
             </Text>
             <Text>
               <b>

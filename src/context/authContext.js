@@ -12,6 +12,7 @@ const AuthenticationProvider = ({ children }) => {
   const [user, setUser] = useState();
   const [isAuth, setIsAuth] = useState(false);
   const [admin, setAdmin] = useState();
+  const [owner, setOwner] = useState();
   const [profilePicture, setProfilePicture] = useState(
     require("../assets/pp_blank.png")
   );
@@ -32,6 +33,7 @@ const AuthenticationProvider = ({ children }) => {
       async function fetchAdmin() {
         const result = await getUserById(altogic.auth.getUser()._id);
         setAdmin(result.data.admin);
+        setOwner(result.data.owner ? result.data.owner : false);
       }
       const pp = altogic.auth.getUser().profilePicture;
 
@@ -126,7 +128,8 @@ const AuthenticationProvider = ({ children }) => {
     setSessions,
     admin,
     profilePicture,
-    setProfilePicture
+    setProfilePicture,
+    owner
   };
 
   return (

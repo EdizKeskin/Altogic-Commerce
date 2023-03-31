@@ -191,8 +191,10 @@ const Messages = {
     is_disabled: "Devre dışı",
     back: "Geri",
     no_orders_by_search: "Bu kriterlere uygun sipariş bulunamadı.",
+    hidden_for_privacy: "Gizlilik nedeniyle gizli",
   },
   "en-US": {
+    hidden_for_privacy: "Hidden for privacy reasons",
     no_orders_by_search: "No orders found by this search.",
     product_deleted_error: "Product could not be deleted.",
     is_disabled: "Disabled",
